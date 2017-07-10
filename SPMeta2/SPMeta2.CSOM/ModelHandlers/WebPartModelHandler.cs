@@ -302,12 +302,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 xml.SetExportMode(definition.ExportMode);
 
+            if (definition.Hidden.HasValue)
+                xml.SetHidden(definition.Hidden.Value);
+
             // bindings
             ProcessParameterBindings(definition, xml);
 
             // properties
             ProcessWebpartProperties(definition, xml);
-
 
             return xml.ToString();
         }

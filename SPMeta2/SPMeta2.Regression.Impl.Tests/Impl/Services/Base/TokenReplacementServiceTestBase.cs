@@ -88,8 +88,8 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
             var isValid = true;
 
             // ~sitecollection -> string.Empty on the root web
-            isValid &= ShouldPass("~sitecollection -> string.Empty", context, "~sitecollection", string.Empty);
-            isValid &= ShouldPass("~SiteCollection -> string.Empty", context, "~SiteCollection", string.Empty);
+            isValid &= ShouldPass("~sitecollection -> string.Empty", context, "~sitecollection", "/");
+            isValid &= ShouldPass("~SiteCollection -> string.Empty", context, "~SiteCollection", "/");
 
             // ~sitecollection/something -> /something on the root web
             isValid &= ShouldPass("~sitecollection/something1 -> /something1", context, "~sitecollection/something1", "/something1");
@@ -125,13 +125,21 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
         {
             var isValid = true;
 
-            // ~site -> string.Empty on the root web
-            isValid &= ShouldPass("~site -> string.Empty", context, "~site", string.Empty);
-            isValid &= ShouldPass("~Site -> string.Empty", context, "~Site", string.Empty);
+            // ~site -> / on the root web
+            isValid &= ShouldPass("~site -> string.Empty", context, "~site", "/");
+            isValid &= ShouldPass("~Site -> string.Empty", context, "~Site", "/");
+
+            // ~site/ -> / on the root web
+            isValid &= ShouldPass("~site/ -> string.Empty", context, "~site/", "/");
+            isValid &= ShouldPass("~Site/ -> string.Empty", context, "~Site/", "/");
 
             // ~site/something -> /something on the root web
             isValid &= ShouldPass("~site/something1 -> /something1", context, "~site/something1", "/something1");
             isValid &= ShouldPass("~Site/something2 -> /something2", context, "~Site/something2", "/something2");
+
+            // ~site/something/ -> /something on the root web
+            isValid &= ShouldPass("~site/something1/ -> /something1", context, "~site/something1/", "/something1");
+            isValid &= ShouldPass("~Site/something2/ -> /something2", context, "~Site/something2/", "/something2");
 
             // same same
             isValid &= ShouldPass("site/something1 -> site/something1", context, "site/something1", "site/something1");

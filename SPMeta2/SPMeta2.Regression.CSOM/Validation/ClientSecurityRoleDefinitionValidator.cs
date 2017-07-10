@@ -26,9 +26,13 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var spObject = FindRoleDefinition(web.RoleDefinitions, definition.Name);
 
+            context.Load(spObject);
+            context.ExecuteQueryWithTrace();
+
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
+                .ShouldNotBeNull(spObject)
                 .ShouldBeEqual(m => m.Name, o => o.Name)
 
                 .ShouldBeEqualIfNotNullOrEmpty(m => m.Description, o => o.Description)

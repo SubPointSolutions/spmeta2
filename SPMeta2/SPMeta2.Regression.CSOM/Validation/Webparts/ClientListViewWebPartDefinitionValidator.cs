@@ -294,7 +294,10 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                         if (typedDefinition.WebId.HasGuidValue() || !string.IsNullOrEmpty(typedDefinition.WebUrl))
                         {
                             targetWeb = new LookupFieldModelHandler()
-                                            .GetTargetWeb(this.CurrentClientContext.Site, typedDefinition.WebUrl, typedDefinition.WebId);
+                                            .GetTargetWeb(this.CurrentClientContext.Site, 
+                                            typedDefinition.WebUrl, 
+                                            typedDefinition.WebId,
+                                            modelHost);
                         }
 
                         var list = XsltListViewWebPartModelHandler.LookupList(targetWeb,

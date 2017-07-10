@@ -30,6 +30,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 v => v.ViewFields,
                 v => v.Title,
                 v => v.DefaultView,
+                v => v.MobileDefaultView,
                 v => v.ViewQuery,
                 v => v.RowLimit,
                 v => v.Paged,
@@ -59,6 +60,12 @@ namespace SPMeta2.Regression.CSOM.Validation
                 .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
                 .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                 .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
+
+            if (definition.MobileDefaultView.HasValue)
+                assert.ShouldBeEqual(m => m.MobileDefaultView, o => o.MobileDefaultView);
+            else
+                assert.SkipProperty(m => m.MobileDefaultView, "MobileDefaultView is null or empty. Skipping.");
+
 
             if (!string.IsNullOrEmpty(definition.Scope))
             {
@@ -98,6 +105,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                    // replacing all new lines
                    srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
                    dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
+
+                   srcViewDate = Regex.Replace(srcViewDate, @"\s+", string.Empty);
+                   dstViewDate = Regex.Replace(dstViewDate, @"\s+", string.Empty);
 
                    var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 
@@ -208,6 +218,9 @@ namespace SPMeta2.Regression.CSOM.Validation
                     // replacing all new lines
                     srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
                     dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
+
+                    srcViewDate = Regex.Replace(srcViewDate, @"\s+", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\s+", string.Empty);
 
                     var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 

@@ -116,6 +116,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefinitionGenerators\SuiteBarDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\OfficialFileHostDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SharePointDesignerSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ClearRecycleBinDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
@@ -341,6 +343,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer1.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp">

@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="c6cf3a69-1a73-4cc5-9c67-e3859a071197" solutionId="c6cf3a69-1a73-4cc5-9c67-e3859a071197" resetWebServer="false" sharePointProductVersion="15.0" name="SPMeta2.Containers.FarmSolutionWebAppContainer" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" />

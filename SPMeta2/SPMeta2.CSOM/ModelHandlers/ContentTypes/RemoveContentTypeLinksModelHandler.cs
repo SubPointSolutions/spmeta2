@@ -39,7 +39,13 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Fetching list content types");
 
-            context.Load(list, l => l.ContentTypes);
+            context.Load(list, l => l.ContentTypes.Include(
+               ct => ct.Id,
+               ct => ct.Name,
+               ct => ct.ReadOnly,
+
+               ct => ct.Parent.Id
+               ));
             context.ExecuteQueryWithTrace();
 
             var listContentTypes = list.ContentTypes.ToList();
@@ -73,9 +79,14 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
 
                 if (listContentType == null && !string.IsNullOrEmpty(srcContentTypeDef.ContentTypeId))
                 {
-                    listContentType =
-                        listContentTypes.FirstOrDefault(
-                            c => c.Id.ToString().ToUpper().StartsWith(srcContentTypeDef.ContentTypeId.ToUpper()));
+                    foreach (var contentType in list.ContentTypes)
+                    {
+                        if (contentType.Parent.Id.ToString().ToUpper() == srcContentTypeDef.ContentTypeId.ToUpper())
+                        {
+                            listContentType = contentType;
+                            break;
+                        }
+                    }
 
                     if (listContentType != null)
                     {

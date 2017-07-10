@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 
 namespace SPMeta2.Regression.Service
@@ -22,7 +23,10 @@ namespace SPMeta2.Regression.Service
             IsErrorEnabled = true;
             IsCriticalEnabled = true;
 
-            var fileName = string.Format("spmeta2.regression.{0}.log", GetTimestamp());
+            var domainId = AppDomain.CurrentDomain.Id;
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+
+            var fileName = string.Format("spmeta2.regression.{0}-{1}.{2}.log", domainId, threadId, GetTimestamp());
             LogFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
         }
 

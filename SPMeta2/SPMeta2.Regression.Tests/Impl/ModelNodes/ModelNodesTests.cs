@@ -83,5 +83,47 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
         }
 
         #endregion
+
+        #region compatibility
+
+        [TestMethod]
+        [TestCategory("Regression.ModelNodes.Compatibility")]
+        [TestCategory("CI.Core")]
+        public void Should_Pass_On_Valid_SSOM_CSOM()
+        {
+            var validDefinitions = new DefinitionBase[]{ 
+                new FieldDefinition(),
+                new WebDefinition(),
+                new ListDefinition(),
+            };
+
+            // both CSOM / SSOM
+            foreach (var def in validDefinitions)
+            {
+                Assert.IsTrue(def.IsCSOMCompatible());
+                Assert.IsTrue(def.IsSSOMCompatible());
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.ModelNodes.Compatibility")]
+        [TestCategory("CI.Core")]
+        public void Should_Pass_On_Valid_SSOM_Invalid_CSOM()
+        {
+            var validDefinitions = new DefinitionBase[]{ 
+                new FarmDefinition(),
+                new WebApplicationDefinition(),
+                new SiteDefinition()
+            };
+
+            // both CSOM / SSOM
+            foreach (var def in validDefinitions)
+            {
+                Assert.IsFalse(def.IsCSOMCompatible());
+                Assert.IsTrue(def.IsSSOMCompatible());
+            }
+        }
+
+        #endregion
     }
 }

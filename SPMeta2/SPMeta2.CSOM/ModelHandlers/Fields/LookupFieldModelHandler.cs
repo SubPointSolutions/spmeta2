@@ -8,6 +8,7 @@ using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
 {
@@ -29,16 +30,38 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
 
         #region methods
 
+        protected override bool PreloadProperties(Field field)
+        {
+            base.PreloadProperties(field);
+
+            var context = field.Context;
+            context.Load(field, f => f.SchemaXml);
+
+            return true;
+        }
+
+
         protected override void ProcessFieldProperties(Field field, FieldDefinition fieldModel)
         {
+            var typedFieldModel = fieldModel.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
+
             var site = HostSite;
             var context = site.Context;
+
+            // CountRelated in Lookups in CSOM #1018
+            // https://github.com/SubPointSolutions/spmeta2/issues/673
+            if (typedFieldModel.CountRelated.HasValue)
+            {
+                var fieldXml = XDocument.Parse(field.SchemaXml);
+                fieldXml.Root.SetAttribute("CountRelated", typedFieldModel.CountRelated.ToString().ToUpper());
+
+                field.SchemaXml = fieldXml.ToString();
+            }
 
             // let base setting be setup
             base.ProcessFieldProperties(field, fieldModel);
 
             var typedField = field.Context.CastTo<FieldLookup>(field);
-            var typedFieldModel = fieldModel.WithAssertAndCast<LookupFieldDefinition>("model", value => value.RequireNotNull());
 
             if (!typedField.IsPropertyAvailable("LookupList"))
             {
@@ -118,7 +141,12 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             return GetTargetWeb(site, definition.LookupWebUrl, definition.LookupWebId);
         }
 
-        public Web GetTargetWeb(Site site, string webUrl, Guid? webId)
+        protected Web GetTargetWeb(Site site, string webUrl, Guid? webId)
+        {
+            return GetTargetWeb(site, webUrl, webId, ModelHost);
+        }
+
+        public Web GetTargetWeb(Site site, string webUrl, Guid? webId, object replacementObject)
         {
             var context = site.Context;
 
@@ -133,16 +161,23 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             }
             else if (!string.IsNullOrEmpty(webUrl))
             {
-                var oldValue = CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext;
+                if (replacementObject == null)
+                    throw new ArgumentNullException("replacementObject");
+
+                //var oldValue = CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext;
 
                 try
                 {
-                    CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = true;
+                    // restrict, only site / web
+                    // Tokens in LookupWebUrl #1013
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1013
+
+                    //CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = false;
 
                     var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
                         Value = webUrl,
-                        Context = context
+                        Context = replacementObject
                     }).Value;
 
                     // server relative url, ensure / in the beginning
@@ -158,7 +193,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
                 }
                 finally
                 {
-                    CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = oldValue;
+                    //CSOMTokenReplacementService.AllowClientContextAsTokenReplacementContext = oldValue;
                 }
             }
 

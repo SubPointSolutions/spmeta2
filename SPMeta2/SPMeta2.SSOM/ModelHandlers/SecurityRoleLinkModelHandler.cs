@@ -48,6 +48,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (modelHost is SPWeb)
                 return modelHost as SPWeb;
 
+            if (modelHost is SPWeb)
+                return modelHost as SPWeb;
+
             if (modelHost is SPList)
                 return (modelHost as SPList).ParentWeb;
 

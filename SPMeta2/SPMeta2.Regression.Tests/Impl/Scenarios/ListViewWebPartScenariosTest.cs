@@ -468,7 +468,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.Type = BuiltInViewType.Grid;
 
                 def.IsDefault = false;
-                
+
                 def.TabularView = null;
 
                 def.Fields = new Collection<string>
@@ -519,6 +519,129 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
             TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Webparts.ListViewWebPart.Calendar")]
+        public void CanDeploy_ListViewWebPart_As_Calender_With_DateRangesOverlap()
+        {
+            // ListViewWebPartDefinition doesn't show calendar view #988
+            // https://github.com/SubPointSolutions/spmeta2/issues/988
+
+            var contentTypeDef = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.DocumentSet_Correct;
+            });
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                //def.TemplateName = BuiltInListTemplates.DocumentLibrary.InternalName;
+                //def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                def.ContentTypesEnabled = true;
+            });
+
+            var listViewDef = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.IsDefault = true;
+                //def.MobileDefaultView = true;
+
+                def.RowLimit = 2147483647;
+                def.Query = @"<Where>
+                                <DateRangesOverlap>
+                                    <FieldRef Name=""StartDate"" />
+                                    <FieldRef Name=""_EndDate"" />
+                                    <FieldRef Name=""RecurrenceID"" />
+                                    <Value Type=""DateTime"">
+                                        <Month />
+                                    </Value>
+                                </DateRangesOverlap>
+                            </Where>";
+
+                def.ViewData = @"<FieldRef Name=""Title"" Type=""CalendarMonthTitle""/>
+<FieldRef Name=""Title"" Type=""CalendarWeekTitle""/>
+<FieldRef Name=""Location"" Type=""CalendarWeekLocation""/>
+<FieldRef Name=""Title"" Type=""CalendarDayTitle""/>
+<FieldRef Name=""Location"" Type=""CalendarDayLocation""/>";
+
+                def.IsPaged = false;
+                def.IsDefault = false;
+
+                def.Fields = new System.Collections.ObjectModel.Collection<string> {
+                    BuiltInFieldDefinitions.Title.InternalName,
+                    BuiltInFieldDefinitions.StartDate.InternalName,
+                    BuiltInFieldDefinitions._EndDate.InternalName, 
+                    BuiltInFieldDefinitions.Title.InternalName,
+
+                    BuiltInFieldDefinitions.Location.InternalName ,
+                    BuiltInFieldDefinitions.fAllDayEvent.InternalName ,
+                    BuiltInFieldDefinitions.fRecurrence.InternalName ,
+                    BuiltInFieldDefinitions.EventType.InternalName 
+                };
+
+                def.Type = @"Html";
+                def.Types = new Collection<string> { 
+                    "Calendar", 
+                    "Recurrence" 
+                };
+            });
+
+
+            var webpartPageDef = ModelGeneratorService.GetRandomDefinition<WebPartPageDefinition>(def =>
+            {
+
+            });
+
+            var calendarWebPart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
+            {
+                def.ListId = null;
+                def.ListUrl = null;
+
+                def.ListTitle = listDef.Title;
+                def.ViewName = listViewDef.Title;
+                def.ChromeType = @"Default";
+
+                //def.ZoneId = @"LeftColumn",
+                //ZoneIndex = 0,
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddContentType(contentTypeDef, contentType =>
+                {
+                    contentType
+                        .AddContentTypeFieldLink(SPMeta2.BuiltInDefinitions.BuiltInFieldDefinitions.Title)
+                        .AddContentTypeFieldLink(SPMeta2.BuiltInDefinitions.BuiltInFieldDefinitions.StartDate)
+                        .AddContentTypeFieldLink(SPMeta2.BuiltInDefinitions.BuiltInFieldDefinitions._EndDate);
+                });
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web
+                    .AddList(listDef, list =>
+                    {
+                        list
+                            .AddListFieldLink(BuiltInFieldDefinitions.Location)
+                            .AddListFieldLink(BuiltInFieldDefinitions.fAllDayEvent)
+                            .AddListFieldLink(BuiltInFieldDefinitions.fRecurrence)
+                            .AddListFieldLink(BuiltInFieldDefinitions.EventType)
+
+                            .AddContentTypeLink(contentTypeDef)
+                            .AddListView(listViewDef);
+                    })
+                    .AddHostList(BuiltInListDefinitions.SitePages, list =>
+                    {
+                        list
+                            .AddWebPartPage(webpartPageDef, page =>
+                            {
+                                page.AddWebPart(calendarWebPart);
+                            });
+                    });
+            });
+
+            TestModel(siteModel, webModel);
         }
 
         #endregion

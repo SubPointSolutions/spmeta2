@@ -13,6 +13,7 @@ using SPMeta2.ModelHosts;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Utils;
 using SPMeta2.Standard.Enumerations;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers
 {
@@ -39,14 +40,19 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             var folderModelHost = modelHost as FolderModelHost;
             var definition = model as PublishingPageDefinition;
 
-
-
             Folder folder = folderModelHost.CurrentListFolder;
 
             if (folder != null && definition != null)
             {
                 var context = folder.Context;
                 var currentPage = GetCurrentPage(folderModelHost.CurrentList, folder, GetSafePageFileName(definition));
+
+                if (currentPage == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find publishing page fo definition:[{0}]",
+                        definition));
+                }
 
                 if (typeof(WebPartDefinitionBase).IsAssignableFrom(childModelType)
                     || childModelType == typeof(DeleteWebPartsDefinition))

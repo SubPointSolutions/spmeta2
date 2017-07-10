@@ -21,95 +21,102 @@ namespace SPMeta2.Services.Impl.Validation
 
         public override void DeployModel(ModelHostBase modelHost, ModelNode model)
         {
-            Exceptions.Clear();
+            // added support recently
+            // .HideContentTypeLink() should work with content type ID #1021
+            // .AddUniqueContentTypeOrder() should work with content type ID #1022
+            // .RemoveContentTypeLink() should work with content type ID #1020
 
-            var exceptionMessage = "List node:[{0}] has [{1}] with ContentTypeId value:[{2}]. ContentTypeId does not work on the list scoped content type operations. Use ContentTypeName for list scoped content type operations.";
+            return;
 
-            var allNodes = model.Flatten();
+            //Exceptions.Clear();
 
-            //var addContentTypes = GetParenChildNodes<ListDefinition, ContentTypeLinkDefinition>(allNodes);
-            var hideContentTypes = GetParenChildNodes<ListDefinition, HideContentTypeLinksDefinition>(allNodes);
-            var removeContentTypes = GetParenChildNodes<ListDefinition, RemoveContentTypeLinksDefinition>(allNodes);
-            var uniqueContentTypes = GetParenChildNodes<ListDefinition, UniqueContentTypeOrderDefinition>(allNodes);
+            //var exceptionMessage = "List node:[{0}] has [{1}] with ContentTypeId value:[{2}]. ContentTypeId does not work on the list scoped content type operations. Use ContentTypeName for list scoped content type operations.";
 
-            //ValidateChildNodes<ContentTypeLinkDefinition>(addContentTypes, (node, child) =>
+            //var allNodes = model.Flatten();
+
+            ////var addContentTypes = GetParenChildNodes<ListDefinition, ContentTypeLinkDefinition>(allNodes);
+            //var hideContentTypes = GetParenChildNodes<ListDefinition, HideContentTypeLinksDefinition>(allNodes);
+            //var removeContentTypes = GetParenChildNodes<ListDefinition, RemoveContentTypeLinksDefinition>(allNodes);
+            //var uniqueContentTypes = GetParenChildNodes<ListDefinition, UniqueContentTypeOrderDefinition>(allNodes);
+
+            ////ValidateChildNodes<ContentTypeLinkDefinition>(addContentTypes, (node, child) =>
+            ////{
+            ////    var typedDef = child.Value as ContentTypeLinkDefinition;
+
+            ////    if (!string.IsNullOrEmpty(typedDef.ContentTypeId))
+            ////    {
+            ////        Exceptions.Add(new SPMeta2ModelValidationException(
+            ////            string.Format(exceptionMessage,
+            ////            new object[]{ 
+            ////                    node,
+            ////                    typedDef.GetType(),
+            ////                    typedDef.ContentTypeName
+            ////                })));
+            ////    }
+            ////});
+
+            //ValidateChildNodes<HideContentTypeLinksDefinition>(hideContentTypes, (node, child) =>
             //{
-            //    var typedDef = child.Value as ContentTypeLinkDefinition;
+            //    var typedDef = child.Value as HideContentTypeLinksDefinition;
 
-            //    if (!string.IsNullOrEmpty(typedDef.ContentTypeId))
+            //    foreach (var ctLink in typedDef.ContentTypes)
             //    {
-            //        Exceptions.Add(new SPMeta2ModelValidationException(
-            //            string.Format(exceptionMessage,
-            //            new object[]{ 
+            //        if (!string.IsNullOrEmpty(ctLink.ContentTypeId))
+            //        {
+            //            Exceptions.Add(new SPMeta2ModelValidationException(
+            //                string.Format(exceptionMessage,
+            //                new object[]{ 
             //                    node,
             //                    typedDef.GetType(),
-            //                    typedDef.ContentTypeName
+            //                    ctLink.ContentTypeId
             //                })));
+            //        }
             //    }
             //});
 
-            ValidateChildNodes<HideContentTypeLinksDefinition>(hideContentTypes, (node, child) =>
-            {
-                var typedDef = child.Value as HideContentTypeLinksDefinition;
+            //ValidateChildNodes<RemoveContentTypeLinksDefinition>(removeContentTypes, (node, child) =>
+            //{
+            //    var typedDef = child.Value as RemoveContentTypeLinksDefinition;
 
-                foreach (var ctLink in typedDef.ContentTypes)
-                {
-                    if (!string.IsNullOrEmpty(ctLink.ContentTypeId))
-                    {
-                        Exceptions.Add(new SPMeta2ModelValidationException(
-                            string.Format(exceptionMessage,
-                            new object[]{ 
-                                node,
-                                typedDef.GetType(),
-                                ctLink.ContentTypeId
-                            })));
-                    }
-                }
-            });
+            //    foreach (var ctLink in typedDef.ContentTypes)
+            //    {
+            //        if (!string.IsNullOrEmpty(ctLink.ContentTypeId))
+            //        {
+            //            Exceptions.Add(new SPMeta2ModelValidationException(
+            //                string.Format(exceptionMessage,
+            //                new object[]{ 
+            //                    node,
+            //                    typedDef.GetType(),
+            //                    ctLink.ContentTypeId
+            //                })));
+            //        }
+            //    }
+            //});
 
-            ValidateChildNodes<RemoveContentTypeLinksDefinition>(removeContentTypes, (node, child) =>
-            {
-                var typedDef = child.Value as RemoveContentTypeLinksDefinition;
+            //ValidateChildNodes<UniqueContentTypeOrderDefinition>(uniqueContentTypes, (node, child) =>
+            //{
+            //    var typedDef = child.Value as UniqueContentTypeOrderDefinition;
 
-                foreach (var ctLink in typedDef.ContentTypes)
-                {
-                    if (!string.IsNullOrEmpty(ctLink.ContentTypeId))
-                    {
-                        Exceptions.Add(new SPMeta2ModelValidationException(
-                            string.Format(exceptionMessage,
-                            new object[]{ 
-                                node,
-                                typedDef.GetType(),
-                                ctLink.ContentTypeId
-                            })));
-                    }
-                }
-            });
+            //    foreach (var ctLink in typedDef.ContentTypes)
+            //    {
+            //        if (!string.IsNullOrEmpty(ctLink.ContentTypeId))
+            //        {
+            //            Exceptions.Add(new SPMeta2ModelValidationException(
+            //                string.Format(exceptionMessage,
+            //                new object[]{ 
+            //                    node,
+            //                    typedDef.GetType(),
+            //                    ctLink.ContentTypeId
+            //                })));
+            //        }
+            //    }
+            //});
 
-            ValidateChildNodes<UniqueContentTypeOrderDefinition>(uniqueContentTypes, (node, child) =>
-            {
-                var typedDef = child.Value as UniqueContentTypeOrderDefinition;
-
-                foreach (var ctLink in typedDef.ContentTypes)
-                {
-                    if (!string.IsNullOrEmpty(ctLink.ContentTypeId))
-                    {
-                        Exceptions.Add(new SPMeta2ModelValidationException(
-                            string.Format(exceptionMessage,
-                            new object[]{ 
-                                node,
-                                typedDef.GetType(),
-                                ctLink.ContentTypeId
-                            })));
-                    }
-                }
-            });
-
-            if (Exceptions.Count > 0)
-            {
-                throw new SPMeta2ModelDeploymentException("Errors while validating the model",
-                    new SPMeta2AggregateException(Exceptions.OfType<Exception>()));
-            }
+            //if (Exceptions.Count > 0)
+            //{
+            //    throw new SPMeta2ModelDeploymentException("Errors while validating the model",
+            //        new SPMeta2AggregateException(Exceptions.OfType<Exception>()));
+            //}
         }
 
         protected virtual void ValidateChildNodes<TChildDefinition>(IEnumerable<ModelNode> nodes,

@@ -23,7 +23,13 @@ namespace SPMeta2.Regression.CSOM.Validation
             var context = list.Context;
 
             context.Load(list, l => l.ContentTypesEnabled);
-            context.Load(list, l => l.ContentTypes);
+            context.Load(list, l => l.ContentTypes.Include(
+                    ct => ct.Id,
+                    ct => ct.StringId,
+                    ct => ct.Name,
+
+                    ct => ct.Parent.Id,
+                    ct => ct.Parent.StringId));
 
             context.ExecuteQueryWithTrace();
 
