@@ -354,6 +354,33 @@ namespace SPMeta2.Extensions
 
         #endregion
 
+        #region provision compatibility
 
+        public static ModelProvisionCompatibilityResult CheckProvisionCompatibility(this ModelNode modelNode)
+        {
+            var service = ServiceContainer.Instance.GetService<ModelCompatibilityServiceBase>();
+
+            return service.CheckProvisionCompatibility(modelNode);
+        }
+
+        public static bool IsCSOMCompatible(this ModelNode modelNode)
+        {
+            var compatibilityResult = CheckProvisionCompatibility(modelNode);
+            var result = compatibilityResult.Result.All(r => r.IsCSOMCompatible.HasValue
+                                                       && r.IsCSOMCompatible.Value);
+
+            return result;
+        }
+
+        public static bool IsSSOMCompatible(this ModelNode model)
+        {
+            var compatibilityResult = CheckProvisionCompatibility(model);
+            var result = compatibilityResult.Result.All(r => r.IsSSOMCompatible.HasValue
+                                                             && r.IsSSOMCompatible.Value);
+
+            return result;
+        }
+
+        #endregion
     }
 }

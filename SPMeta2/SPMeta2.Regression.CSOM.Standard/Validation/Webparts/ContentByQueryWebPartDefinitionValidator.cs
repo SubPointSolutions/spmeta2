@@ -514,7 +514,8 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Webparts
 
                         var targetWeb = webLookup.GetTargetWeb(listItemModelHost.HostSite,
                             typedDefinition.WebUrl,
-                            typedDefinition.WebId);
+                            typedDefinition.WebId,
+                            modelHost);
 
                         var list = targetWeb.QueryAndGetListByUrl(typedDefinition.ListUrl);
                         isValid = CurrentWebPartXml.GetListGuid() == list.Id.ToString("D");

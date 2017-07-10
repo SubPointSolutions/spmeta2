@@ -27,8 +27,11 @@ namespace SPMeta2.Regression.CSOM.Validation
             securityRoleContext.ExecuteQueryWithTrace();
 
             var roleAssignments = securableObject.RoleAssignments;
-            var spObject = roleAssignments
-                                          .OfType<RoleAssignment>()
+
+            securityRoleContext.Load(roleAssignments, d => d.Include(c => c.Member));
+            securityRoleContext.ExecuteQueryWithTrace();
+
+            var spObject = roleAssignments.ToArray()
                                           .FirstOrDefault(r => r.Member.Id == securityGroup.Id);
 
 

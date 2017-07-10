@@ -141,6 +141,11 @@ namespace SPMeta2.Standard.Definitions.Fields
         [DataMember]
         public Guid? TermGroupId { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        [ExpectUpdate]
+        public bool? UserCreated { get; set; }
+
         #endregion
 
         #region methods

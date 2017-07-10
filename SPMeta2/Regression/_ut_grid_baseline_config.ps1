@@ -57,7 +57,19 @@ $configScript = {
             $s.Configuration.Alter()
         }
 
-        function Ensure-AssociatedGroups() {
+         function Ensure-AssociatedGroups-ForAllSites() {
+
+            Add-PSSnapin Microsoft.SharePoint.PowerShell
+            $sites = Get-SPSite
+
+            foreach($site in $sites)
+            {
+                Write-Host "Ensuring associated security group on site:[$($site.Url)]"
+                Ensure-AssociatedGroups $site.Url
+            }
+         }
+
+        function Ensure-AssociatedGroups($url) {
 
             Add-PSSnapin Microsoft.SharePoint.PowerShell
 
@@ -66,7 +78,7 @@ $configScript = {
 
              # TODO
 
-            $web = Get-SPWeb ("http://" + $computerName + ":31449")
+            $web = Get-SPWeb ($url)
             if ($web.AssociatedVisitorGroup -eq $null) {
                 Write-Host 'The Visitor Group does not exist. It will be created...' -ForegroundColor DarkYellow
                 $currentLogin = $web.CurrentUser.LoginName
@@ -127,9 +139,8 @@ $configScript = {
         $computerName = [environment]::MachineName
 
         Write-Host "Runing on [$computerName]"
-        #return
 
-        Ensure-AssociatedGroups
+        Ensure-AssociatedGroups-ForAllSites
 
         Update-SharePoint-ULS
         Limit-SharePoint-Search

@@ -230,7 +230,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                contentType.Update(true);
+                if (!contentType.ReadOnly)
+                {
+                    contentType.Update(true);
+                }
+
                 context.ExecuteQueryWithTrace();
             }
             else
@@ -256,7 +260,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 //existingWorkflowAssotiation.Update();
 
-                contentType.Update(true);
+                if (!contentType.ReadOnly)
+                {
+                    contentType.Update(true);
+                }
+
                 context.ExecuteQueryWithTrace();
             }
         }

@@ -448,5 +448,12 @@ namespace SPMeta2.Enumerations
         public static readonly Guid XSLStyleIconUrl = new Guid("{3dfb3e11-9ccd-4404-b44a-a71f6399ea56}");
         public static readonly Guid XSLStyleRequiredFields = new Guid("{acb9088a-a171-4b99-aa7a-10388586bc74}");
         public static readonly Guid XSLStyleWPType = new Guid("{4499086f-9ac1-41df-86c3-d8c1f8fc769a}");
+
+
+        #region manually added
+
+        public static readonly Guid DocumentSetDescription = new Guid("{CBB92DA4-FD46-4C7D-AF6C-3128C2A5576E}"); 
+
+        #endregion
     }
 }

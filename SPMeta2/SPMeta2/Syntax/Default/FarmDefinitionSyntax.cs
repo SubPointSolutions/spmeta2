@@ -11,7 +11,8 @@ namespace SPMeta2.Syntax.Default
         IManagedPropertyHostModelNode,
         IFeatureHostModelNode,
         IWebApplicationHostModelNode,
-        ISecureStoreApplicationHostModelNode
+        ISecureStoreApplicationHostModelNode,
+        IFarmSolutionModelHostNode
     {
 
     }

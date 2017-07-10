@@ -3504,5 +3504,11 @@ namespace SPMeta2.Enumerations
         public static string XSLStyleWPType = "XSLStyleWPType";
 
         #endregion
+
+        #region manually added
+
+        
+
+        #endregion
     }
 }

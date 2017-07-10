@@ -222,5 +222,4 @@ namespace SPMeta2.Attributes.Regression
     {
 
     }
-
 }

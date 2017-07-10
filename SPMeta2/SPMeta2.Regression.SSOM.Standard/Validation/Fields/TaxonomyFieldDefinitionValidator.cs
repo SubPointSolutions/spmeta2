@@ -303,6 +303,10 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Fields
             assert.SkipProperty(m => m.TermLCID, "TermLCID. Skipping property.");
             assert.SkipProperty(m => m.TermSetLCID, "TermSetLCID. Skipping property.");
 
+            if (definition.UserCreated.HasValue)
+                assert.ShouldBeEqual(m => m.UserCreated, o => o.UserCreated);
+            else
+                assert.SkipProperty(m => m.UserCreated, "UserCreated is null. Skipping property.");
         }
     }
 }

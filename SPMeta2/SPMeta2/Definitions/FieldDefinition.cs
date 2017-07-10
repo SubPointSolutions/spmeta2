@@ -300,6 +300,17 @@ namespace SPMeta2.Definitions
         [DataMember]
         public virtual string ValidationMessage { get; set; }
 
+        /// <summary>
+        /// Gets or sets a Boolean value that specifies whether values in the field can be modified.
+        /// Corresponds to SPField.ReadOnlyField property
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+
+        public bool? ReadOnlyField { get; set; }
+
+
         #endregion
 
         #region methods

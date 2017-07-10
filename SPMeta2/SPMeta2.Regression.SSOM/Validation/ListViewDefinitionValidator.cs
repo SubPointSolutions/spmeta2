@@ -33,6 +33,11 @@ namespace SPMeta2.Regression.SSOM.Validation
                                .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
 
+            if (definition.MobileDefaultView.HasValue)
+                assert.ShouldBeEqual(m => m.MobileDefaultView, o => o.MobileDefaultView);
+            else
+                assert.SkipProperty(m => m.MobileDefaultView, "MobileDefaultView is null or empty. Skipping.");
+
 
             if (definition.InlineEdit.HasValue)
                 assert.ShouldBeEqual(m => m.InlineEdit.ToString().ToLower(), o => o.InlineEdit.ToLower());
@@ -78,6 +83,8 @@ namespace SPMeta2.Regression.SSOM.Validation
                     srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
                     dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
 
+                    srcViewDate = Regex.Replace(srcViewDate, @"\s+", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\s+", string.Empty);
 
                     var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 

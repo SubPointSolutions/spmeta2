@@ -35,11 +35,13 @@ namespace SPMeta2.SSOM.ModelHandlers
                 DeployWebEventReceiver(modelHost, modelHost as WebModelHost, definition);
             else if (modelHost is SiteModelHost)
                 DeploySiteEventReceiver(modelHost, modelHost as SiteModelHost, definition);
+            else if (modelHost is ContentTypeModelHost)
+                DeployContentTypeEventReceiver(modelHost, (modelHost as ContentTypeModelHost).HostContentType, definition);
             else if (modelHost is SPContentType)
                 DeployContentTypeEventReceiver(modelHost, modelHost as SPContentType, definition);
             else
             {
-                throw new SPMeta2UnsupportedModelHostException("model host should be ListModelHost/WebModelHost/SiteModelHost");
+                throw new SPMeta2Exception("model host should be ListModelHost/WebModelHost/SiteModelHost");
             }
         }
 

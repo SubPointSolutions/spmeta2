@@ -323,8 +323,6 @@ namespace SPMeta2.Utils
             return GetProperty(webpartXmlDocument, name);
         }
 
-
-
         public static string GetGroupStyle(this XDocument webpartXmlDocument)
         {
             var name = MethodBase.GetCurrentMethod().Name.Replace("Get", string.Empty);
@@ -444,6 +442,16 @@ namespace SPMeta2.Utils
         {
             var name = MethodBase.GetCurrentMethod().Name.Replace("Set", string.Empty);
             return SetOrUpdateProperty(webpartXmlDocument, name, value);
+        }
+
+        public static XDocument SetHidden(this XDocument webpartXmlDocument, bool value)
+        {
+            if (IsV3version(webpartXmlDocument))
+                return SetOrUpdateV3Property(webpartXmlDocument, "Hidden", value.ToString(), "bool", WebPartNamespaceV3, false);
+            if (IsV2version(webpartXmlDocument))
+                return SetOrUpdateV2Property(webpartXmlDocument, "IsVisible", (!value).ToString().ToLower(), "bool", WebPartNamespaceV2, false);
+
+            throw new Exception("http://schemas.microsoft.com/WebPart/v3 or http://schemas.microsoft.com/WebPart/v2 is expected, but missed");
         }
 
         public static XDocument BindXsltListViewWebPartToList(this XDocument webpartXmlDocument, string listId)

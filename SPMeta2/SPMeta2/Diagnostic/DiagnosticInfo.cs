@@ -54,7 +54,7 @@ namespace SPMeta2.Diagnostic
                 toString.AddPropertyValue(p => p.IsSSOMDetected);
             }
 
-            return toString.ToString();
+            return toString.ToString(Environment.NewLine);
         }
 
         #endregion

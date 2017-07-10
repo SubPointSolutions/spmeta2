@@ -248,6 +248,38 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region provision order
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Order")]
+        public void CanDeploy_QuickLaunchNavigationNodes_With_SubWeb()
+        {
+            // Incorrect provision order for navigation nodes #1019
+            // https://github.com/SubPointSolutions/spmeta2/issues/1019
+
+            var index = Rnd.Int();
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddWeb(new WebDefinition()
+                {
+                    Title = "Forum",
+                    //LCID = 1049,
+                    Url = "Forum" + index,
+                    WebTemplate = BuiltInWebTemplates.Collaboration.CommunitySite
+                });
+                web.AddQuickLaunchNavigationNode(new QuickLaunchNavigationNodeDefinition()
+                {
+                    Title = "Forum" + index,
+                    Url = "~sitecollection/Forum" + index
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
         #region tokens
 
         [TestMethod]
@@ -257,6 +289,84 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var nav1Node = GenerateNode(n =>
             {
                 n.Url = string.Format("~sitecollection/{0}.html", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddQuickLaunchNavigationNode(nav1Node);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens.Raw")]
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteCollectionToken_Raw()
+        {
+            var nav1Node = GenerateNode(n =>
+            {
+                n.IsExternal = false;
+                n.Url = string.Format("~sitecollection", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddQuickLaunchNavigationNode(nav1Node);
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens.Raw")]
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteCollectionToken_RawSlash()
+        {
+            var nav1Node = GenerateNode(n =>
+            {
+                n.IsExternal = false;
+                n.Url = string.Format("~sitecollection/", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddQuickLaunchNavigationNode(nav1Node);
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens.Raw")]
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteCollectionToken_RawOnSubWeb()
+        {
+            var nav1Node = GenerateNode(n =>
+            {
+                n.IsExternal = false;
+                n.Url = string.Format("~sitecollection", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddQuickLaunchNavigationNode(nav1Node);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens.Raw")]
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteCollectionToken_RawSlashOnSubWeb()
+        {
+            var nav1Node = GenerateNode(n =>
+            {
+                n.IsExternal = false;
+                n.Url = string.Format("~sitecollection/", Rnd.String());
             });
 
             var model = SPMeta2Model.NewWebModel(web =>
@@ -287,6 +397,84 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                         rndWeb.AddQuickLaunchNavigationNode(nav1Node);
                     });
                 });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens.Raw")]
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteToken_Raw()
+        {
+            var nav1Node = GenerateNode(n =>
+            {
+                n.IsExternal = false;
+                n.Url = string.Format("~site", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddQuickLaunchNavigationNode(nav1Node);
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens.Raw")]
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteToken_RawSlash()
+        {
+            var nav1Node = GenerateNode(n =>
+            {
+                n.IsExternal = false;
+                n.Url = string.Format("~site/", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddQuickLaunchNavigationNode(nav1Node);
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens.Raw")]
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteToken_RawOnSubWeb()
+        {
+            var nav1Node = GenerateNode(n =>
+            {
+                n.IsExternal = false;
+                n.Url = string.Format("~site", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddQuickLaunchNavigationNode(nav1Node);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.QuickLaunchNavigationNode.Tokens.Raw")]
+        public void CanDeploy_QuickLaunchNavigationNode_WithSiteToken_RawSlashOnSubWeb()
+        {
+            var nav1Node = GenerateNode(n =>
+            {
+                n.IsExternal = false;
+                n.Url = string.Format("~site/", Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddQuickLaunchNavigationNode(nav1Node);
+                });
+            });
 
             TestModel(model);
         }

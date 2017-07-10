@@ -68,7 +68,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var webPartXmlString = webClient.DownloadString(webpartExportUrl);
                 CurrentWebPartXml = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXmlString);
 
-
                 assert.ShouldBeEqual(m => m.Title, o => o.Title);
 
                 // checking the web part type, shoul be as expected
@@ -417,6 +416,11 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     assert.SkipProperty(m => m.AuthorizationFilter, "AuthorizationFilter is null or empty. Skipping.");
                 }
+
+                if (definition.Hidden.HasValue)
+                    assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
+                else
+                    assert.SkipProperty(m => m.Hidden, "Hidden is null or empty. Skipping.");
 
             });
         }

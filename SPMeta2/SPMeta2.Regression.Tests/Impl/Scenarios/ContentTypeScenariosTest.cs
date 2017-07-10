@@ -779,5 +779,65 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         }
 
         #endregion
+
+        #region addint out of the box content types
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.OOTB")]
+        public void CanDeploy_Item_ContentType_To_List()
+        {
+            // "Item" ContentTypeLink #1016
+            // https://github.com/SubPointSolutions/spmeta2/issues/1016
+
+            var announcementList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.Announcements;
+                def.ContentTypesEnabled = true;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(announcementList, list =>
+                {
+                    list.AddContentTypeLink(new ContentTypeLinkDefinition
+                    {
+                        ContentTypeId = BuiltInContentTypeId.Item,
+                        ContentTypeName = "Item"
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.OOTB")]
+        public void CanDeploy_Item_ContentType_To_Library()
+        {
+            // "Item" ContentTypeLink #1016
+            // https://github.com/SubPointSolutions/spmeta2/issues/1016
+
+            var announcementList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                def.ContentTypesEnabled = true;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(announcementList, list =>
+                {
+                    list.AddContentTypeLink(new ContentTypeLinkDefinition
+                    {
+                        ContentTypeId = BuiltInContentTypeId.Item,
+                        ContentTypeName = "Item"
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
     }
 }

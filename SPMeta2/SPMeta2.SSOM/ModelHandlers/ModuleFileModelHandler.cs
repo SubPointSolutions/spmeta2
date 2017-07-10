@@ -208,10 +208,16 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private string GetSafeFileUrl(SPFolder folder, ModuleFileDefinition moduleFile)
         {
-            if (folder.ServerRelativeUrl != "/")
-                return folder.ServerRelativeUrl + "/" + moduleFile.FileName;
+            var result = moduleFile.FileName;
 
-            return moduleFile.FileName;
+            if (folder.ServerRelativeUrl != "/")
+            {
+                result = UrlUtility.CombineUrl(folder.ServerRelativeUrl, moduleFile.FileName);
+            }
+
+            result = result.Replace("//", "/");
+
+            return result;
         }
 
         public static void WithSafeFileOperation(

@@ -54,8 +54,6 @@ namespace SPMeta2.CSOM.ModelHandlers.Base
         {
             if (modelHost is WebModelHost)
             {
-
-
                 return LookupNavigationNode(GetNavigationNodeCollection((modelHost as WebModelHost).HostWeb), definition);
             }
             else if (modelHost is NavigationNodeModelHost)

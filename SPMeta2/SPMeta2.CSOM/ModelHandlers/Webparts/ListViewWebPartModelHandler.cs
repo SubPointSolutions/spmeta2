@@ -221,7 +221,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 if (typedDefinition.WebId.HasGuidValue() || !string.IsNullOrEmpty(typedDefinition.WebUrl))
                 {
                     targetWeb = new LookupFieldModelHandler()
-                                    .GetTargetWeb(this.CurrentClientContext.Site, typedDefinition.WebUrl, typedDefinition.WebId);
+                                    .GetTargetWeb(this.CurrentClientContext.Site, 
+                                                  typedDefinition.WebUrl, 
+                                                  typedDefinition.WebId,
+                                                  provisionContext.ListItemModelHost);
                 }
 
                 var list = XsltListViewWebPartModelHandler.LookupList(targetWeb, typedDefinition.ListUrl, typedDefinition.ListTitle, typedDefinition.ListId);
