@@ -264,7 +264,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 web.AddWeb(new WebDefinition()
                 {
                     Title = "Forum",
-                    LCID = 1049,
+                    //LCID = 1049,
                     Url = "Forum" + index,
                     WebTemplate = BuiltInWebTemplates.Collaboration.CommunitySite
                 });
