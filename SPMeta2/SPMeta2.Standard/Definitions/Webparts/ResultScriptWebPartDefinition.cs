@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Regression;
@@ -48,7 +45,105 @@ namespace SPMeta2.Standard.Definitions.Webparts
         [ExpectValidation]
         public bool? ShowResultCount { get; set; }
 
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowLanguageOptions { get; set; }
 
+        [DataMember]
+        [ExpectValidation]
+        public int? MaxPagesBeforeCurrent { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowBestBets { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string AdvancedSearchPageAddress { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? UseSharedDataProvider { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowPreferencesLink { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowViewDuplicates { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? RepositionLanguageDropDown { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string PreloadedItemTemplateIdsJson { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowPaging { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string ResultTypeId { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowResults { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string ItemTemplateId { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string ItemBodyTemplateId { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string HitHighlightedPropertiesJson { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string AvailableSortsJson { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string RenderTemplateId { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowPersonalFavorites { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowSortOptions { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowAlertMe { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowDidYouMean { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string QueryGroupName { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? ShowAdvancedLink { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public bool? BypassResultTypes { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public string GroupTemplateId { get; set; }
         #endregion
 
         #region methods
@@ -56,7 +151,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
         public override string ToString()
         {
             return new ToStringResult<ResultScriptWebPartDefinition>(this, base.ToString())
-                          .ToString();
+                .ToString();
         }
 
         #endregion
