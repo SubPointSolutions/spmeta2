@@ -18,14 +18,14 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
         public static TModelNode AddPeoplePickerSettings<TModelNode>(this TModelNode model, PeoplePickerSettingsDefinition definition)
-            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
+            where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
             return AddPeoplePickerSettings(model, definition, null);
         }
 
         public static TModelNode AddPeoplePickerSettings<TModelNode>(this TModelNode model, PeoplePickerSettingsDefinition definition,
             Action<PeoplePickerSettingsModelNode> action)
-            where TModelNode : ModelNode, IModuleFileHostModelNode, new()
+            where TModelNode : ModelNode, IWebApplicationModelNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
