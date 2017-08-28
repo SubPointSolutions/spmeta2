@@ -54,13 +54,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected virtual bool IsSharePointOnlineContext(ClientContext context)
         {
-#if NET35
-            return false;
-#endif
-
-#if !NET35
-            return context.Credentials is SharePointOnlineCredentials;
-#endif
+            return ClientRuntimeContextExtensions.IsSharePointOnlineContext(context);
         }
 
         #endregion

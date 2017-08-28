@@ -31,6 +31,8 @@ namespace SPMeta2.CSOM.Services.Impl
 
             InitAllowedStatusCodes();
             InitAllowedIISResetSocketStatusCodes();
+
+            Context2SharePointOnlineHash = new Dictionary<object, bool>();
         }
 
         private void InitAllowedIISResetSocketStatusCodes()
@@ -47,6 +49,23 @@ namespace SPMeta2.CSOM.Services.Impl
         #endregion
 
         #region properties
+
+
+
+        private RequireCSOMRuntimeVersionDeploymentService _assemblyVersionService;
+
+        protected virtual RequireCSOMRuntimeVersionDeploymentService AssemblyVersionService
+        {
+            get
+            {
+                if (_assemblyVersionService == null)
+                    _assemblyVersionService = new RequireCSOMRuntimeVersionDeploymentService();
+
+                return _assemblyVersionService;
+            }
+        }
+
+        protected Dictionary<object, bool> Context2SharePointOnlineHash { get; set; }
 
         public int ExecuteQueryDelayInMilliseconds { get; set; }
         public int ExecuteQueryRetryAttempts { get; set; }
@@ -71,6 +90,55 @@ namespace SPMeta2.CSOM.Services.Impl
         #endregion
 
         #region methods
+
+        protected virtual bool DetectSharePointOnlineContext(ClientRuntimeContext context)
+        {
+#if NET35
+            return false;
+#endif
+
+#if !NET35
+            // checking based on the current assembly version
+            // using hash to avoid performance degradation
+
+            if (!Context2SharePointOnlineHash.ContainsKey(context))
+            {
+                Context2SharePointOnlineHash.Add(context, false);
+
+                try
+                {
+                    // by assembly version
+                    var version = AssemblyVersionService.GetAssemblyFileVersion(context.GetType().Assembly);
+
+                    // 16.1.0.0 for SharePoint Online
+                    // 16.0.0.0 for SharePoint 2016, we should be safe
+                    // Major.Minor.Build.Revision
+                    Context2SharePointOnlineHash[context] = version.Major == 16 && version.Minor == 1;
+                }
+                catch (Exception e)
+                {
+                    // fallback
+                    Context2SharePointOnlineHash[context] = context.Credentials is SharePointOnlineCredentials;
+                }
+            }
+
+            return Context2SharePointOnlineHash[context];
+#endif
+        }
+
+        /// <summary>
+        /// Detects if the context is SharePoint Online one.
+        /// Tries to detect the version of the assembly looking for 16.1, 
+        /// then fallaback to context.Credentials is SharePointOnlineCredentials
+        /// 
+        /// Returns false for the rest of the cases.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override bool IsSharePointOnlineContext(ClientRuntimeContext context)
+        {
+            return DetectSharePointOnlineContext(context);
+        }
 
         protected virtual void InternalExecuteQuery(ClientRuntimeContext context)
         {
