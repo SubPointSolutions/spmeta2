@@ -75,6 +75,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 webApplication.AddSuiteBar(new SuiteBarDefinition());
 
                 webApplication.AddFarmSolution(new FarmSolutionDefinition());
+
+                webApplication.AddPeoplePickerSettings(new PeoplePickerSettingsDefinition());
             });
         }
 
