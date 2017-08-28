@@ -59,6 +59,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             // deploy
             var settings = GetCurrentSettings(list);
 
+            // MetadataNavigationSettings Hierarchy missing Folders field #1064
+            // https://github.com/SubPointSolutions/spmeta2/issues/1064
+            // always ensure a top level NavigationHierarchies->FolderHierarchy->HideFoldersNode=false
+
+            settings.EnsureDefaultFolderHierarchyNode();
+
             if (definition.Hierarchies.Count() > 0)
             {
                 foreach (var h in definition.Hierarchies)
@@ -66,7 +72,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     if (h.FieldId.HasGuidValue())
                     {
                         var targetField = list.Fields.GetById(h.FieldId.Value);
-                        
+
                         context.Load(targetField);
                         context.ExecuteQueryWithTrace();
 
@@ -117,7 +123,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
-            
+
             if (needUpdate)
             {
                 MetadataNavigationSettingsConfig.SetMetadataNavigationSettings(list, settings);
