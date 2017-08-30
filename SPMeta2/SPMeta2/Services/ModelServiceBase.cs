@@ -349,14 +349,14 @@ namespace SPMeta2.Services
 
             _modelTraverseService.OnModelProcessed += (node) =>
             {
-                CurrentModelNodeIndex++;
-
                 RaiseOnModelNodeProcessed(this, new ModelProcessingEventArgs
                 {
                     Model = CurrentModelNode,
                     CurrentNode = node,
                     ProcessedModelNodeCount = CurrentModelNodeIndex
                 });
+
+                CurrentModelNodeIndex++;
 
                 _activeModelNode = null;
             };
@@ -389,7 +389,7 @@ namespace SPMeta2.Services
 
         private void ProcessModelDeployment(object modelHost, ModelNode modelNode)
         {
-            CurrentModelNodeIndex = 0;
+            CurrentModelNodeIndex = 1;
 
             CurrentModelHost = modelHost;
             CurrentModelNode = modelNode;
