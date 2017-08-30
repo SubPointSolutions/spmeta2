@@ -36,14 +36,17 @@ namespace SPMeta2.Definitions.Webparts
 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired(GroupName = "Target List")]
         public string ListTitle { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired(GroupName = "Target List")]
         public string ListUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired(GroupName = "Target List")]
         public Guid? ListId { get; set; }
 
         [ExpectValidation]
