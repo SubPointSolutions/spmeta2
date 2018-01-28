@@ -4,7 +4,7 @@
      Name="SPMeta2ContainersAppContainer"
      ProductID="{e81b6820-5d57-4d17-a098-5f4317f6c400}"
      Version="1.0.0.3"
-     SharePointMinVersion="15.0.0.0"
+     SharePointMinVersion="16.0.0.0"
 >
   <Properties>
     <Title>SPMeta2.Containers.AppContainer</Title>
