@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 using Microsoft.SharePoint.Client;
 
@@ -11,7 +12,6 @@ using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
-using System.Text;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -70,6 +70,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
 
             assert.SkipProperty(m => m.EnableAssignToEmail, "EnableAssignToEmail is not supported by CSOM");
+            assert.SkipProperty(m => m.DisableGridEditing, "DisableGridEditing is not supported by CSOM");
             assert.SkipProperty(m => m.WriteSecurity, "WriteSecurity is not supported by CSOM");
             assert.SkipProperty(m => m.NavigateForFormsPages, "NavigateForFormsPages is not supported by CSOM");
 

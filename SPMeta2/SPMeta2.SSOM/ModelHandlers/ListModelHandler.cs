@@ -171,6 +171,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.EnableAssignToEmail.HasValue)
                 list.EnableAssignToEmail = definition.EnableAssignToEmail.Value;
 
+            if (definition.DisableGridEditing.HasValue)
+                list.DisableGridEditing = definition.DisableGridEditing.Value;
+
 #if !NET35
             if (definition.IndexedRootFolderPropertyKeys.Any())
             {
