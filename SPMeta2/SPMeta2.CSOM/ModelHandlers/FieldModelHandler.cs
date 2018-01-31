@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
@@ -9,7 +12,6 @@ using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Services;
 using SPMeta2.Utils;
-using System.Collections.Generic;
 using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -379,6 +381,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
 
                 var addFieldOptions = (AddFieldOptions)(int)fieldModel.AddFieldOptions;
+
+                foreach (var addFieldOption in fieldModel.AddFieldOptionList)
+                {
+                    addFieldOptions |= (AddFieldOptions)(int)addFieldOption;
+                }
+
                 var resultField = fieldCollection.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
 
                 if (PreloadProperties(resultField))

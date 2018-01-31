@@ -15,6 +15,6 @@ namespace SPMeta2.Enumerations
         AddToAllContentTypes = 4,
         AddFieldInternalNameHint = 8,
         AddFieldToDefaultView = 16,
-        AddFieldCheckDisplayName = 32,
+        AddFieldCheckDisplayName = 32
     }
 }
