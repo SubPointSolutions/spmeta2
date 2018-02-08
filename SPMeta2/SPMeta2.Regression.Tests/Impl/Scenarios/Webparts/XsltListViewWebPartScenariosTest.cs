@@ -297,7 +297,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                 var xsltListViewWebpart =
                     ModelGeneratorService.GetRandomDefinition<XsltListViewWebPartDefinition>(def =>
                     {
-                        def.ListId = Guid.Empty;
+                        // list id will be updated later in OnProvisioned
+                        // we need to set something here 
+                        // to pass property validation which requires one of the properties set
+                        def.ListId = Guid.NewGuid();
                         def.ListTitle = string.Empty;
                         def.ListUrl = string.Empty;
 
@@ -410,7 +413,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                 {
                     BuiltInInternalFieldNames.ID,
                     BuiltInInternalFieldNames.Edit,
-                    BuiltInInternalFieldNames.Title                    
+                    BuiltInInternalFieldNames.Title
                 };
 
                 def.IsDefault = false;
@@ -464,7 +467,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                 {
                     BuiltInInternalFieldNames.ID,
                     BuiltInInternalFieldNames.Edit,
-                    BuiltInInternalFieldNames.Title                    
+                    BuiltInInternalFieldNames.Title
                 };
 
                 def.Url = string.Format("{0}.aspx", Rnd.String());
@@ -777,7 +780,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Webparts
                                     .AddWebPart(ceWebPart)
                                     .AddXsltListViewWebPart(xsltWebPart);
                             })
-                                // we need to ensure that mentioned web part are on the target page, literally
+                            // we need to ensure that mentioned web part are on the target page, literally
                             .AddDefinitionNode(new WebpartPresenceOnPageDefinition
                             {
                                 PageFileName = wikiPage.FileName,
