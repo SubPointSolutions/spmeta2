@@ -376,6 +376,7 @@
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
     <Compile Include="Services\Impl\DefaultIncrementalModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\DefaultTryRetryService.cs" />
+    <Compile Include="Services\Impl\DefaultWebPartPageTemplatesService.cs" />
     <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
@@ -428,6 +429,7 @@
     <Compile Include="Services\TraceServiceBase.cs" />
     <Compile Include="Services\TryRetryServiceBase.cs" />
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
+    <Compile Include="Services\WebPartPageTemplatesServiceBase.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="Syntax\Default\Interfaces\IFarmSolutionModelHostNode.cs" />
@@ -619,6 +621,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SP2013WebPartPageTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\SP2016WebPartPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SP2016WebPartPageTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\CamlQueryUtils.cs" />
     <Compile Include="Utils\ConvertUtils.cs" />
     <Compile Include="Utils\CultureUtils.cs" />
@@ -684,6 +691,10 @@
     <EmbeddedResource Include="Templates\SP2013WebPartPageTemplates.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SP2013WebPartPageTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SP2016WebPartPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SP2016WebPartPageTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Templates\Webparts\ContentEditorWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\XsltListViewWebPart.webpart" />

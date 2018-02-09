@@ -24,7 +24,6 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         {
             var service = new MD5HashCodeServiceBase();
 
-
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
 

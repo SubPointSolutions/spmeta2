@@ -1,0 +1,551 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="spstd1" xml:space="preserve">
+    <value>&lt;%-- _lcid="1033" _version="16.0.4266" _dal="1" --%&gt;
+&lt;%-- _LocalBinding --%&gt;
+&lt;%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c"  %&gt; &lt;%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Import Namespace="Microsoft.SharePoint" %&gt; &lt;%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePoint:ListItemProperty Property="BaseName" maxlength="40" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+	&lt;meta name="ProgId" content="SharePoint.WebPartPage.Document" /&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+	&lt;meta name="CollaborationServer" content="SharePoint Team Web Site" /&gt;
+	&lt;SharePoint:ScriptBlock runat="server"&gt;
+	var navBarHelpOverrideKey = "WSSEndUser";
+	&lt;/SharePoint:ScriptBlock&gt;
+&lt;SharePoint:StyleBlock runat="server"&gt;
+body #s4-leftpanel {
+	display:none;
+}
+.s4-ca {
+	margin-left:0px;
+}
+&lt;/SharePoint:StyleBlock&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderSearchArea" runat="server"&gt;
+	&lt;SharePoint:DelegateControl runat="server"
+		ControlId="SmallSearchInputBox" /&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageDescription" runat="server"&gt;
+	&lt;SharePoint:ProjectProperty Property="Description" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server"&gt;
+  &lt;div class="ms-hide"&gt;
+	&lt;WebPartPages:WebPartZone runat="server" title="loc:TitleBar" id="TitleBar" AllowLayoutChange="false" AllowPersonalization="false" Style="display:none;" /&gt;
+  &lt;/div&gt;
+  &lt;table class="ms-core-tableNoSpace ms-webpartPage-root" width="100%"&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:FullPage" ID="FullPage" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;SharePoint:ScriptBlock runat="server"&gt;if(typeof(MSOLayout_MakeInvisibleIfEmpty) == "function") {MSOLayout_MakeInvisibleIfEmpty();}&lt;/SharePoint:ScriptBlock&gt;
+		&lt;/table&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+  <data name="spstd2" xml:space="preserve">
+    <value>&lt;%-- _lcid="1033" _version="16.0.4266" _dal="1" --%&gt;
+&lt;%-- _LocalBinding --%&gt;
+&lt;%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c"  %&gt; &lt;%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Import Namespace="Microsoft.SharePoint" %&gt; &lt;%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePoint:ListItemProperty Property="BaseName" maxlength="40" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+	&lt;meta name="ProgId" content="SharePoint.WebPartPage.Document" /&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+	&lt;meta name="CollaborationServer" content="SharePoint Team Web Site" /&gt;
+	&lt;SharePoint:ScriptBlock runat="server"&gt;
+	var navBarHelpOverrideKey = "WSSEndUser";
+	&lt;/SharePoint:ScriptBlock&gt;
+&lt;SharePoint:StyleBlock runat="server"&gt;
+body #s4-leftpanel {
+	display:none;
+}
+.s4-ca {
+	margin-left:0px;
+}
+&lt;/SharePoint:StyleBlock&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderSearchArea" runat="server"&gt;
+	&lt;SharePoint:DelegateControl runat="server"
+		ControlId="SmallSearchInputBox" /&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageDescription" runat="server"&gt;
+	&lt;SharePoint:ProjectProperty Property="Description" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server"&gt;
+  &lt;div class="ms-hide"&gt;
+	&lt;WebPartPages:WebPartZone runat="server" title="loc:TitleBar" id="TitleBar" AllowLayoutChange="false" AllowPersonalization="false" Style="display:none;" /&gt;
+  &lt;/div&gt;
+  &lt;table class="ms-core-tableNoSpace ms-webpartPage-root" width="100%"&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Header" ID="Header" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:LeftColumn" ID="LeftColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:MiddleColumn" ID="MiddleColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:RightColumn" ID="RightColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Footer" ID="Footer" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;SharePoint:ScriptBlock runat="server"&gt;if(typeof(MSOLayout_MakeInvisibleIfEmpty) == "function") {MSOLayout_MakeInvisibleIfEmpty();}&lt;/SharePoint:ScriptBlock&gt;
+		&lt;/table&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+  <data name="spstd3" xml:space="preserve">
+    <value>&lt;%-- _lcid="1033" _version="16.0.4266" _dal="1" --%&gt;
+&lt;%-- _LocalBinding --%&gt;
+&lt;%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c"  %&gt; &lt;%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Import Namespace="Microsoft.SharePoint" %&gt; &lt;%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePoint:ListItemProperty Property="BaseName" maxlength="40" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+	&lt;meta name="ProgId" content="SharePoint.WebPartPage.Document" /&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+	&lt;meta name="CollaborationServer" content="SharePoint Team Web Site" /&gt;
+	&lt;SharePoint:ScriptBlock runat="server"&gt;
+	var navBarHelpOverrideKey = "WSSEndUser";
+	&lt;/SharePoint:ScriptBlock&gt;
+&lt;SharePoint:StyleBlock runat="server"&gt;
+body #s4-leftpanel {
+	display:none;
+}
+.s4-ca {
+	margin-left:0px;
+}
+&lt;/SharePoint:StyleBlock&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderSearchArea" runat="server"&gt;
+	&lt;SharePoint:DelegateControl runat="server"
+		ControlId="SmallSearchInputBox" /&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageDescription" runat="server"&gt;
+	&lt;SharePoint:ProjectProperty Property="Description" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server"&gt;
+  &lt;div class="ms-hide"&gt;
+	&lt;WebPartPages:WebPartZone runat="server" title="loc:TitleBar" id="TitleBar" AllowLayoutChange="false" AllowPersonalization="false" Style="display:none;" /&gt;
+  &lt;/div&gt;
+  &lt;table class="ms-core-tableNoSpace ms-webpartPage-root" width="100%"&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="2" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Header" ID="Header" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:LeftColumn" ID="LeftColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Body" ID="Body" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;SharePoint:ScriptBlock runat="server"&gt;if(typeof(MSOLayout_MakeInvisibleIfEmpty) == "function") {MSOLayout_MakeInvisibleIfEmpty();}&lt;/SharePoint:ScriptBlock&gt;
+		&lt;/table&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+  <data name="spstd4" xml:space="preserve">
+    <value>&lt;%-- _lcid="1033" _version="16.0.4266" _dal="1" --%&gt;
+&lt;%-- _LocalBinding --%&gt;
+&lt;%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c"  %&gt; &lt;%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Import Namespace="Microsoft.SharePoint" %&gt; &lt;%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePoint:ListItemProperty Property="BaseName" maxlength="40" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+	&lt;meta name="ProgId" content="SharePoint.WebPartPage.Document" /&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+	&lt;meta name="CollaborationServer" content="SharePoint Team Web Site" /&gt;
+	&lt;SharePoint:ScriptBlock runat="server"&gt;
+	var navBarHelpOverrideKey = "WSSEndUser";
+	&lt;/SharePoint:ScriptBlock&gt;
+&lt;SharePoint:StyleBlock runat="server"&gt;
+body #s4-leftpanel {
+	display:none;
+}
+.s4-ca {
+	margin-left:0px;
+}
+&lt;/SharePoint:StyleBlock&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderSearchArea" runat="server"&gt;
+	&lt;SharePoint:DelegateControl runat="server"
+		ControlId="SmallSearchInputBox" /&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageDescription" runat="server"&gt;
+	&lt;SharePoint:ProjectProperty Property="Description" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server"&gt;
+  &lt;div class="ms-hide"&gt;
+	&lt;WebPartPages:WebPartZone runat="server" title="loc:TitleBar" id="TitleBar" AllowLayoutChange="false" AllowPersonalization="false" Style="display:none;" /&gt;
+  &lt;/div&gt;
+  &lt;table class="ms-core-tableNoSpace ms-webpartPage-root" width="100%"&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="2" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Header" ID="Header" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Body" ID="Body" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:RightColumn" ID="RightColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;SharePoint:ScriptBlock runat="server"&gt;if(typeof(MSOLayout_MakeInvisibleIfEmpty) == "function") {MSOLayout_MakeInvisibleIfEmpty();}&lt;/SharePoint:ScriptBlock&gt;
+		&lt;/table&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+  <data name="spstd5" xml:space="preserve">
+    <value>&lt;%-- _lcid="1033" _version="16.0.4266" _dal="1" --%&gt;
+&lt;%-- _LocalBinding --%&gt;
+&lt;%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c"  %&gt; &lt;%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Import Namespace="Microsoft.SharePoint" %&gt; &lt;%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePoint:ListItemProperty Property="BaseName" maxlength="40" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+	&lt;meta name="ProgId" content="SharePoint.WebPartPage.Document" /&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+	&lt;meta name="CollaborationServer" content="SharePoint Team Web Site" /&gt;
+	&lt;SharePoint:ScriptBlock runat="server"&gt;
+	var navBarHelpOverrideKey = "WSSEndUser";
+	&lt;/SharePoint:ScriptBlock&gt;
+&lt;SharePoint:StyleBlock runat="server"&gt;
+body #s4-leftpanel {
+	display:none;
+}
+.s4-ca {
+	margin-left:0px;
+}
+&lt;/SharePoint:StyleBlock&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderSearchArea" runat="server"&gt;
+	&lt;SharePoint:DelegateControl runat="server"
+		ControlId="SmallSearchInputBox" /&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageDescription" runat="server"&gt;
+	&lt;SharePoint:ProjectProperty Property="Description" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server"&gt;
+  &lt;div class="ms-hide"&gt;
+	&lt;WebPartPages:WebPartZone runat="server" title="loc:TitleBar" id="TitleBar" AllowLayoutChange="false" AllowPersonalization="false" Style="display:none;" /&gt;
+  &lt;/div&gt;
+  &lt;table class="ms-core-tableNoSpace ms-webpartPage-root" width="100%"&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Header" ID="Header" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" rowspan="4" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:LeftColumn" ID="LeftColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Row1" ID="Row1" FrameType="TitleBarOnly" Orientation="Horizontal"/&gt; &lt;/td&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" rowspan="4" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:RightColumn" ID="RightColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Row2" ID="Row2" FrameType="TitleBarOnly" Orientation="Horizontal"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Row3" ID="Row3" FrameType="TitleBarOnly" Orientation="Horizontal"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Row4" ID="Row4" FrameType="TitleBarOnly" Orientation="Horizontal"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Footer" ID="Footer" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;SharePoint:ScriptBlock runat="server"&gt;if(typeof(MSOLayout_MakeInvisibleIfEmpty) == "function") {MSOLayout_MakeInvisibleIfEmpty();}&lt;/SharePoint:ScriptBlock&gt;
+		&lt;/table&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+  <data name="spstd6" xml:space="preserve">
+    <value>&lt;%-- _lcid="1033" _version="16.0.4266" _dal="1" --%&gt;
+&lt;%-- _LocalBinding --%&gt;
+&lt;%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c"  %&gt; &lt;%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Import Namespace="Microsoft.SharePoint" %&gt; &lt;%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePoint:ListItemProperty Property="BaseName" maxlength="40" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+	&lt;meta name="ProgId" content="SharePoint.WebPartPage.Document" /&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+	&lt;meta name="CollaborationServer" content="SharePoint Team Web Site" /&gt;
+	&lt;SharePoint:ScriptBlock runat="server"&gt;
+	var navBarHelpOverrideKey = "WSSEndUser";
+	&lt;/SharePoint:ScriptBlock&gt;
+&lt;SharePoint:StyleBlock runat="server"&gt;
+body #s4-leftpanel {
+	display:none;
+}
+.s4-ca {
+	margin-left:0px;
+}
+&lt;/SharePoint:StyleBlock&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderSearchArea" runat="server"&gt;
+	&lt;SharePoint:DelegateControl runat="server"
+		ControlId="SmallSearchInputBox" /&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageDescription" runat="server"&gt;
+	&lt;SharePoint:ProjectProperty Property="Description" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server"&gt;
+  &lt;div class="ms-hide"&gt;
+	&lt;WebPartPages:WebPartZone runat="server" title="loc:TitleBar" id="TitleBar" AllowLayoutChange="false" AllowPersonalization="false" Style="display:none;" /&gt;
+  &lt;/div&gt;
+  &lt;table class="ms-core-tableNoSpace ms-webpartPage-root" width="100%"&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Header" ID="Header" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:LeftColumn" ID="LeftColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+					&lt;td valign="top" style="padding:0"&gt;
+						&lt;table cellpadding="4" cellspacing="0" border="0" width="100%" height="100%"&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="2" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:TopRow" ID="TopRow" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:CenterLeftColumn" ID="CenterLeftColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:CenterRightColumn" ID="CenterRightColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+						&lt;/table&gt;
+					&lt;/td&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:RightColumn" ID="RightColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top" width="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Footer" ID="Footer" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;SharePoint:ScriptBlock runat="server"&gt;if(typeof(MSOLayout_MakeInvisibleIfEmpty) == "function") {MSOLayout_MakeInvisibleIfEmpty();}&lt;/SharePoint:ScriptBlock&gt;
+		&lt;/table&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+  <data name="spstd7" xml:space="preserve">
+    <value>&lt;%-- _lcid="1033" _version="16.0.4266" _dal="1" --%&gt;
+&lt;%-- _LocalBinding --%&gt;
+&lt;%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c"  %&gt; &lt;%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Import Namespace="Microsoft.SharePoint" %&gt; &lt;%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePoint:ListItemProperty Property="BaseName" maxlength="40" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+	&lt;meta name="ProgId" content="SharePoint.WebPartPage.Document" /&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+	&lt;meta name="CollaborationServer" content="SharePoint Team Web Site" /&gt;
+	&lt;SharePoint:ScriptBlock runat="server"&gt;
+	var navBarHelpOverrideKey = "WSSEndUser";
+	&lt;/SharePoint:ScriptBlock&gt;
+&lt;SharePoint:StyleBlock runat="server"&gt;
+body #s4-leftpanel {
+	display:none;
+}
+.s4-ca {
+	margin-left:0px;
+}
+&lt;/SharePoint:StyleBlock&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderSearchArea" runat="server"&gt;
+	&lt;SharePoint:DelegateControl runat="server"
+		ControlId="SmallSearchInputBox" /&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageDescription" runat="server"&gt;
+	&lt;SharePoint:ProjectProperty Property="Description" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server"&gt;
+  &lt;div class="ms-hide"&gt;
+	&lt;WebPartPages:WebPartZone runat="server" title="loc:TitleBar" id="TitleBar" AllowLayoutChange="false" AllowPersonalization="false" Style="display:none;" /&gt;
+  &lt;/div&gt;
+  &lt;table class="ms-core-tableNoSpace ms-webpartPage-root" width="100%"&gt;
+				&lt;tr&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:LeftColumn" ID="LeftColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+					&lt;td valign="top" style="padding:0"&gt;
+						&lt;table cellpadding="4" cellspacing="0" border="0" width="100%" height="100%"&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Header" ID="Header" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:TopRow" ID="TopRow" FrameType="TitleBarOnly" Orientation="Horizontal"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:CenterLeftColumn" ID="CenterLeftColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:CenterColumn" ID="CenterColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:CenterRightColumn" ID="CenterRightColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Footer" ID="Footer" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+						&lt;/table&gt;
+					&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;SharePoint:ScriptBlock runat="server"&gt;if(typeof(MSOLayout_MakeInvisibleIfEmpty) == "function") {MSOLayout_MakeInvisibleIfEmpty();}&lt;/SharePoint:ScriptBlock&gt;
+		&lt;/table&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+  <data name="spstd8" xml:space="preserve">
+    <value>&lt;%-- _lcid="1033" _version="16.0.4266" _dal="1" --%&gt;
+&lt;%-- _LocalBinding --%&gt;
+&lt;%@ Page language="C#" MasterPageFile="~masterurl/default.master"    Inherits="Microsoft.SharePoint.WebPartPages.WebPartPage,Microsoft.SharePoint,Version=16.0.0.0,Culture=neutral,PublicKeyToken=71e9bce111e9429c"  %&gt; &lt;%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Import Namespace="Microsoft.SharePoint" %&gt; &lt;%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt; &lt;%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageTitle" runat="server"&gt;
+	&lt;SharePoint:ListItemProperty Property="BaseName" maxlength="40" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderAdditionalPageHead" runat="server"&gt;
+	&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+	&lt;meta name="ProgId" content="SharePoint.WebPartPage.Document" /&gt;
+	&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+	&lt;meta name="CollaborationServer" content="SharePoint Team Web Site" /&gt;
+	&lt;SharePoint:ScriptBlock runat="server"&gt;
+	var navBarHelpOverrideKey = "WSSEndUser";
+	&lt;/SharePoint:ScriptBlock&gt;
+&lt;SharePoint:StyleBlock runat="server"&gt;
+body #s4-leftpanel {
+	display:none;
+}
+.s4-ca {
+	margin-left:0px;
+}
+&lt;/SharePoint:StyleBlock&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderSearchArea" runat="server"&gt;
+	&lt;SharePoint:DelegateControl runat="server"
+		ControlId="SmallSearchInputBox" /&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderPageDescription" runat="server"&gt;
+	&lt;SharePoint:ProjectProperty Property="Description" runat="server"/&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server"&gt;
+  &lt;div class="ms-hide"&gt;
+	&lt;WebPartPages:WebPartZone runat="server" title="loc:TitleBar" id="TitleBar" AllowLayoutChange="false" AllowPersonalization="false" Style="display:none;" /&gt;
+  &lt;/div&gt;
+  &lt;table class="ms-core-tableNoSpace ms-webpartPage-root" width="100%"&gt;
+				&lt;tr&gt;
+					&lt;td valign="top" style="padding:0"&gt;
+						&lt;table cellpadding="4" cellspacing="0" border="0" width="100%" height="100%"&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Header" ID="Header" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:TopRow" ID="TopRow" FrameType="TitleBarOnly" Orientation="Horizontal"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:CenterLeftColumn" ID="CenterLeftColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:CenterColumn" ID="CenterColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:CenterRightColumn" ID="CenterRightColumn" FrameType="TitleBarOnly"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+							&lt;tr&gt;
+								&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" colspan="3" valign="top"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:Footer" ID="Footer"/&gt; &lt;/td&gt;
+							&lt;/tr&gt;
+						&lt;/table&gt;
+					&lt;/td&gt;
+					&lt;td id="_invisibleIfEmpty" name="_invisibleIfEmpty" valign="top" height="100%"&gt; &lt;WebPartPages:WebPartZone runat="server" Title="loc:RightColumn" ID="RightColumn"/&gt; &lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;SharePoint:ScriptBlock runat="server"&gt;if(typeof(MSOLayout_MakeInvisibleIfEmpty) == "function") {MSOLayout_MakeInvisibleIfEmpty();}&lt;/SharePoint:ScriptBlock&gt;
+		&lt;/table&gt;
+&lt;/asp:Content&gt;</value>
+  </data>
+</root>

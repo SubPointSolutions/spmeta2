@@ -55,6 +55,8 @@ namespace SPMeta2
             RegisterService(typeof(ModelStatInfoServiceBase), new DefaultModelStatInfoService());
 
             RegisterService(typeof(TryRetryServiceBase), new DefaultTryRetryService());
+
+            RegisterService(typeof(WebPartPageTemplatesServiceBase), new DefaultWebPartPageTemplatesService());
         }
 
         #endregion

@@ -47,7 +47,15 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                     if (!string.IsNullOrEmpty(d.Email))
                     {
-                        isValid = s.LoginName.ToUpper() == d.LoginName.ToUpper();
+                        // check via login if present
+                        if (!string.IsNullOrEmpty(s.LoginName))
+                        {
+                            isValid = s.LoginName.ToUpper() == d.LoginName.ToUpper();
+                        }
+                        else
+                        {
+                            isValid = s.Email.ToUpper() == d.Email.ToUpper();
+                        }
                     }
                     else
                     {
