@@ -113,11 +113,20 @@ namespace SPMeta2.CSOM.Services.Impl
                     // 16.1.0.0 for SharePoint Online
                     // 16.0.0.0 for SharePoint 2016, we should be safe
                     // Major.Minor.Build.Revision
-                    Context2SharePointOnlineHash[context] = version.Major == 16 && version.Minor == 1;
+                    // currrent assembly? at least 16 (O365 / SharePoint 2016)
+                    Context2SharePointOnlineHash[context] = version.Major == 16;
+
+                    // if we talk to SharePoint 2016 from old, SP2013 CSOM
+                    // SP2016 CSOM - taxonomy group cannot be found after provision #1103
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1103
+                    if (context.ServerLibraryVersion.Major == 16)
+                    {
+                        Context2SharePointOnlineHash[context] = version.Major == 16;
+                    }
                 }
                 catch (Exception e)
                 {
-                    // fallback
+                    // fallback 
                     Context2SharePointOnlineHash[context] = context.Credentials is SharePointOnlineCredentials;
                 }
             }
