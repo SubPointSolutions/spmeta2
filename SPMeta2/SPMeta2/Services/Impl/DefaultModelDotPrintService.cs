@@ -15,8 +15,6 @@ namespace SPMeta2.Services.Impl
             IndentString = "    ";
             NewLineString = Environment.NewLine;
 
-            HashCodeService = new MD5HashCodeServiceBase();
-
             ModelNodeRelatonshipTemplate = "\"[root] {0}\" -> \"[root] {1}\"";
             ModelNodeTemplate = "\"[root] {0}\" [label = \"{1}\", shape = \"box\"]";
         }
@@ -31,7 +29,22 @@ namespace SPMeta2.Services.Impl
         public string ModelNodeRelatonshipTemplate { get; set; }
         public string ModelNodeTemplate { get; set; }
 
-        protected HashCodeServiceBase HashCodeService { get; set; }
+        private HashCodeServiceBase _hashCodeService;
+
+        protected HashCodeServiceBase HashCodeService
+        {
+            get
+            {
+                if (_hashCodeService == null)
+                    _hashCodeService = ServiceContainer.Instance.GetService<HashCodeServiceBase>();
+
+                return _hashCodeService;
+            }
+            set
+            {
+                _hashCodeService = value;
+            }
+        }
 
         #endregion
 

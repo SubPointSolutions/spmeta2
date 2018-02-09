@@ -11,8 +11,8 @@ Apply-M2RegressionSettings -config $spMeta2Config `
                 -configName $configName `
                 -api $api `
                 -skipTestData $false `
-                -skipSPWebApp $false `
-                -skipSPPostCheck $false `
-                -skipSPServicesFix $false `
+                -skipSPWebApp $true `
+                -skipSPPostCheck $true `
+                -skipSPServicesFix $true `
                 -skipEnvVariables $false `
                 -deleteSPWebApp $false 

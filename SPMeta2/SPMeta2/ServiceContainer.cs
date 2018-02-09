@@ -57,6 +57,7 @@ namespace SPMeta2
             RegisterService(typeof(TryRetryServiceBase), new DefaultTryRetryService());
 
             RegisterService(typeof(WebPartPageTemplatesServiceBase), new DefaultWebPartPageTemplatesService());
+            RegisterService(typeof(HashCodeServiceBase), new MD5HashCodeServiceBase());
         }
 
         #endregion

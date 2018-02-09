@@ -42,7 +42,8 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
                 typeof(TryRetryServiceBase),
 
-                typeof(WebPartPageTemplatesServiceBase)
+                typeof(WebPartPageTemplatesServiceBase),
+                typeof(HashCodeServiceBase)
             };
 
             foreach (var serviceType in serviceTypes)

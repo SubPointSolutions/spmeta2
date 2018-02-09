@@ -463,4 +463,8 @@ Global
 		{9A306EC6-DE61-49B9-940D-7C1A36FC15AD} = {358E83EE-8ABA-463E-A868-3906865FDA39}
 		{B9DDD9D7-99AF-4849-A559-C02558D4F774} = {358E83EE-8ABA-463E-A868-3906865FDA39}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		BuildVersion_StartDate = 2000/1/1
+		BuildVersion_UpdateFileVersion = True
+	EndGlobalSection
 EndGlobal
