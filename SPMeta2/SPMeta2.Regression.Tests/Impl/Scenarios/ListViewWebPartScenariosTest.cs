@@ -127,7 +127,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 var sourceList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def => { });
                 var listViewWebpart = ModelGeneratorService.GetRandomDefinition<ListViewWebPartDefinition>(def =>
                 {
-                    def.ListId = Guid.Empty;
+                    // it will be updated later, just passing model validation
+                    def.ListId = Guid.NewGuid();
                     def.ListTitle = string.Empty;
                     def.ListUrl = string.Empty;
 

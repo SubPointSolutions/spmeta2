@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using System.Web.UI.WebControls.WebParts;
 using Microsoft.Office.Server.Search.WebControls;
-using Microsoft.SharePoint.Portal.WebControls;
 using SPMeta2.Definitions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
@@ -51,6 +46,78 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Webparts
 
             if (definition.ShowResultCount.HasValue)
                 typedWebpart.ShowResultCount = definition.ShowResultCount.Value;
+
+            if (definition.ShowLanguageOptions.HasValue)
+                typedWebpart.ShowLanguageOptions = definition.ShowLanguageOptions.Value;
+
+            if (definition.MaxPagesBeforeCurrent.HasValue)
+                typedWebpart.MaxPagesBeforeCurrent = definition.MaxPagesBeforeCurrent.Value;
+
+            if (definition.ShowBestBets.HasValue)
+                typedWebpart.ShowBestBets = definition.ShowBestBets.Value;
+
+            if (!string.IsNullOrEmpty(definition.AdvancedSearchPageAddress))
+                typedWebpart.AdvancedSearchPageAddress = definition.AdvancedSearchPageAddress;
+
+            if (definition.UseSharedDataProvider.HasValue)
+                typedWebpart.UseSharedDataProvider = definition.UseSharedDataProvider.Value;
+
+            if (definition.ShowPreferencesLink.HasValue)
+                typedWebpart.ShowPreferencesLink = definition.ShowPreferencesLink.Value;
+
+            if (definition.ShowViewDuplicates.HasValue)
+                typedWebpart.ShowViewDuplicates = definition.ShowViewDuplicates.Value;
+
+            if (definition.RepositionLanguageDropDown.HasValue)
+                typedWebpart.RepositionLanguageDropDown = definition.RepositionLanguageDropDown.Value;
+
+            if (!string.IsNullOrEmpty(definition.PreloadedItemTemplateIdsJson))
+                typedWebpart.PreloadedItemTemplateIdsJson = definition.PreloadedItemTemplateIdsJson;
+
+            if (definition.ShowPaging.HasValue)
+                typedWebpart.ShowPaging = definition.ShowPaging.Value;
+
+            if (!string.IsNullOrEmpty(definition.ResultTypeId))
+                typedWebpart.ResultTypeId = definition.ResultTypeId;
+
+            if (definition.ShowResults.HasValue)
+                typedWebpart.ShowResults = definition.ShowResults.Value;
+
+            if (!string.IsNullOrEmpty(definition.ItemTemplateId))
+                typedWebpart.ItemTemplateId = definition.ItemTemplateId;
+
+            if (!string.IsNullOrEmpty(definition.HitHighlightedPropertiesJson))
+                typedWebpart.HitHighlightedPropertiesJson = definition.HitHighlightedPropertiesJson;
+
+            if (!string.IsNullOrEmpty(definition.AvailableSortsJson))
+                typedWebpart.AvailableSortsJson = definition.AvailableSortsJson;
+
+            if (!string.IsNullOrEmpty(definition.RenderTemplateId))
+                typedWebpart.RenderTemplateId = definition.RenderTemplateId;
+
+            if (definition.ShowPersonalFavorites.HasValue)
+                typedWebpart.ShowPersonalFavorites = definition.ShowPersonalFavorites.Value;
+
+            if (definition.ShowSortOptions.HasValue)
+                typedWebpart.ShowSortOptions = definition.ShowSortOptions.Value;
+
+            if (definition.ShowAlertMe.HasValue)
+                typedWebpart.ShowAlertMe = definition.ShowAlertMe.Value;
+
+            if (definition.ShowDidYouMean.HasValue)
+                typedWebpart.ShowDidYouMean = definition.ShowDidYouMean.Value;
+
+            if (!string.IsNullOrEmpty(definition.QueryGroupName))
+                typedWebpart.QueryGroupName = definition.QueryGroupName;
+
+            if (definition.ShowAdvancedLink.HasValue)
+                typedWebpart.ShowAdvancedLink = definition.ShowAdvancedLink.Value;
+
+            if (definition.BypassResultTypes.HasValue)
+                typedWebpart.BypassResultTypes = definition.BypassResultTypes.Value;
+
+            if (!string.IsNullOrEmpty(definition.GroupTemplateId))
+                typedWebpart.GroupTemplateId = definition.GroupTemplateId;
         }
 
         #endregion

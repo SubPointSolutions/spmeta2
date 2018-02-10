@@ -241,72 +241,10 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public virtual string GetWebPartPageTemplateContent(WebPartPageDefinition webPartPageModel)
         {
-            // TODO, add support for SP2016
-            // Built-in web part page templates should be correctly resolved for SP2010/2013 #683
-
             var spRuntimeVersion = typeof(SPField).Assembly.GetName().Version;
+            var service = ServiceContainer.Instance.GetService<WebPartPageTemplatesServiceBase>();
 
-            if (spRuntimeVersion.Major == 14)
-            {
-                return GetSP2010WebPartPageTemplateContent(webPartPageModel);
-            }
-
-            if (spRuntimeVersion.Major == 15)
-            {
-                return GetSP2013WebPartPageTemplateContent(webPartPageModel);
-            }
-
-            throw new Exception(string.Format("PageLayoutTemplate: [{0}] is not supported.", webPartPageModel.PageLayoutTemplate));
-        }
-
-        protected virtual string GetSP2013WebPartPageTemplateContent(WebPartPageDefinition webPartPageModel)
-        {
-            switch (webPartPageModel.PageLayoutTemplate)
-            {
-                case 1:
-                    return SP2013WebPartPageTemplates.spstd1;
-                case 2:
-                    return SP2013WebPartPageTemplates.spstd2;
-                case 3:
-                    return SP2013WebPartPageTemplates.spstd3;
-                case 4:
-                    return SP2013WebPartPageTemplates.spstd4;
-                case 5:
-                    return SP2013WebPartPageTemplates.spstd5;
-                case 6:
-                    return SP2013WebPartPageTemplates.spstd6;
-                case 7:
-                    return SP2013WebPartPageTemplates.spstd7;
-                case 8:
-                    return SP2013WebPartPageTemplates.spstd8;
-            }
-
-            throw new Exception(string.Format("PageLayoutTemplate: [{0}] is not supported.", webPartPageModel.PageLayoutTemplate));
-        }
-
-        protected virtual string GetSP2010WebPartPageTemplateContent(WebPartPageDefinition webPartPageModel)
-        {
-            switch (webPartPageModel.PageLayoutTemplate)
-            {
-                case 1:
-                    return SP2010WebPartPageTemplates.spstd1;
-                case 2:
-                    return SP2010WebPartPageTemplates.spstd2;
-                case 3:
-                    return SP2010WebPartPageTemplates.spstd3;
-                case 4:
-                    return SP2010WebPartPageTemplates.spstd4;
-                case 5:
-                    return SP2010WebPartPageTemplates.spstd5;
-                case 6:
-                    return SP2010WebPartPageTemplates.spstd6;
-                case 7:
-                    return SP2010WebPartPageTemplates.spstd7;
-                case 8:
-                    return SP2010WebPartPageTemplates.spstd8;
-            }
-
-            throw new Exception(string.Format("PageLayoutTemplate: [{0}] is not supported.", webPartPageModel.PageLayoutTemplate));
+            return service.GetPageLayoutTemplate(webPartPageModel.PageLayoutTemplate, spRuntimeVersion);
         }
 
         #endregion

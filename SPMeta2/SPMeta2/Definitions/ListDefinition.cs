@@ -286,6 +286,15 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool? EnableAssignToEmail { get; set; }
 
+        /// <summary>
+        /// Represents SPList.DisableGridEditing property.
+        /// Supported only with SSOM provision
+        /// https://github.com/SubPointSolutions/spmeta2/issues/1097
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? DisableGridEditing { get; set; }
 
         #endregion
 

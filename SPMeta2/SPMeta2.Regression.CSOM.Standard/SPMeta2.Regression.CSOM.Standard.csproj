@@ -47,7 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-    <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')">
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug45-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -67,7 +67,7 @@
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.dll</HintPath>
       <Private>False</Private>
-    </Reference>   
+    </Reference>
     <Reference Condition="'$(spRuntime)'=='14'" Include="Microsoft.SharePoint.Client.Runtime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
@@ -137,7 +137,7 @@
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
       <Private>False</Private>
     </Reference>
-     <Reference Condition="'$(spRuntime)'=='16'" Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+    <Reference Condition="'$(spRuntime)'=='16'" Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
       <Private>False</Private>
@@ -313,6 +313,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

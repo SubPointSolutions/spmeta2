@@ -2,7 +2,7 @@
     "defaultSolutionDirectory": "./../../",
     "defaultSolutionFilePath": "./../../SPMeta2.sln",
 
-    "defaultDocsBuildEnabled": true,
+    "defaultDocsBuildEnabled": false,
 
     "defaultDocsViewFolder": "SPMeta2/SubPointSolutions.Docs/Views/SPMeta2",
     "defaultDocsRepoFolder": "m2-m2",
@@ -284,7 +284,7 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2",
             "Id": "SPMeta2.Core",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
             "ProjectUrl": "https://github.com/SubPointSolutions/spmeta2",
@@ -323,11 +323,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.Standard",
             "Id": "SPMeta2.Core.Standard",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -368,11 +368,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
             "Id": "SPMeta2.CSOM.Foundation",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -405,15 +405,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
             "Id": "SPMeta2.CSOM.Standard",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.CSOM.Foundation",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -446,11 +446,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM",
             "Id": "SPMeta2.SSOM.Foundation",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -483,15 +483,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM.Standard",
             "Id": "SPMeta2.SSOM.Standard",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.SSOM.Foundation",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -525,11 +525,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
             "Id": "SPMeta2.CSOM.Foundation-v14",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -555,15 +555,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
             "Id": "SPMeta2.CSOM.Standard-v14",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.CSOM.Foundation-v14",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -589,11 +589,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM",
             "Id": "SPMeta2.SSOM.Foundation-v14",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -619,15 +619,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.SSOM.Standard",
             "Id": "SPMeta2.SSOM.Standard-v14",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.SSOM.Foundation-v14",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 }
             ],
             "LicenseUrl": "http://docs.subpointsolutions.com/spmeta2/license",
@@ -653,11 +653,11 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM",
             "Id": "SPMeta2.CSOM.Foundation-v16",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.Core",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 },
                 {
                     "Id": "Microsoft.SharePointOnline.CSOM",
@@ -694,15 +694,15 @@
         {
             "CustomProjectFolder" : "SPMeta2/SPMeta2.CSOM.Standard",
             "Id": "SPMeta2.CSOM.Standard-v16",
-            "Version": "1.2.130-beta1",
+            "Version": "1.2.140",
             "Dependencies": [ 
                 {
                     "Id": "SPMeta2.CSOM.Foundation-v16",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 },
                 {
                     "Id": "SPMeta2.Core.Standard",
-                    "Version": "1.2.130-beta1"
+                    "Version": "1.2.140"
                 },
                 {
                     "Id": "Microsoft.SharePointOnline.CSOM",

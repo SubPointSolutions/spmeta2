@@ -238,7 +238,20 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                     updatedSchemaXml.Root.ReplaceWith(originalSchemaXml.Root);
 
 #if !NET35
+                    // updating inner xml definition for view
                     hiddenView.ListViewXml = updatedSchemaXml.Root.GetInnerXmlAsString();
+                    
+                    // updating other attribute based properties, in the root node
+                    // partly related to following issue
+                    // List view scope does not apply in xslt list view webpart #1030
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1030
+
+                    var scopeValue = updatedSchemaXml.Root.GetAttributeValue("Scope");
+
+                    if(!string.IsNullOrEmpty(scopeValue))
+                    {
+                        hiddenView.Scope = (ViewScope)Enum.Parse(typeof(ViewScope), scopeValue);
+                    }
 #endif
                 }
 

@@ -70,26 +70,35 @@ namespace SPMeta2.CSOM.Standard.Config
 
         #region methods
 
+        public void EnsureDefaultFolderHierarchyNode()
+        {
+            var root = SettingDocument.Root;
+
+            var parentNode = root.Descendants("NavigationHierarchies").FirstOrDefault();
+
+            if (parentNode == null)
+            {
+                parentNode = new XElement("NavigationHierarchies");
+                root.Add(parentNode);
+
+                var folderHierarchyNode = new XElement("FolderHierarchy");
+
+                folderHierarchyNode.SetAttribute("HideFoldersNode", "False");
+                parentNode.Add(folderHierarchyNode);
+            }
+        }
+
         public void AddConfiguredHierarchy(MetadataNavigationHierarchyConfig item)
         {
             var currentKey = FindConfiguredKeyFilter(item.FieldId);
 
             if (currentKey == null)
             {
+                EnsureDefaultFolderHierarchyNode();
+
+                // parentNode should be ensured iearly in EnsureDefaultFolderHierarchyNode()
                 var root = SettingDocument.Root;
-
                 var parentNode = root.Descendants("NavigationHierarchies").FirstOrDefault();
-
-                if (parentNode == null)
-                {
-                    parentNode = new XElement("NavigationHierarchies");
-                    root.Add(parentNode);
-
-                    var folderHierarchyNode = new XElement("FolderHierarchy");
-
-                    folderHierarchyNode.SetAttribute("HideFoldersNode", "False");
-                    parentNode.Add(folderHierarchyNode);
-                }
 
                 var newNode = new XElement("MetadataField");
 

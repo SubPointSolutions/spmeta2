@@ -118,7 +118,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     targetContentType = web.AvailableContentTypes[0];
                 }
 
-                if (targetContentType == null)
+                if (targetContentType == null || targetContentType.ServerObjectIsNull == true)
                 {
                     TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall,
                         "Cannot find site content type by ID: [{0}] or Name:[{1}].",

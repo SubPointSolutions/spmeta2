@@ -265,6 +265,7 @@
     <Compile Include="Impl\Services\HashCodeServiceTests.cs" />
     <Compile Include="Impl\Services\IncrementalModelTreeTraverseServiceTests.cs" />
     <Compile Include="Impl\Services\DefaultTryRetryServiceTests.cs" />
+    <Compile Include="Impl\Services\ModelServiceBaseTests.cs" />
     <Compile Include="Impl\Services\ServiceContainerTests.cs" />
     <Compile Include="Impl\Services\TokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Syntax\ContentTypeDefinitionSyntaxTests.cs" />
@@ -622,6 +623,11 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

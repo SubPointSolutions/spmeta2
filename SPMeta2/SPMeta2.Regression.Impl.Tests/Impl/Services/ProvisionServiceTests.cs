@@ -212,6 +212,9 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
             provisionService.SetIncrementalProvisionMode(incrementalProvisionConfig);
 
+            if (!provisionRunner.SiteUrls.Any())
+                throw new Exception("Cannot find any O365 site urls to run with test");
+
             provisionRunner.SiteUrls.ForEach(siteUrl =>
             {
                 var model = SPMeta2Model.NewSiteModel(site => { });

@@ -376,6 +376,7 @@
     <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
     <Compile Include="Services\Impl\DefaultIncrementalModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\DefaultTryRetryService.cs" />
+    <Compile Include="Services\Impl\DefaultWebPartPageTemplatesService.cs" />
     <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
     <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
@@ -398,6 +399,7 @@
     <Compile Include="Services\LogEventId.cs" />
     <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />
     <Compile Include="Services\LookupServiceBase.cs" />
+    <Compile Include="Services\MD5HashCodeServiceBase.cs" />
     <Compile Include="Services\ModelCompatibilityServiceBase.cs" />
     <Compile Include="Services\ModelStatInfoServiceBase.cs" />
     <Compile Include="Services\ModelPrintServiceBase.cs" />
@@ -428,6 +430,7 @@
     <Compile Include="Services\TraceServiceBase.cs" />
     <Compile Include="Services\TryRetryServiceBase.cs" />
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
+    <Compile Include="Services\WebPartPageTemplatesServiceBase.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="Syntax\Default\Interfaces\IFarmSolutionModelHostNode.cs" />
@@ -619,6 +622,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SP2013WebPartPageTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\SP2016WebPartPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SP2016WebPartPageTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\CamlQueryUtils.cs" />
     <Compile Include="Utils\ConvertUtils.cs" />
     <Compile Include="Utils\CultureUtils.cs" />
@@ -685,6 +693,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SP2013WebPartPageTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SP2016WebPartPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SP2016WebPartPageTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Templates\Webparts\ContentEditorWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\XsltListViewWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ScriptEditorWebPart.webpart" />
@@ -735,6 +747,11 @@
     <Folder Include="Validation\Impl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

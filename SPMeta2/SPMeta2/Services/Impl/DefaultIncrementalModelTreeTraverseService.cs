@@ -20,8 +20,6 @@ namespace SPMeta2.Services.Impl
 
         public DefaultIncrementalModelTreeTraverseService()
         {
-            _hashService = new MD5HashCodeServiceBase();
-
             CurrentModelHash = new ModelHash();
             IgnoredModelNodes = new List<ModelNode>();
 
@@ -46,7 +44,22 @@ namespace SPMeta2.Services.Impl
         public ModelHash PreviousModelHash { get; set; }
         public ModelHash CurrentModelHash { get; private set; }
 
-        protected HashCodeServiceBase _hashService { get; set; }
+        private HashCodeServiceBase _hashService;
+
+        protected HashCodeServiceBase HashService
+        {
+            get
+            {
+                if (_hashService == null)
+                    _hashService = ServiceContainer.Instance.GetService<HashCodeServiceBase>();
+
+                return _hashService;
+            }
+            set
+            {
+                _hashService = value;
+            }
+        }
 
         protected List<ModelNode> IgnoredModelNodes { get; private set; }
 
@@ -65,7 +78,7 @@ namespace SPMeta2.Services.Impl
             {
                 if (!_cache4Object2Hash.ContainsKey(value))
                 {
-                    var hash = _hashService.GetHashCode(value);
+                    var hash = HashService.GetHashCode(value);
 
                     TraceService.VerboseFormat(0,
                                              "GetHashString() - cold hit, adding value to cache:[{0}] -> [{1}]",
@@ -88,7 +101,7 @@ namespace SPMeta2.Services.Impl
             }
             else
             {
-                var hash = _hashService.GetHashCode(value);
+                var hash = HashService.GetHashCode(value);
 
                 TraceService.VerboseFormat(0,
                                          "GetHashString() - hot hit, returning value from cache:[{0}] -> [{1}]",
@@ -420,7 +433,7 @@ namespace SPMeta2.Services.Impl
                 var serializer = ServiceContainer.Instance.GetService<DefaultXMLSerializationService>();
                 serializer.RegisterKnownTypes(new[]
                 {
-                    typeof(ModelHash), 
+                    typeof(ModelHash),
                     typeof(ModelNodeHash)
                 });
 

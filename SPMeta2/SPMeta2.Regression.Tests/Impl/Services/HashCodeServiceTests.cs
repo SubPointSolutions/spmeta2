@@ -22,8 +22,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
         [TestCategory("CI.Core")]
         public void CanGetHashForAllDefinitions()
         {
-            var service = new MD5HashCodeServiceBase();
-
+            var service = ServiceContainer.Instance.GetService<HashCodeServiceBase>();
 
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
