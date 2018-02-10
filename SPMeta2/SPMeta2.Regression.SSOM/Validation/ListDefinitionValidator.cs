@@ -48,9 +48,22 @@ namespace SPMeta2.Regression.SSOM.Validation
             });
 
             if (definition.EnableAssignToEmail.HasValue)
+            {
                 assert.ShouldBeEqual(m => m.EnableAssignToEmail, o => o.EnableAssignToEmail);
+            }
             else
-                assert.SkipProperty(m => m.EnableAssignToEmail, "EnableAssignToEmail   is null or empty");
+            {
+                assert.SkipProperty(m => m.EnableAssignToEmail, "EnableAssignToEmail is null or empty");
+            }
+
+            if (definition.DisableGridEditing.HasValue)
+            {
+                assert.ShouldBeEqual(m => m.DisableGridEditing, o => o.DisableGridEditing);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DisableGridEditing, "DisableGridEditing is null or empty");
+            }
 
             if (definition.NavigateForFormsPages.HasValue)
             {
@@ -58,7 +71,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
             {
-                assert.SkipProperty(m => m.NavigateForFormsPages, "NavigateForFormsPages  is null or empty");
+                assert.SkipProperty(m => m.NavigateForFormsPages, "NavigateForFormsPages is null or empty");
             }
 
             if (definition.WriteSecurity.HasValue)

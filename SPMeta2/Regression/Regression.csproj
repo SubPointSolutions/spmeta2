@@ -42,15 +42,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.yaml" />
-    <None Include="_ut_grid_baseline_config.ps1" />
-    <None Include="_ut_grid_dsc_spmeta2_webapp_unittests.ps1" />
-    <None Include="_ut_grid_dsc_spmeta2_webapp.ps1" />
-    <None Include="_ut_grid_dsc_modules.ps1" />
-    <None Include="_ut_bootstrap_psmodule.ps1" />
-    <None Include="_helpers.ps1" />
+    <None Include=".configs\o365-subpoint.ps1" />
+    <None Include="bootstrap.ps1" />
+    <None Include="config.default.ps1" />
+    <None Include="local.config.ps1" />
+    <None Include="local.o365.ps1" />
+    <None Include="local.o365v16.ps1" />
+    <None Include="local.ssom.ps1" />
+    <None Include="local.csom.ps1" />
+    <None Include="utils\_spmeta2.utils.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

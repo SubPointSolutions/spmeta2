@@ -452,7 +452,7 @@ namespace SPMeta2.Containers.Services
             TestModels(new ModelNode[] { model });
         }
 
-        private static HashCodeServiceBase _hasService = new MD5HashCodeServiceBase();
+        private static HashCodeServiceBase _hasService = ServiceContainer.Instance.GetService<HashCodeServiceBase>();
         private static Dictionary<DefinitionBase, string> _definitionHashes = new Dictionary<DefinitionBase, string>();
 
         private static void PersistDefinitionHashes(IEnumerable<ModelNode> models)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
+
 using Microsoft.SharePoint.Client;
 
 using SPMeta2.CSOM.DefaultSyntax;
@@ -591,7 +591,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             return null;
         }
 
-
         #endregion
 
         public override Type TargetType
@@ -607,7 +606,5 @@ namespace SPMeta2.CSOM.ModelHandlers
                 { "DescriptionResource", definition.DescriptionResource },
             });
         }
-
-
     }
 }

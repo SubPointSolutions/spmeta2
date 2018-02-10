@@ -125,7 +125,7 @@ namespace SPMeta2.CSOM.Services.Impl
             return GetAssemblyFileVersion(spAssembly);
         }
 
-        protected virtual Version GetAssemblyFileVersion(Assembly assembly)
+        public virtual Version GetAssemblyFileVersion(Assembly assembly)
         {
             var fileVersionAttribute = Attribute.GetCustomAttribute(
                                             assembly,

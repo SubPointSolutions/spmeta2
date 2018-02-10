@@ -52,13 +52,17 @@
     <None Include="Pester\regression.nuget.ps1" />
     <None Include="Pester\_install.ps1" />
     <None Include="tools\nuget.config" />
-    <None Include="tools\packages.config" />
+    <None Include="tools\packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="tools\packages.config.md5sum" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="tools\nuget.exe" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

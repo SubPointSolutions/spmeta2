@@ -407,7 +407,7 @@ namespace SPMeta2.Regression.Tests.Base
         {
             WithExcpectedExceptions(new Type[] {
                 typeof(SPMeta2NotSupportedException)
-             
+
             }, action);
         }
 
@@ -593,13 +593,26 @@ namespace SPMeta2.Regression.Tests.Base
             });
         }
 
+        private static List<ExpectUpdateValueServiceBase> _expectUpdateServices;
+
+        private static List<ExpectUpdateValueServiceBase> ExpectUpdateServices
+        {
+            get
+            {
+                if (_expectUpdateServices == null)
+                {
+                    _expectUpdateServices = new List<ExpectUpdateValueServiceBase>();
+                    _expectUpdateServices.AddRange(ReflectionUtils.GetTypesFromAssembly<ExpectUpdateValueServiceBase>(typeof(ExpectUpdateValueServiceBase).Assembly)
+                                                                 .Select(t => Activator.CreateInstance(t) as ExpectUpdateValueServiceBase));
+                }
+
+                return _expectUpdateServices;
+            }
+        }
+
         private static object GetNewPropValue(ExpectUpdate attr, object obj, PropertyInfo prop)
         {
-            var expectUpdateServices = new List<ExpectUpdateValueServiceBase>();
-            expectUpdateServices.AddRange(ReflectionUtils.GetTypesFromAssembly<ExpectUpdateValueServiceBase>(typeof(ExpectUpdateValueServiceBase).Assembly)
-                                                         .Select(t => Activator.CreateInstance(t) as ExpectUpdateValueServiceBase));
-
-            var targetServices = expectUpdateServices.FirstOrDefault(s => s.TargetType == attr.GetType());
+            var targetServices = ExpectUpdateServices.FirstOrDefault(s => s.TargetType == attr.GetType());
 
             if (targetServices == null)
                 throw new SPMeta2NotImplementedException(string.Format("Can't find ExpectUpdateValueServiceBase impl for type: [{0}]", attr.GetType()));

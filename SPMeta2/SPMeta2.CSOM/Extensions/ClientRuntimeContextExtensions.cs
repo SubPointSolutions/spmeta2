@@ -45,6 +45,11 @@ namespace SPMeta2.CSOM.Extensions
 
         #region methods
 
+        public static bool IsSharePointOnlineContext(this  ClientRuntimeContext context)
+        {
+            return ClientRuntimeContextService.IsSharePointOnlineContext(context);
+        }
+
         public static void ExecuteQueryWithTrace(this  ClientRuntimeContext context)
         {
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "ExecuteQuery()");
