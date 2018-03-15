@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -26,9 +26,8 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var modelHost = modelHostContext.ModelHost;
             var model = modelHostContext.Model;
-            var childModelType = modelHostContext.ChildModelType;
+            //var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
-
 
             var web = ExtractWeb(modelHost);
 
@@ -86,15 +85,15 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost as SiteModelHost;
+            //var siteModelHost = modelHost as SiteModelHost;
 
             if (modelHost is SiteModelHost)
             {
-                DeploySiteGroup(modelHost, modelHost as SiteModelHost, model);
+                DeploySiteGroup(modelHost, (SiteModelHost) modelHost, model);
             }
             else if (modelHost is SecurityGroupModelHost)
             {
-                DeploySiteGroupUnderSiteGroup(modelHost, modelHost as SecurityGroupModelHost, model);
+                DeploySiteGroupUnderSiteGroup(modelHost, (SecurityGroupModelHost) modelHost, model);
             }
             else
             {
@@ -153,8 +152,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             var web = site.RootWeb;
 
-            //var site = web.Site;
-            var currentGroup = (SPGroup)null;
+            SPGroup currentGroup;
             var hasInitialGroup = false;
 
             try
@@ -241,6 +239,33 @@ namespace SPMeta2.SSOM.ModelHandlers
             });
 
             currentGroup.Update();
+
+            // Assign group to AssociatedXXXGroup property of web
+            // https://github.com/SubPointSolutions/spmeta2/issues/1108
+
+            if (securityGroupModel.IsAssociatedMemberGroup)
+                web.AssociatedMemberGroup = currentGroup;
+
+            if (securityGroupModel.IsAssociatedOwnerGroup)
+                web.AssociatedOwnerGroup = currentGroup;
+
+            if (securityGroupModel.IsAssociatedVisitorsGroup)
+                web.AssociatedVisitorGroup = currentGroup;
+
+            // Does this need to be called? Would it work using the securityGroupModel
+            //InvokeOnModelEvent(this, new ModelEventArgs
+            //{
+            //    CurrentModelNode = null,
+            //    Model = null,
+            //    EventType = ModelEventType.OnProvisioned,
+            //    Object = web,
+            //    ObjectType = typeof(SPWeb),
+            //    ObjectDefinition = securityGroupModel,
+            //    ModelHost = modelHost
+            //});
+
+            if (securityGroupModel.IsAssociatedMemberGroup || securityGroupModel.IsAssociatedOwnerGroup || securityGroupModel.IsAssociatedVisitorsGroup)
+                web.Update();
         }
 
         protected virtual SPPrincipal EnsureOwnerUser(SPWeb web, string owner)
@@ -256,7 +281,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var principalInfos = SPUtility.SearchPrincipals(web, owner, SPPrincipalType.All, SPPrincipalSource.All, null, 2, out max);
 
                 if (principalInfos.Count > 0)
-                //if (principalInfos.Value != null)
                 {
                     var info = principalInfos[0];
 
