@@ -472,7 +472,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             // additions
 #if !NET35
-            if (!String.IsNullOrEmpty(fieldModel.JSLink))
+            if (!string.IsNullOrEmpty(fieldModel.JSLink))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.JSLink, fieldModel.JSLink);
 #endif
 

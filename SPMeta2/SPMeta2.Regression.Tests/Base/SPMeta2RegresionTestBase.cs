@@ -1,37 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Security.Policy;
+using System.IO;
+
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Containers.Consts;
 using SPMeta2.Containers.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.Containers.Services;
+using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.Containers.Standard.DefinitionGenerators;
 using SPMeta2.Containers.Utils;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Webparts;
 using SPMeta2.Exceptions;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
-
-using SPMeta2.Regression.Tests.Services;
-using SPMeta2.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SPMeta2.Enumerations;
-using SPMeta2.Validation.Services;
-using System.Collections.ObjectModel;
-using SPMeta2.Standard.Enumerations;
-using System.Text;
-using SPMeta2.Containers.Services.Rnd;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Regression.ModelHandlers;
-using SPMeta2.Regression.Tests.Impl.Scenarios.Webparts;
-using SPMeta2.Services;
-using System.IO;
-using SPMeta2.Containers.Consts;
+using SPMeta2.Regression.Tests.Services;
 using SPMeta2.Regression.Utils;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.Tests.Base
 {
@@ -143,8 +132,7 @@ namespace SPMeta2.Regression.Tests.Base
                 args.RequestingAssembly
                 ));
         }
-
-
+        
         public SPMeta2RegresionTestCoreBase()
         {
             Rnd = new DefaultRandomService();
@@ -158,10 +146,10 @@ namespace SPMeta2.Regression.Tests.Base
         {
             var result = true;
 
-            result = result & (e is SPMeta2Exception);
-            result = result & (e.InnerException is SPMeta2AggregateException);
-            result = result & ((e.InnerException as AggregateException)
-                                    .InnerExceptions.All(ee => ee is SPMeta2ModelValidationException));
+            result = result & e is SPMeta2Exception;
+            result = result & e.InnerException is SPMeta2AggregateException;
+            result = result & (e.InnerException as AggregateException)
+                     .InnerExceptions.All(ee => ee is SPMeta2ModelValidationException);
 
             return result;
         }

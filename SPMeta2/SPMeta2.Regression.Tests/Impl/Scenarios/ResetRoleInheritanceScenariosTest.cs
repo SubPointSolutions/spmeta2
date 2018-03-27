@@ -1,9 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SPMeta2.Containers;
-using SPMeta2.Containers.Services;
-using SPMeta2.Definitions;
-using SPMeta2.Exceptions;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using System;
@@ -11,13 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using SPMeta2.Syntax.Default;
-using System.IO;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class SandboxSolutionScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class ResetRoleInheritanceScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 
@@ -37,7 +30,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
-       
+        // web scope, TODO
+
+        // list scope, TODO
+
+        // folder scope, TODO
+
+        // list item scope, TODO
 
         #endregion
     }

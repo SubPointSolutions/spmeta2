@@ -19,7 +19,7 @@ using SPMeta2.Containers.Utils;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class TaxonomyTermStoreScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class TaxonomyTermStoreScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

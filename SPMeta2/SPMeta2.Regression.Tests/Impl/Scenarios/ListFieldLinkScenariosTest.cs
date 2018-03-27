@@ -1,26 +1,21 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SPMeta2.Regression.Tests.Base;
-using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using SPMeta2.Containers;
-using SPMeta2.Syntax.Default;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Models;
+using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
+using SPMeta2.Syntax.Default;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class ListFieldLinkScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class ListFieldLinkScenariosTest : SPMeta2RegresionScenarioTestBase
     {
-        public ListFieldLinkScenariousTest()
+        public ListFieldLinkScenariosTest()
         {
-            this.EnablePropertyUpdateValidation = false;
+            EnablePropertyUpdateValidation = false;
         }
 
         #region internal
@@ -49,7 +44,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 web.AddRandomList(list =>
                 {
-                    list.AddListFieldLink(new ListFieldLinkDefinition()
+                    list.AddListFieldLink(new ListFieldLinkDefinition
                     {
                         FieldId = BuiltInFieldId.URL
                     });
@@ -67,7 +62,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 web.AddRandomList(list =>
                 {
-                    list.AddListFieldLink(new ListFieldLinkDefinition()
+                    list.AddListFieldLink(new ListFieldLinkDefinition
                     {
                         FieldInternalName = BuiltInInternalFieldNames.URL
                     });
@@ -89,7 +84,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 web.AddRandomList(list =>
                 {
-                    list.AddListFieldLink(new ListFieldLinkDefinition()
+                    list.AddListFieldLink(new ListFieldLinkDefinition
                     {
                         FieldId = BuiltInFieldId.Title,
                         DisplayName = Rnd.String()
@@ -123,8 +118,6 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                         list.AddListFieldLink(webField);
                     });
                 });
-
-
             });
 
             TestModel(siteModel, webModel);
@@ -158,7 +151,38 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                        });
                    });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Options")]
+        public void CanDeploy_ListFieldLink_AsAddToDefaultView_ViaAddFieldOptions()
+        {
+            var field = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            field.AddFieldOptions = BuiltInAddFieldOptions.AddFieldToDefaultView;
+
+            var listFieldLink = new ListFieldLinkDefinition
+            {
+                FieldId = field.Id,
+                AddFieldOptions = BuiltInAddFieldOptions.AddFieldToDefaultView
+            };
+
+            var siteModel = SPMeta2Model
+                .NewSiteModel(site =>
+                {
+                    site.AddField(field);
+                });
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddRandomList(list =>
+                    {
+                        list.AddListFieldLink(listFieldLink);
+                    });
+                });
+
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
         [TestMethod]
@@ -175,17 +199,17 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 AddToDefaultView = true
             };
 
-            var ct_1 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            var ct1 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
             {
                 def.ParentContentTypeId = BuiltInContentTypeId.Item;
             });
 
-            var ct_2 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            var ct2 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
             {
                 def.ParentContentTypeId = BuiltInContentTypeId.Item;
             });
 
-            var ct_3 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            var ct3 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
             {
                 def.ParentContentTypeId = BuiltInContentTypeId.Item;
             });
@@ -199,9 +223,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var siteModel = SPMeta2Model
                    .NewSiteModel(site =>
                    {
-                       site.AddContentType(ct_1);
-                       site.AddContentType(ct_2);
-                       site.AddContentType(ct_3);
+                       site.AddContentType(ct1);
+                       site.AddContentType(ct2);
+                       site.AddContentType(ct3);
 
                        site.AddField(field);
                    });
@@ -211,9 +235,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                    {
                        web.AddList(genericList, list =>
                        {
-                           list.AddContentTypeLink(ct_1);
-                           list.AddContentTypeLink(ct_2);
-                           list.AddContentTypeLink(ct_3);
+                           list.AddContentTypeLink(ct1);
+                           list.AddContentTypeLink(ct2);
+                           list.AddContentTypeLink(ct3);
 
                            list.AddListFieldLink(listFieldLink);
                        });
@@ -230,9 +254,83 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             //           });
             //       });
 
-            TestModels(new  ModelNode[] { siteModel, webModel });
+            TestModels(new ModelNode[] { siteModel, webModel });
         }
 
-        #endregion
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.Options")]
+        public void CanDeploy_ListFieldLink_MultipleAddFieldOption()
+        {
+            var field = ModelGeneratorService.GetRandomDefinition<FieldDefinition>();
+            field.AddFieldOptionList = new List<BuiltInAddFieldOptions>
+            {
+                BuiltInAddFieldOptions.AddFieldToDefaultView,
+                BuiltInAddFieldOptions.AddFieldInternalNameHint,
+                BuiltInAddFieldOptions.AddToAllContentTypes
+            };
+
+            var listFieldLink = new ListFieldLinkDefinition
+            {
+                FieldId = field.Id,
+                AddFieldOptionList = new List<BuiltInAddFieldOptions>
+                {
+                BuiltInAddFieldOptions.AddFieldToDefaultView,
+                BuiltInAddFieldOptions.AddFieldInternalNameHint,
+                BuiltInAddFieldOptions.AddToAllContentTypes
+                }
+            };
+
+            var ct1 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Item;
+            });
+
+            var ct2 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Item;
+            });
+
+            var ct3 = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Item;
+            });
+
+            var genericList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var siteModel = SPMeta2Model
+                .NewSiteModel(site =>
+                {
+                    site.AddContentType(ct1);
+                    site.AddContentType(ct2);
+                    site.AddContentType(ct3);
+
+                    site.AddField(field);
+                });
+
+            var webModel = SPMeta2Model
+                .NewWebModel(web =>
+                {
+                    web.AddList(genericList, list =>
+                    {
+                        list.AddContentTypeLink(ct1);
+                        list.AddContentTypeLink(ct2);
+                        list.AddContentTypeLink(ct3);
+
+                        list.AddListFieldLink(listFieldLink);
+                    })
+                    .AddRandomList(list =>
+                    {
+                        list.AddListFieldLink(listFieldLink);
+                    });
+                });
+
+            TestModels(new ModelNode[] { siteModel, webModel });
+        }
     }
+
+    #endregion
 }

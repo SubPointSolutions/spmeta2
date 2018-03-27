@@ -114,6 +114,10 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
             {
+                if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.AddFieldInternalNameHint))
+                {
+                    assert.ShouldBeEqual(m => m.InternalName, o => o.InternalName);
+                }
                 // TODO
                 // In addition to AddFieldOptions also AddFieldOptionList should be checked
                 // Validation appears to be complex as it depends on various variables like where the field is added to and so forth

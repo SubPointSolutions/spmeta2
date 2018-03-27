@@ -17,7 +17,7 @@ using SPMeta2.Models;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class AuditSettingsScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class AuditSettingsScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

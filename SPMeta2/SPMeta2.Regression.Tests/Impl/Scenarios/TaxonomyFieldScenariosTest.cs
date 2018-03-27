@@ -18,7 +18,7 @@ using SPMeta2.Syntax.Default.Modern;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class TaxonomyFieldScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class TaxonomyFieldScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

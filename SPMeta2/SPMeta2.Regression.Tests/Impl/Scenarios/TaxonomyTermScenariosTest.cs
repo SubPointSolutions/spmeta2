@@ -20,7 +20,7 @@ using ReflectionUtils = SPMeta2.Utils.ReflectionUtils;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class TaxonomyTermScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class TaxonomyTermScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

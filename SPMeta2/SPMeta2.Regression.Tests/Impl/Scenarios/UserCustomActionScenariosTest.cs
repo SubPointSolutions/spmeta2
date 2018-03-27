@@ -16,7 +16,7 @@ using SPMeta2.Containers.Services;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class UserCustomActionScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class UserCustomActionScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

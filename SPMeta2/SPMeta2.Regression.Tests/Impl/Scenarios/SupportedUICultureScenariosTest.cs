@@ -25,7 +25,7 @@ using SPMeta2.Regression.Tests.Utils;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class SupportedUICultureScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class SupportedUICultureScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

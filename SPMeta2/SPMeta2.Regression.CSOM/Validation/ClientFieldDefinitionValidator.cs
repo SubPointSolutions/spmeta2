@@ -1,16 +1,17 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Regression.CSOM.Utils;
 using SPMeta2.Services;
 using SPMeta2.Utils;
-using SPMeta2.Definitions.Fields;
-
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -112,7 +113,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     var srcProp = s.GetExpressionValue(m => m.DefaultFormula);
 
-                    var isValid = false;
+                    bool isValid;
 
                     var dstXmlNode = XDocument.Parse(d.SchemaXml).Root;
                     var defaultValueNode = dstXmlNode.Descendants("DefaultFormula").FirstOrDefault();

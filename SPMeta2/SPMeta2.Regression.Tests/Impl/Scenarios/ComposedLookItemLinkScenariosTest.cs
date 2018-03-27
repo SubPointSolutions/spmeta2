@@ -18,7 +18,7 @@ using SPMeta2.Enumerations;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class ComposedLookItemLinkScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class ComposedLookItemLinkScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 
