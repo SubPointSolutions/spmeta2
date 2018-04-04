@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SPMeta2.BuiltInDefinitions;
-using SPMeta2.Containers;
-using SPMeta2.Containers.Standard;
+
 using SPMeta2.Definitions;
-using SPMeta2.Enumerations;
-using SPMeta2.Models;
-using SPMeta2.Regression.Tests.Definitions;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
-using SPMeta2.Standard.Definitions;
 using SPMeta2.Syntax.Default;
-using SPMeta2.Validation.Validators.Relationships;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {

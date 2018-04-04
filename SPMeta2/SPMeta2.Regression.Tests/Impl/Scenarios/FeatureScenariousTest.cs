@@ -17,7 +17,7 @@ using SPMeta2.Containers.Consts;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class FeatureScenariosTest : SPMeta2RegresionScenarioTestBase
+    public class FeatureScenariousTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

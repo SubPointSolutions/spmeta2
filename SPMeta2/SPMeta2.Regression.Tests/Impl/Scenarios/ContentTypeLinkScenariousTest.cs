@@ -14,7 +14,7 @@ using SPMeta2.Syntax.Default;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
     [TestClass]
-    public class ContentTypeLinkScenariosTest : SPMeta2RegresionScenarioTestBase
+    public class ContentTypeLinkScenariousTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

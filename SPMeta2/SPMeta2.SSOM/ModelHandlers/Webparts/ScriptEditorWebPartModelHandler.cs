@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using System.Xml;
 using Microsoft.SharePoint.WebPartPages;
+
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
 
 namespace SPMeta2.SSOM.ModelHandlers.Webparts

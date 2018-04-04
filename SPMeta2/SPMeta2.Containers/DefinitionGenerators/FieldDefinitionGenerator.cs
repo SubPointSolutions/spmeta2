@@ -30,7 +30,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
             PreProcessDefinitionTemplate(def);
 
             def.Id = Rnd.Guid();
-            def.InternalName = $"iname_{Rnd.String(16)}";
+            def.InternalName = string.Format("iname_{0}", Rnd.String(16));
 
             def.Description = Rnd.String();
 
@@ -58,7 +58,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
             PostProcessDefinitionTemplate(def);
 
-            action?.Invoke(def);
+            if (action != null)
+                action(def);
 
             return def;
         }

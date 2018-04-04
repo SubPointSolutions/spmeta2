@@ -1,21 +1,22 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using SPMeta2.Containers;
-using SPMeta2.Containers.Extensions;
-using SPMeta2.Containers.Services;
-using SPMeta2.Containers.Templates.Documents;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Enumerations;
 using SPMeta2.Models;
+using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using SPMeta2.Containers.Extensions;
+using SPMeta2.Containers.Services;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
+using SPMeta2.Containers.Templates.Documents;
+using SPMeta2.Standard.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -137,9 +138,9 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 def.ParentContentTypeId = levelOne.GetContentTypeId();
             });
 
-            return new List<ContentTypeDefinition>(new[]
+            return new List<ContentTypeDefinition>(new ContentTypeDefinition[]
             {
-                root,
+                root,   
                 levelOne,
                 levelTwo
             });
@@ -151,7 +152,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         {
             var contentTypes = GetHierarchicalContentTypes();
 
-            contentTypes.Sort(delegate (ContentTypeDefinition c1, ContentTypeDefinition c2)
+            contentTypes.Sort(delegate(ContentTypeDefinition c1, ContentTypeDefinition c2)
             {
                 return c1.IsChildOf(c2) ? -1 : 1;
             });
@@ -172,7 +173,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var contentTypes = GetHierarchicalContentTypes();
             contentTypes = contentTypes.OrderByDescending(c => c.Id).ToList();
 
-            contentTypes.Sort(delegate (ContentTypeDefinition c1, ContentTypeDefinition c2)
+            contentTypes.Sort(delegate(ContentTypeDefinition c1, ContentTypeDefinition c2)
             {
                 return c1.IsChildOf(c2) ? 1 : -1;
             });
@@ -289,8 +290,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                        {
                            Fields = new List<FieldLinkValue>
                            {
-                                new FieldLinkValue { InternalName = e.Second.InternalName },
-                                new FieldLinkValue { InternalName = e.First.InternalName }
+                                          new FieldLinkValue { InternalName = e.Second.InternalName },
+                                          new FieldLinkValue { InternalName = e.First.InternalName },
                            }
                        });
                 });
@@ -314,8 +315,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                        {
                            Fields = new List<FieldLinkValue>
                            {
-                                new FieldLinkValue { InternalName = e.Second.InternalName },
-                                new FieldLinkValue { InternalName = e.First.InternalName }
+                                          new FieldLinkValue { InternalName = e.Second.InternalName },
+                                          new FieldLinkValue { InternalName = e.First.InternalName },
                            }
                        }, m =>
                        {
@@ -351,10 +352,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     contentTypeModel
                        .AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition
                        {
+
                            Fields = new List<FieldLinkValue>
                            {
-                                new FieldLinkValue { InternalName = e.Second.InternalName },
-                                new FieldLinkValue { InternalName = e.First.InternalName }
+                                          new FieldLinkValue { InternalName = e.Second.InternalName },
+                                          new FieldLinkValue { InternalName = e.First.InternalName },
                            }
                        });
                 });
@@ -412,10 +414,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                         contenTypeLink.AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition
                         {
+
                             Fields = new List<FieldLinkValue>
                             {
-                                new FieldLinkValue {InternalName = fieldDef.InternalName},
-                                new FieldLinkValue {InternalName = "Title"}
+                                    new FieldLinkValue {InternalName = fieldDef.InternalName},
+                                    new FieldLinkValue {InternalName = "Title"},
                             }
                         });
                     });
@@ -453,7 +456,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                                 Fields = new List<FieldLinkValue>
                                 {
                                     new FieldLinkValue {InternalName = e.Second.InternalName},
-                                    new FieldLinkValue {InternalName = e.First.InternalName}
+                                    new FieldLinkValue {InternalName = e.First.InternalName},
                                 }
                             });
                     });
@@ -468,10 +471,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                         {
                             contenTypeLink.AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition
                             {
+
                                 Fields = new List<FieldLinkValue>
                                 {
                                     new FieldLinkValue {InternalName = first},
-                                    new FieldLinkValue {InternalName = second}
+                                    new FieldLinkValue {InternalName = second},
                                 }
                             });
                         });
@@ -542,7 +546,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 #pragma warning disable 618
                documentTemplateLibrary.Url,
 #pragma warning restore 618
-               documentTemplate.FileName
+               documentTemplate.FileName 
             });
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
@@ -589,12 +593,12 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             var subWebDef = ModelGeneratorService.GetRandomDefinition<WebDefinition>();
 
             siteContentType.DocumentTemplate = UrlUtility.CombineUrl(new[]{
-               "~sitecollection",
+               "~sitecollection", 
                subWebDef.Url,
 #pragma warning disable 618
                documentTemplateLibrary.Url,
 #pragma warning restore 618
-               documentTemplate.FileName
+               documentTemplate.FileName 
             });
 
             var siteModel = SPMeta2Model.NewSiteModel(site =>
@@ -761,13 +765,13 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 definition.NameResource.Add(new ValueForUICulture
                 {
                     CultureId = localeId,
-                    Value = $"LocalizedName_{localeId}"
+                    Value = string.Format("LocalizedName_{0}", localeId)
                 });
 
                 definition.DescriptionResource.Add(new ValueForUICulture
                 {
                     CultureId = localeId,
-                    Value = $"LocalizedDescription_{localeId}"
+                    Value = string.Format("LocalizedDescription_{0}", localeId)
                 });
             }
 

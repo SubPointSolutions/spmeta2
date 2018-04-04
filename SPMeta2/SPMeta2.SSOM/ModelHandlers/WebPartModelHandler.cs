@@ -1,23 +1,20 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Security;
 using System.Text;
 using System.Web.UI.WebControls;
-using Microsoft.SharePoint;
-using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Enumerations;
-using SPMeta2.ModelHandlers;
-using SPMeta2.Services;
-using SPMeta2.SSOM.Extensions;
-using SPMeta2.Syntax.Default;
-using SPMeta2.Utils;
 using System.Web.UI.WebControls.WebParts;
+
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.WebPartPages;
-using SPMeta2.SSOM.ModelHosts;
+
 using SPMeta2.Common;
+using SPMeta2.Definitions;
+using SPMeta2.Services;
 using SPMeta2.Services.Webparts;
+using SPMeta2.SSOM.Extensions;
+using SPMeta2.SSOM.ModelHosts;
+using SPMeta2.Utils;
+
 using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
 
 namespace SPMeta2.SSOM.ModelHandlers
@@ -180,7 +177,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         Model = null,
                         EventType = ModelEventType.OnProvisioning,
                         Object = onUpdatingWebpartInstnce,
-                        ObjectType = typeof(System.Web.UI.WebControls.WebParts.WebPart),
+                        ObjectType = typeof(WebPart),
                         ObjectDefinition = model,
                         ModelHost = modelHost
                     });
@@ -196,7 +193,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                         Model = null,
                         EventType = ModelEventType.OnProvisioned,
                         Object = onUpdatedWebpartInstnce,
-                        ObjectType = typeof(System.Web.UI.WebControls.WebParts.WebPart),
+                        ObjectType = typeof(WebPart),
                         ObjectDefinition = model,
                         ModelHost = modelHost
                     });
@@ -204,20 +201,17 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ProcessWebpartProperties);
 
             OnAfterDeployModel(host, webpartModel);
-
         }
 
-
-
-        private static Guid PageLayout = new Guid("0f800910-b30d-4c8f-b011-8189b2297094");
-        private static Guid PublishingPageContent = new Guid("f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8");
+        private static readonly Guid PageLayout = new Guid("0f800910-b30d-4c8f-b011-8189b2297094");
+        private static readonly Guid PublishingPageContent = new Guid("f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8");
 
         private static void HandleWikiOrPublishingPageProvision(SPListItem listItem, WebPartDefinition webpartModel)
         {
             if (!webpartModel.AddToPageContent)
                 return;
 
-            var targetFieldId = Guid.Empty;
+            Guid targetFieldId;
 
             if (listItem.Fields.Contains(SPBuiltInFieldId.WikiField))
                 targetFieldId = SPBuiltInFieldId.WikiField;
@@ -254,7 +248,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                if (content.ToUpper().IndexOf(wpId.ToUpper()) == -1)
+                if (content.ToUpper().IndexOf(wpId.ToUpper(), StringComparison.Ordinal) == -1)
                 {
                     content += wikiResult;
 
@@ -262,7 +256,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                     listItem.Update();
                 }
             }
-
         }
 
         protected virtual void OnBeforeDeployModel(WebpartPageModelHost host, WebPartDefinition webpartPageModel)
