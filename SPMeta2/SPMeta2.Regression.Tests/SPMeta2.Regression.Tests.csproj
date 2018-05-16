@@ -208,7 +208,6 @@
     <Compile Include="Impl\Scenarios\EventReceiverScenariosTest.cs" />
     <Compile Include="Impl\Scenarios\Fields\ChoiceFieldScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\Fields\LookupFieldScenariousTest.cs" />
-    <Compile Include="Impl\Scenarios\JobScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\AuditSettingsScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\ListItemValueScenariousTest.cs" />
     <Compile Include="Impl\Scenarios\MasterPageSettingsDefinitionScenariosTest.cs" />
