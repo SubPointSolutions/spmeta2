@@ -104,6 +104,12 @@ namespace SPMeta2.Containers.Services
             return null;
         }
 
+        public static T RandomEnumValue<T>(this RandomService service)
+        {
+            var v = Enum.GetValues(typeof(T));
+            return (T)v.GetValue(new Random().Next(v.Length));
+        }
+
         public static T RandomFromArray<T>(this RandomService service, IEnumerable<T> array)
         {
             return array.ToList()[service.Int(array.Count() - 1)];
@@ -203,8 +209,7 @@ namespace SPMeta2.Containers.Services
 
         public static string CamlQuery(this RandomService service)
         {
-            return string.Format(
-                        "<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
+            return string.Format("<Where><Eq><FieldRef Name=\"Title\" /><Value Type=\"Text\">{0}</Value></Eq></Where>",
                         service.String());
         }
 
@@ -289,8 +294,4 @@ namespace SPMeta2.Containers.Services
             throw new Exception(string.Format("Environment value [{0}] is NULL", EnvironmentConsts.DefaultTestDomainUserEmails));
         }
     }
-
-    //public abstract int Short();
-    //  public abstract int Short(int maxValue);
-
 }

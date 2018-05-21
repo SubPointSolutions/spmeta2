@@ -26,9 +26,7 @@ namespace SPMeta2.Containers.Services
     {
         public AssertServiceBase AssertService { get; set; }
         public RandomService RndService { get; set; }
-
-
-
+        
         public RegressionTestService()
         {
             RegExcludedDefinitionTypes = new List<Type>();
@@ -512,11 +510,9 @@ namespace SPMeta2.Containers.Services
 
             foreach (var model in models)
             {
-                ContainerTraceUtils.WriteLine(string.Format(".ToPrettyPrint() result:"));
-                ContainerTraceUtils.WriteLine(model.ToPrettyPrint());
+                ContainerTraceUtils.WriteLine($".ToPrettyPrint() result:{model.ToPrettyPrint()}");
 
-                ContainerTraceUtils.WriteLine(string.Format(".ToDotGraph result:"));
-                ContainerTraceUtils.WriteLine(model.ToDotGraph());
+                ContainerTraceUtils.WriteLine($".ToDotGraph result:{model.ToDotGraph()}");
 
                 if (EnableDefinitionImmutabilityValidation)
                     PersistDefinitionHashes(new[] { model });
@@ -527,15 +523,14 @@ namespace SPMeta2.Containers.Services
                 {
                     var runner = runnerContext.Runner;
 
-                    if (BeforeProvisionRunnerExcecution != null)
-                        BeforeProvisionRunnerExcecution(runner);
+                    BeforeProvisionRunnerExcecution?.Invoke(runner);
 
                     var omModelType = GetRunnerType(runner);
                     var hooks = new List<EventHooks>();
 
                     if (!deployOnce)
                     {
-                        if (this.EnableDefinitionValidation)
+                        if (EnableDefinitionValidation)
                         {
                             hooks = GetHooks(model);
 
@@ -559,20 +554,19 @@ namespace SPMeta2.Containers.Services
                     else
                     {
                         throw new SPMeta2NotImplementedException(
-                            string.Format("Runner does not support model of type: [{0}]", model.Value.GetType()));
+                            $"Runner does not support model of type: [{model.Value.GetType()}]");
                     }
 
                     if (!deployOnce)
                     {
-                        if (this.EnableDefinitionValidation)
+                        if (EnableDefinitionValidation)
                         {
                             var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
                             AssertService.IsFalse(hasMissedOrInvalidProps);
                         }
                     }
 
-                    if (AfterProvisionRunnerExcecution != null)
-                        AfterProvisionRunnerExcecution(runner);
+                    AfterProvisionRunnerExcecution?.Invoke(runner);
                 });
 
                 if (!deployOnce)
@@ -614,14 +608,11 @@ namespace SPMeta2.Containers.Services
 
             ModelNode result = null;
 
-            var allHooks = new List<EventHooks>();
-
             WithProvisionRunnerContext(runnerContext =>
             {
                 var runner = runnerContext.Runner;
 
-                if (BeforeProvisionRunnerExcecution != null)
-                    BeforeProvisionRunnerExcecution(runner);
+                BeforeProvisionRunnerExcecution?.Invoke(runner);
 
                 ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
 
@@ -640,7 +631,7 @@ namespace SPMeta2.Containers.Services
 
                 var hooks = new List<EventHooks>();
 
-                if (this.EnableDefinitionValidation)
+                if (EnableDefinitionValidation)
                 {
                     hooks = GetHooks(definitionSandbox);
 
@@ -648,7 +639,7 @@ namespace SPMeta2.Containers.Services
                         hook.Tag = runner.Name;
 
                     GetSerializedAndRestoredModels(definitionSandbox);
-                    allHooks.AddRange(hooks);
+                    new List<EventHooks>().AddRange(hooks);
                 }
                 else
                 {
@@ -667,14 +658,13 @@ namespace SPMeta2.Containers.Services
                 if (definitionSandbox.Value.GetType() == typeof(WebDefinition))
                     runner.DeployWebModel(definitionSandbox);
 
-                if (this.EnableDefinitionValidation)
+                if (EnableDefinitionValidation)
                 {
                     var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
                     AssertService.IsFalse(hasMissedOrInvalidProps);
                 }
 
-                if (AfterProvisionRunnerExcecution != null)
-                    AfterProvisionRunnerExcecution(runner);
+                AfterProvisionRunnerExcecution?.Invoke(runner);
 
                 result = definitionSandbox;
             });

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -76,6 +78,14 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public BuiltInAddFieldOptions AddFieldOptions { get; set; }
+
+        /// <summary>
+        /// Extends existing AddFieldOptions property to be able to set multiple options
+        /// https://github.com/SubPointSolutions/spmeta2/issues/1091
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public List<BuiltInAddFieldOptions> AddFieldOptionList { get; set; }
 
         #endregion
 

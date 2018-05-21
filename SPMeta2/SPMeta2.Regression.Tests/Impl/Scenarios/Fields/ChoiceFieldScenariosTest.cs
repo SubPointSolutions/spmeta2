@@ -17,7 +17,7 @@ using SPMeta2.Syntax.Default.Modern;
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 {
     [TestClass]
-    public class ChoiceFieldScenariousTest : SPMeta2RegresionScenarioTestBase
+    public class ChoiceFieldScenariosTest : SPMeta2RegresionScenarioTestBase
     {
         #region internal
 

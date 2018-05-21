@@ -133,7 +133,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-
                 if (fieldModel.PushChangesToLists.HasValue)
                 {
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
@@ -146,8 +145,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                     TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Update(true)");
                     field.Update(true);
                 }
-
-
             }
         }
 
@@ -231,7 +228,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             // additions
 #if !NET35
-            if (!String.IsNullOrEmpty(fieldModel.JSLink))
+            if (!string.IsNullOrEmpty(fieldModel.JSLink))
                 fieldTemplate.SetAttribute(BuiltInFieldAttributes.JSLink, fieldModel.JSLink);
 #endif
 
@@ -324,6 +321,11 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var fieldDef = GetTargetSPFieldXmlDefinition(fieldModel);
                 var addFieldOptions = (SPAddFieldOptions)(int)fieldModel.AddFieldOptions;
 
+                foreach (var addFieldOption in fieldModel.AddFieldOptionList)
+                {
+                    addFieldOptions |= (SPAddFieldOptions) (int) addFieldOption;
+                }
+
                 fields.AddFieldAsXml(fieldDef, fieldModel.AddToDefaultView, addFieldOptions);
 
                 currentField = fields[fieldModel.Id];
@@ -340,7 +342,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     TraceService.Information((int)LogEventId.CoreCalls, "Could not find existing field by ID, fallback on InternalName");
 
                     currentField = fields.OfType<SPField>()
-                                               .FirstOrDefault(f => String.Equals(f.InternalName, fieldModel.InternalName,
+                                               .FirstOrDefault(f => string.Equals(f.InternalName, fieldModel.InternalName,
                                                                     StringComparison.OrdinalIgnoreCase));
                 }
 
@@ -459,8 +461,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.ShowInVersionHistory.HasValue)
                 field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;
-
-
+            
             // process localiation
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using SPMeta2.Common;
-using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
@@ -28,10 +28,8 @@ namespace SPMeta2.Services.Impl
         {
             get
             {
-                if (_modelWeighService == null)
-                    _modelWeighService = ServiceContainer.Instance.GetService<ModelWeighServiceBase>();
-
-                return _modelWeighService;
+                return _modelWeighService ??
+                       (_modelWeighService = ServiceContainer.Instance.GetService<ModelWeighServiceBase>());
             }
             set { _modelWeighService = value; }
         }
@@ -72,29 +70,27 @@ namespace SPMeta2.Services.Impl
 
                 CurrentModelPath.Push(modelNode);
 
-                var modelDefinition = modelNode.Value as DefinitionBase;
+                var modelDefinition = modelNode.Value;
                 var modelHandler = OnModelHandlerResolve(modelNode);
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing,
                     "Raising OnModelFullyProcessing for model: [{0}].", modelNode);
 
-                if (OnModelFullyProcessing != null)
-                    OnModelFullyProcessing(modelNode);
+                OnModelFullyProcessing?.Invoke(modelNode);
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing,
                     "Raising OnModelProcessing for model: [{0}].", modelNode);
 
                 OnBeforeDeployModelNode(modelHost, modelNode);
 
-                if (OnModelProcessing != null)
-                    OnModelProcessing(modelNode);
+                OnModelProcessing?.Invoke(modelNode);
 
                 //var requireselfProcessing = modelDefinition.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing;
                 var requireselfProcessing = modelNode.Options.RequireSelfProcessing;
 
                 TraceService.InformationFormat((int)LogEventId.ModelProcessing,
                     "Deploying model [{0}] RSP: [{1}] : [{2}].",
-                    new[] { modelNode.Value.GetType().Name, requireselfProcessing.ToString(), modelNode.Value.ToString() });
+                    new object[] { modelNode.Value.GetType().Name, requireselfProcessing.ToString(), modelNode.Value.ToString() });
 
                 if (requireselfProcessing)
                 {
@@ -110,8 +106,7 @@ namespace SPMeta2.Services.Impl
                             Exception = e
                         };
 
-                        if (OnException != null)
-                            OnException(this, onExceptionArgs);
+                        OnException?.Invoke(this, onExceptionArgs);
 
                         if (!onExceptionArgs.Handled)
                         {
@@ -128,8 +123,7 @@ namespace SPMeta2.Services.Impl
                 // https://github.com/SubPointSolutions/spmeta2/issues/978
                 OnAfterDeployModelNode(modelHost, modelNode);
 
-                if (OnModelProcessed != null)
-                    OnModelProcessed(modelNode);
+                OnModelProcessed?.Invoke(modelNode);
 
                 var childModelTypes = GetSortedChildModelTypes(modelNode);
 
@@ -142,13 +136,12 @@ namespace SPMeta2.Services.Impl
                     ModelWeighService.SortChildModelNodes(modelNode, childModels);
 
                     TraceService.VerboseFormat((int)LogEventId.ModelProcessing, "Found [{0}] models of type: [{1}].",
-                        new object[] { childModels.Count(), childModelType.Key });
+                        new object[] { childModels.Count, childModelType.Key });
 
                     TraceService.VerboseFormat((int)LogEventId.ModelProcessing,
                         "Raising OnChildModelsProcessing of type: [{0}].", new object[] { childModelType.Key });
 
-                    if (OnChildModelsProcessing != null)
-                        OnChildModelsProcessing(modelNode, childModelType.Key, childModels);
+                    OnChildModelsProcessing?.Invoke(modelNode, childModelType.Key, childModels);
 
                     foreach (var childModel in childModels)
                     {
@@ -173,8 +166,7 @@ namespace SPMeta2.Services.Impl
 
                     TraceService.VerboseFormat((int)LogEventId.ModelProcessing,
                         "Raising OnChildModelsProcessed of type: [{0}].", new object[] { childModelType.Key });
-                    if (OnChildModelsProcessed != null)
-                        OnChildModelsProcessed(modelNode, childModelType.Key, childModels);
+                    OnChildModelsProcessed?.Invoke(modelNode, childModelType.Key, childModels);
 
                     TraceService.VerboseFormat((int)LogEventId.ModelProcessing,
                         "Finishing processing child models of type: [{0}].", new object[] { childModelType.Key });
@@ -183,8 +175,7 @@ namespace SPMeta2.Services.Impl
                 TraceService.VerboseFormat((int)LogEventId.ModelProcessing,
                     "Raising OnModelFullyProcessed for model: [{0}].", modelNode);
 
-                if (OnModelFullyProcessed != null)
-                    OnModelFullyProcessed(modelNode);
+                OnModelFullyProcessed?.Invoke(modelNode);
             }
             catch (Exception e)
             {
@@ -194,8 +185,7 @@ namespace SPMeta2.Services.Impl
                     Exception = e
                 };
 
-                if (OnException != null)
-                    OnException(this, onExceptionArgs);
+                OnException?.Invoke(this, onExceptionArgs);
 
                 if (!onExceptionArgs.Handled)
                 {
@@ -275,10 +265,10 @@ namespace SPMeta2.Services.Impl
                 });
             }
 
-            foreach (var g in childModelTypes)
-            {
+            //foreach (var g in childModelTypes)
+            //{
 
-            }
+            //}
 
             return childModelTypes;
         }

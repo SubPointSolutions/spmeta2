@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -84,6 +85,7 @@ namespace SPMeta2.Definitions
 
             AdditionalAttributes = new List<FieldAttributeValue>();
             AddFieldOptions = BuiltInAddFieldOptions.DefaultValue;
+            AddFieldOptionList = new List<BuiltInAddFieldOptions>();
 
             TitleResource = new List<ValueForUICulture>();
             DescriptionResource = new List<ValueForUICulture>();
@@ -100,13 +102,20 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool AddToDefaultView { get; set; }
 
-
         /// <summary>
         /// Reflects SharePoint's AddFieldOptions while provisioning field for the first time
         /// </summary>
         [ExpectValidation]
         [DataMember]
         public BuiltInAddFieldOptions AddFieldOptions { get; set; }
+
+        /// <summary>
+        /// Extends existing AddFieldOptions property to be able to set multiple options
+        /// https://github.com/SubPointSolutions/spmeta2/issues/1091
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public List<BuiltInAddFieldOptions> AddFieldOptionList { get; set; }
 
         /// <summary>
         /// Raw field XML to be used during the first provision

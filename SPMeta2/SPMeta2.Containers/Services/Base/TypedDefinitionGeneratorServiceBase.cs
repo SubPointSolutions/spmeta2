@@ -1,10 +1,10 @@
 ﻿using System;
+
 using SPMeta2.Containers.Services.Rnd;
 
 namespace SPMeta2.Containers.Services.Base
 {
-    public abstract class TypedDefinitionGeneratorServiceBase<TModelDefinition> :
-        DefinitionGeneratorServiceBase
+    public abstract class TypedDefinitionGeneratorServiceBase<TModelDefinition> : DefinitionGeneratorServiceBase
     {
         public TypedDefinitionGeneratorServiceBase()
         {
@@ -30,13 +30,12 @@ namespace SPMeta2.Containers.Services.Base
 
         protected virtual TModelDefinition WithEmptyDefinition(Action<TModelDefinition> action)
         {
-            var definition = (TModelDefinition)Activator.CreateInstance<TModelDefinition>();
+            var definition = Activator.CreateInstance<TModelDefinition>();
 
             if (action != null)
                 action(definition);
 
             return definition;
         }
-
     }
 }

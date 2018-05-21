@@ -1,16 +1,14 @@
-﻿using Microsoft.SharePoint;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using System.Xml.Linq;
+
+using Microsoft.SharePoint;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.Enumerations;
-using SPMeta2.Exceptions;
-using SPMeta2.SSOM.ModelHandlers;
-using SPMeta2.SSOM.ModelHosts;
-using SPMeta2.Utils;
-using System.Xml.Linq;
-using System.Linq;
 using SPMeta2.Definitions.Fields;
+using SPMeta2.Enumerations;
+using SPMeta2.SSOM.ModelHandlers;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -45,12 +43,12 @@ namespace SPMeta2.Regression.SSOM.Validation
             assert
                 .ShouldNotBeNull(spObject)
                 .ShouldBeEqual(m => m.Title, o => o.Title)
-                //.ShouldBeEqual(m => m.InternalName, o => o.InternalName)
-                    .ShouldBeEqual(m => m.Id, o => o.Id)
-                    .ShouldBeEqual(m => m.Required, o => o.Required);
-            //.ShouldBeEqual(m => m.Description, o => o.Description)
+                .ShouldBeEqual(m => m.Id, o => o.Id)
+                .ShouldBeEqual(m => m.Required, o => o.Required)
+                .ShouldBeEqual(m => m.Indexed, o => o.Indexed)
+                .ShouldBeEqual(m => m.Hidden, o => o.Hidden);
+
             //.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
-            //.ShouldBeEqual(m => m.Group, o => o.Group);
 
             if (!string.IsNullOrEmpty(definition.Group))
                 assert.ShouldBeEqual(m => m.Group, o => o.Group);
@@ -116,7 +114,23 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
             {
+                if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.AddFieldInternalNameHint))
+                {
+                    assert.ShouldBeEqual(m => m.InternalName, o => o.InternalName);
+                }
                 // TODO
+                // In addition to AddFieldOptions also AddFieldOptionList should be checked
+                // Validation appears to be complex as it depends on various variables like where the field is added to and so forth
+            }
+
+            // TODO, R&D to check InternalName changes in list-scoped fields
+            if (spObject.InternalName == definition.InternalName)
+            {
+                assert.ShouldBeEqual(m => m.InternalName, o => o.InternalName);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.InternalName, "Target InternalName is different to source InternalName. Could be an error if this is not a list scoped field");
             }
 
             if (definition.AddToDefaultView)
@@ -226,44 +240,30 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             }
 
-            // TODO, R&D to check InternalName changes in list-scoped fields
-            if (spObject.InternalName == definition.InternalName)
-            {
-                assert.ShouldBeEqual(m => m.InternalName, o => o.InternalName);
-            }
-            else
-            {
-                assert.SkipProperty(m => m.InternalName,
-                    "Target InternalName is different to source InternalName. Could be an error if this is not a list scoped field");
-            }
-
-            assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
-
             if (definition.EnforceUniqueValues.HasValue)
                 assert.ShouldBeEqual(m => m.EnforceUniqueValues, o => o.EnforceUniqueValues);
             else
                 assert.SkipProperty(m => m.EnforceUniqueValues, "EnforceUniqueValues is NULL");
-
-
+            
             if (!string.IsNullOrEmpty(definition.ValidationFormula))
                 assert.ShouldBeEqual(m => m.ValidationFormula, o => o.ValidationFormula);
             else
-                assert.SkipProperty(m => m.ValidationFormula, string.Format("ValidationFormula value is not set. Skippping."));
+                assert.SkipProperty(m => m.ValidationFormula, "ValidationFormula value is not set. Skippping.");
 
             if (!string.IsNullOrEmpty(definition.ValidationMessage))
                 assert.ShouldBeEqual(m => m.ValidationMessage, o => o.ValidationMessage);
             else
-                assert.SkipProperty(m => m.ValidationMessage, string.Format("ValidationFormula value is not set. Skippping."));
+                assert.SkipProperty(m => m.ValidationMessage, "ValidationFormula value is not set. Skippping.");
 
             if (!string.IsNullOrEmpty(definition.DefaultValue))
                 assert.ShouldBePartOf(m => m.DefaultValue, o => o.DefaultValue);
             else
-                assert.SkipProperty(m => m.DefaultValue, string.Format("Default value is not set. Skippping."));
+                assert.SkipProperty(m => m.DefaultValue, "Default value is not set. Skippping.");
 
             if (!string.IsNullOrEmpty(definition.DefaultFormula))
                 assert.ShouldBePartOf(m => m.DefaultFormula, o => o.DefaultFormula);
             else
-                assert.SkipProperty(m => m.DefaultFormula, string.Format("Default formula is not set. Skippping."));
+                assert.SkipProperty(m => m.DefaultFormula, "Default formula is not set. Skippping.");
 
             if (!string.IsNullOrEmpty(spObject.JSLink) &&
                 (spObject.JSLink == "SP.UI.Taxonomy.js|SP.UI.Rte.js(d)|SP.Taxonomy.js(d)|ScriptForWebTaggingUI.js(d)" ||
@@ -306,16 +306,12 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEqual(m => m.ShowInViewForms, o => o.ShowInViewForms);
             else
                 assert.SkipProperty(m => m.ShowInViewForms, "ShowInViewForms is NULL");
-
-            assert
-                .ShouldBeEqual(m => m.Indexed, o => o.Indexed);
-
+            
             if (definition.AllowDeletion.HasValue)
                 assert.ShouldBeEqual(m => m.AllowDeletion, o => o.AllowDeletion);
             else
                 assert.SkipProperty(m => m.AllowDeletion, "AllowDeletion is NULL");
-
-
+            
             /// localization
             if (definition.TitleResource.Any())
             {
