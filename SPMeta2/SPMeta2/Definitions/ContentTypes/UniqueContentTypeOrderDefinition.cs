@@ -33,9 +33,9 @@ namespace SPMeta2.Definitions.ContentTypes
 
         public override string ToString()
         {
-            return new ToStringResult<FieldLinkValue>(this)
-                         .AddPropertyValue(p => p.InternalName)
-                         .AddPropertyValue(p => p.Id)
+            return new ToStringResultRaw()
+                         .AddRawPropertyValue("InternalName", InternalName)
+                         .AddRawPropertyValue("Id", Id)
                          .ToString();
         }
     }
@@ -77,8 +77,8 @@ namespace SPMeta2.Definitions.ContentTypes
 
         public override string ToString()
         {
-            return new ToStringResult<UniqueContentTypeOrderDefinition>(this)
-                          .AddPropertyValue(p => p.ContentTypes)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("ContentTypes", ContentTypes)
                           .ToString();
         }
 

@@ -150,7 +150,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<ResultScriptWebPartDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
                 .ToString();
         }
 

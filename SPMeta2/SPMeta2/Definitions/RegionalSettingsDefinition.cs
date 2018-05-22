@@ -109,18 +109,18 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<RegionalSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.TimeZoneId)
-                          .AddPropertyValue(p => p.AdjustHijriDays)
-                          .AddPropertyValue(p => p.AlternateCalendarType)
-                          .AddPropertyValue(p => p.CalendarType)
-                          .AddPropertyValue(p => p.Collation)
-                          .AddPropertyValue(p => p.LocaleId)
-                          .AddPropertyValue(p => p.ShowWeeks)
-                          .AddPropertyValue(p => p.Time24)
-                          .AddPropertyValue(p => p.WorkDayStartHour)
-                          .AddPropertyValue(p => p.WorkDayEndHour)
-                          .AddPropertyValue(p => p.WorkDays)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("TimeZoneId", TimeZoneId)
+                          .AddRawPropertyValue("AdjustHijriDays", AdjustHijriDays)
+                          .AddRawPropertyValue("AlternateCalendarType", AlternateCalendarType)
+                          .AddRawPropertyValue("CalendarType", CalendarType)
+                          .AddRawPropertyValue("Collation", Collation)
+                          .AddRawPropertyValue("LocaleId", LocaleId)
+                          .AddRawPropertyValue("ShowWeeks", ShowWeeks)
+                          .AddRawPropertyValue("Time24", Time24)
+                          .AddRawPropertyValue("WorkDayStartHour", WorkDayStartHour)
+                          .AddRawPropertyValue("WorkDayEndHour", WorkDayEndHour)
+                          .AddRawPropertyValue("WorkDays", WorkDays)
                           .ToString();
         }
 

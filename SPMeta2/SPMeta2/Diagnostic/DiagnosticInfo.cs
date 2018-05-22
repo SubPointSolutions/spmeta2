@@ -30,28 +30,28 @@ namespace SPMeta2.Diagnostic
 
         public override string ToString()
         {
-            var toString = new ToStringResult<DiagnosticInfo>(this, base.ToString())
-                         .AddPropertyValue(p => p.SPMeta2FileVersion)
-                         .AddPropertyValue(p => p.SPMeta2FileLocation);
+            var toString = new ToStringResultRaw(base.ToString())
+                         .AddRawPropertyValue("SPMeta2FileVersion", SPMeta2FileVersion)
+                         .AddRawPropertyValue("SPMeta2FileLocation", SPMeta2FileLocation);
 
             if (IsCSOMDetected)
             {
-                toString.AddPropertyValue(p => p.CSOMFileVersion);
-                toString.AddPropertyValue(p => p.CSOMFileLocation);
+                toString.AddRawPropertyValue("CSOMFileVersion", CSOMFileVersion);
+                toString.AddRawPropertyValue("CSOMFileLocation", CSOMFileLocation);
             }
             else
             {
-                toString.AddPropertyValue(p => p.IsCSOMDetected);
+                toString.AddRawPropertyValue("IsCSOMDetected", IsCSOMDetected);
             }
 
             if (IsSSOMDetected)
             {
-                toString.AddPropertyValue(p => p.SSOMFileVersion);
-                toString.AddPropertyValue(p => p.SSOMFileLocation);
+                toString.AddRawPropertyValue("SSOMFileVersion", SSOMFileVersion);
+                toString.AddRawPropertyValue("SSOMFileLocation", SSOMFileLocation);
             }
             else
             {
-                toString.AddPropertyValue(p => p.IsSSOMDetected);
+                toString.AddRawPropertyValue("IsSSOMDetected", IsSSOMDetected);
             }
 
             return toString.ToString(Environment.NewLine);

@@ -116,7 +116,7 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<CalculatedFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
                           .ToString();
         }
 

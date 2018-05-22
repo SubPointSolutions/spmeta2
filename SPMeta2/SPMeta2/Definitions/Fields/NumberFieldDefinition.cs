@@ -82,10 +82,10 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<NumberFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(d => d.MaximumValue)
-                          .AddPropertyValue(d => d.MinimumValue)
-                          .AddPropertyValue(d => d.ShowAsPercentage)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("MaximumValue", MaximumValue)
+                          .AddRawPropertyValue("MinimumValue", MinimumValue)
+                          .AddRawPropertyValue("ShowAsPercentage", ShowAsPercentage)
                           .ToString();
         }
 

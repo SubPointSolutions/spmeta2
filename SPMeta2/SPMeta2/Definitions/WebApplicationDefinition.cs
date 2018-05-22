@@ -132,17 +132,17 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WebApplicationDefinition>(this)
-                          .AddPropertyValue(p => p.HostHeader)
-                          .AddPropertyValue(p => p.Port)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("HostHeader", HostHeader)
+                          .AddRawPropertyValue("Port", Port)
 
-                          .AddPropertyValue(p => p.CreateNewDatabase)
-                          .AddPropertyValue(p => p.DatabaseServer)
-                          .AddPropertyValue(p => p.DatabaseName)
+                          .AddRawPropertyValue("CreateNewDatabase", CreateNewDatabase)
+                          .AddRawPropertyValue("DatabaseServer", DatabaseServer)
+                          .AddRawPropertyValue("DatabaseName", DatabaseName)
 
-                          .AddPropertyValue(p => p.ApplicationPoolId)
-                          .AddPropertyValue(p => p.UseSecureSocketsLayer)
-                          .AddPropertyValue(p => p.ManagedAccount)
+                          .AddRawPropertyValue("ApplicationPoolId", ApplicationPoolId)
+                          .AddRawPropertyValue("UseSecureSocketsLayer", UseSecureSocketsLayer)
+                          .AddRawPropertyValue("ManagedAccount", ManagedAccount)
                           .ToString();
         }
 

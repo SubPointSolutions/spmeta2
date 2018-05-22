@@ -83,11 +83,11 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SharePointDesignerSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.EnableSharePointDesigner)
-                          .AddPropertyValue(p => p.EnableDetachingPages)
-                          .AddPropertyValue(p => p.EnableCustomizingMasterPagesAndPageLayouts)
-                          .AddPropertyValue(p => p.EnableManagingWebSiteUrlStructure)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("EnableSharePointDesigner", EnableSharePointDesigner)
+                          .AddRawPropertyValue("EnableDetachingPages", EnableDetachingPages)
+                          .AddRawPropertyValue("EnableCustomizingMasterPagesAndPageLayouts", EnableCustomizingMasterPagesAndPageLayouts)
+                          .AddRawPropertyValue("EnableManagingWebSiteUrlStructure", EnableManagingWebSiteUrlStructure)
                           .ToString();
         }
 

@@ -120,9 +120,9 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<PageLayoutAndSiteTemplateSettingsDefinition>(this)
-                //.AddPropertyValue(p => p.AudienceName)
-                //.AddPropertyValue(p => p.AudienceDescription)
+            return new ToStringResultRaw()
+                          //.AddRawPropertyValue(p => p.AudienceName)
+                          //.AddRawPropertyValue(p => p.AudienceDescription)
                           .ToString();
         }
 

@@ -19,7 +19,7 @@ namespace SPMeta2.Standard.Definitions
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [SingletonIdentity]
 
@@ -39,8 +39,8 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SearchConfigurationDefinition>(this)
-                          .AddPropertyValue(p => p.SearchConfiguration)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("SearchConfiguration", SearchConfiguration)
                           .ToString();
         }
 

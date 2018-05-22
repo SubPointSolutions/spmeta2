@@ -253,11 +253,11 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ListViewDefinition>(this)
-                         .AddPropertyValue(p => p.Title)
-                         .AddPropertyValue(p => p.Url)
-                         .AddPropertyValue(p => p.IsDefault)
-                         .AddPropertyValue(p => p.Query)
+            return new ToStringResultRaw()
+                         .AddRawPropertyValue("Title", Title)
+                         .AddRawPropertyValue("Url", Url)
+                         .AddRawPropertyValue("IsDefault", IsDefault)
+                         .AddRawPropertyValue("Query", Query)
 
                          .ToString();
         }

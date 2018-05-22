@@ -258,22 +258,22 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<ContentByQueryWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.DataMappings)
-                          .AddPropertyValue(p => p.DataMappingViewFields)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("DataMappings", DataMappings)
+                          .AddRawPropertyValue("DataMappingViewFields", DataMappingViewFields)
 
-                          .AddPropertyValue(p => p.ItemLimit)
+                          .AddRawPropertyValue("ItemLimit", ItemLimit)
 
-                          .AddPropertyValue(p => p.WebUrl)
-                          .AddPropertyValue(p => p.ListGuid)
-                          .AddPropertyValue(p => p.ListName)
-                          .AddPropertyValue(p => p.ListUrl)
+                          .AddRawPropertyValue("WebUrl", WebUrl)
+                          .AddRawPropertyValue("ListGuid", ListGuid)
+                          .AddRawPropertyValue("ListName", ListName)
+                          .AddRawPropertyValue("ListUrl", ListUrl)
 
-                          .AddPropertyValue(p => p.ItemStyle)
-                          .AddPropertyValue(p => p.GroupStyle)
+                          .AddRawPropertyValue("ItemStyle", ItemStyle)
+                          .AddRawPropertyValue("GroupStyle", GroupStyle)
 
-                          .AddPropertyValue(p => p.MainXslLink)
-                          .AddPropertyValue(p => p.ItemXslLink)
+                          .AddRawPropertyValue("MainXslLink", MainXslLink)
+                          .AddRawPropertyValue("ItemXslLink", ItemXslLink)
 
                           .ToString();
         }

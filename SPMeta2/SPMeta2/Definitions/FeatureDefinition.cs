@@ -100,12 +100,12 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<FeatureDefinition>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.Id)
-                          .AddPropertyValue(p => p.Scope)
-                          .AddPropertyValue(p => p.Enable)
-                          .AddPropertyValue(p => p.ForceActivate)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("Id", Id)
+                          .AddRawPropertyValue("Scope", Scope)
+                          .AddRawPropertyValue("Enable", Enable)
+                          .AddRawPropertyValue("ForceActivate", ForceActivate)
 
                           .ToString();
         }

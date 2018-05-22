@@ -100,7 +100,7 @@ namespace SPMeta2.Standard.Definitions
             if (!string.IsNullOrEmpty(result))
                 return result;
 
-            return new ToStringResult<MetadataNavigationSettingsDefinition>(this)
+            return new ToStringResultRaw()
                         .ToString();
         }
 

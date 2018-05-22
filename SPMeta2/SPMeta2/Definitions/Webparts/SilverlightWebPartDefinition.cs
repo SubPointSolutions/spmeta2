@@ -47,9 +47,9 @@ namespace SPMeta2.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<SilverlightWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.Url)
-                          .AddPropertyValue(p => p.CustomInitParameters)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("Url", Url)
+                          .AddRawPropertyValue("CustomInitParameters", CustomInitParameters)
                           .ToString();
         }
 

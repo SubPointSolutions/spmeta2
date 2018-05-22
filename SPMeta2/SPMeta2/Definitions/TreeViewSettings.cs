@@ -42,9 +42,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<TreeViewSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.QuickLaunchEnabled)
-                          .AddPropertyValue(p => p.TreeViewEnabled)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("QuickLaunchEnabled", QuickLaunchEnabled)
+                          .AddRawPropertyValue("TreeViewEnabled", TreeViewEnabled)
 
                           .ToString();
         }

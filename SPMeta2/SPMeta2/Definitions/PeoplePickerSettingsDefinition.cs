@@ -83,24 +83,24 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public bool? PeopleEditorOnlyResolveWithinSiteCollection { get; set; }
-        
+
         #endregion
 
         #region methods
 
         public override string ToString()
         {
-            return new ToStringResult<PeoplePickerSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.ActiveDirectoryCustomFilter)
-                          .AddPropertyValue(p => p.ActiveDirectoryCustomQuery)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("ActiveDirectoryCustomFilter", ActiveDirectoryCustomFilter)
+                          .AddRawPropertyValue("ActiveDirectoryCustomQuery", ActiveDirectoryCustomQuery)
 
-                          .AddPropertyValue(p => p.ActiveDirectoryRestrictIsolatedNameLevel)
-                          .AddPropertyValue(p => p.ActiveDirectorySearchTimeout)
-                          .AddPropertyValue(p => p.AllowLocalAccount)
+                          .AddRawPropertyValue("ActiveDirectoryRestrictIsolatedNameLevel", ActiveDirectoryRestrictIsolatedNameLevel)
+                          .AddRawPropertyValue("ActiveDirectorySearchTimeout", ActiveDirectorySearchTimeout)
+                          .AddRawPropertyValue("AllowLocalAccount", AllowLocalAccount)
 
-                          .AddPropertyValue(p => p.NoWindowsAccountsForNonWindowsAuthenticationMode)
-                          .AddPropertyValue(p => p.OnlySearchWithinSiteCollection)
-                          .AddPropertyValue(p => p.PeopleEditorOnlyResolveWithinSiteCollection)
+                          .AddRawPropertyValue("NoWindowsAccountsForNonWindowsAuthenticationMode", NoWindowsAccountsForNonWindowsAuthenticationMode)
+                          .AddRawPropertyValue("OnlySearchWithinSiteCollection", OnlySearchWithinSiteCollection)
+                          .AddRawPropertyValue("PeopleEditorOnlyResolveWithinSiteCollection", PeopleEditorOnlyResolveWithinSiteCollection)
                           .ToString();
         }
 

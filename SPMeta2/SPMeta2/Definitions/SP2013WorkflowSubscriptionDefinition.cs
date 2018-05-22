@@ -108,12 +108,12 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SP2013WorkflowSubscriptionDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.WorkflowDisplayName)
-                          .AddPropertyValue(p => p.HistoryListUrl)
-                          .AddPropertyValue(p => p.TaskListUrl)
-                          .AddPropertyValue(p => p.EventTypes)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("WorkflowDisplayName", WorkflowDisplayName)
+                          .AddRawPropertyValue("HistoryListUrl", HistoryListUrl)
+                          .AddRawPropertyValue("TaskListUrl", TaskListUrl)
+                          .AddRawPropertyValue("EventTypes", EventTypes)
 
                           .ToString();
         }

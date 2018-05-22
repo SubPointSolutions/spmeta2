@@ -36,7 +36,7 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             // we need that to pass SPMeta2 API tests 'DefinitionsShouldHaveToStringOverride'
-            return new ToStringResult<ResetRoleInheritanceDefinition>(this)
+            return new ToStringResultRaw()
                          .ToString();
         }
 

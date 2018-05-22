@@ -19,7 +19,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListItemDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -66,9 +66,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ListItemFieldValueDefinition>(this)
-                          .AddPropertyValue(p => p.FieldName)
-                          .AddPropertyValue(p => p.FieldId)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("FieldName", FieldName)
+                          .AddRawPropertyValue("FieldId", FieldId)
                           .ToString();
         }
 

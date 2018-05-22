@@ -317,11 +317,11 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<FieldDefinition>(this)
-                         .AddPropertyValue(p => p.InternalName)
-                         .AddPropertyValue(p => p.Id)
-                         .AddPropertyValue(p => p.Title)
-                         .AddPropertyValue(p => p.FieldType)
+            return new ToStringResultRaw()
+                         .AddRawPropertyValue("InternalName", InternalName)
+                         .AddRawPropertyValue("Id", Id)
+                         .AddRawPropertyValue("Title", Title)
+                         .AddRawPropertyValue("FieldType", FieldType)
                          .ToString();
         }
 

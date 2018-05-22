@@ -96,11 +96,11 @@ namespace SPMeta2.Definitions.Base
 
         public override string ToString()
         {
-            return new ToStringResult<NavigationNodeDefinitionBase>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.Url)
-                          .AddPropertyValue(p => p.IsExternal)
-                          .AddPropertyValue(p => p.IsVisible)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("Url", Url)
+                          .AddRawPropertyValue("IsExternal", IsExternal)
+                          .AddRawPropertyValue("IsVisible", IsVisible)
                           .ToString();
         }
 

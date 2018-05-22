@@ -47,7 +47,7 @@ namespace SPMeta2.Definitions
         // ReSharper disable once RedundantOverridenMember
         public override string ToString()
         {
-            return new ToStringResult<DeleteWebPartsDefinition>(this)
+            return new ToStringResultRaw()
                          .ToString();
         }
 

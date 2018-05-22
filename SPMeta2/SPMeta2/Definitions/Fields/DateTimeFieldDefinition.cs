@@ -17,7 +17,7 @@ namespace SPMeta2.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
@@ -64,10 +64,10 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<DateTimeFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.CalendarType)
-                          .AddPropertyValue(p => p.DisplayFormat)
-                          .AddPropertyValue(p => p.FriendlyDisplayFormat)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("CalendarType", CalendarType)
+                          .AddRawPropertyValue("DisplayFormat", DisplayFormat)
+                          .AddRawPropertyValue("FriendlyDisplayFormat", FriendlyDisplayFormat)
                           .ToString();
         }
 

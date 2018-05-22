@@ -21,7 +21,7 @@ namespace SPMeta2.Standard.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHostAttribute(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     //[ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -68,7 +68,7 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<LinkFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
                           .ToString();
         }

@@ -33,8 +33,8 @@ namespace SPMeta2.Standard.Definitions.Webparts
     {
         public override string ToString()
         {
-            return new ToStringResult<SummaryLinkWebPartDefinition>(this, base.ToString())
-                          //.AddPropertyValue(p => p.Group)
+            return new ToStringResultRaw(base.ToString())
+                          //.AddRawPropertyValue(p => p.Group)
                           .ToString();
         }
     }

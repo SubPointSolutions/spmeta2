@@ -155,9 +155,9 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WebNavigationSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.GlobalNavigationSource)
-                          .AddPropertyValue(p => p.CurrentNavigationSource)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("GlobalNavigationSource", GlobalNavigationSource)
+                          .AddRawPropertyValue("CurrentNavigationSource", CurrentNavigationSource)
                           .ToString();
         }
 

@@ -31,7 +31,7 @@ namespace SPMeta2.Definitions.Fields
         }
 
         #endregion
-      
+
         #region properties
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<DependentLookupFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.InternalName)
-                          .AddPropertyValue(p => p.PrimaryLookupFieldId)
-                          .AddPropertyValue(p => p.AllowMultipleValues)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("InternalName", InternalName)
+                          .AddRawPropertyValue("PrimaryLookupFieldId", PrimaryLookupFieldId)
+                          .AddRawPropertyValue("AllowMultipleValues", AllowMultipleValues)
                           .ToString();
         }
     }

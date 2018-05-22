@@ -103,9 +103,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ModuleFileDefinition>(this)
-                          .AddPropertyValue(p => p.FileName)
-                          .AddPropertyValue(p => p.Overwrite)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("FileName", FileName)
+                          .AddRawPropertyValue("Overwrite", Overwrite)
 
                           .ToString();
         }

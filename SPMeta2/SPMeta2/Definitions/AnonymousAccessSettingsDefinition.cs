@@ -55,8 +55,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<AnonymousAccessSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.AnonymousState)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("AnonymousState", AnonymousState)
                           .ToString();
         }
 

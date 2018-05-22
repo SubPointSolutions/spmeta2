@@ -72,11 +72,11 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SearchSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.SearchCenterUrl)
-                          .AddPropertyValue(p => p.UseParentResultsPageUrl)
-                          .AddPropertyValue(p => p.UseCustomResultsPageUrl)
-                          .AddPropertyValue(p => p.UseFirstSearchNavigationNode)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("SearchCenterUrl", SearchCenterUrl)
+                          .AddRawPropertyValue("UseParentResultsPageUrl", UseParentResultsPageUrl)
+                          .AddRawPropertyValue("UseCustomResultsPageUrl", UseCustomResultsPageUrl)
+                          .AddRawPropertyValue("UseFirstSearchNavigationNode", UseFirstSearchNavigationNode)
                           .ToString();
         }
 

@@ -65,7 +65,7 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectValidation]
         [ExpectUpdateAsIntRange(
-            MinValue = (int)OfficialFileAction.Copy, 
+            MinValue = (int)OfficialFileAction.Copy,
             MaxValue = (int)OfficialFileAction.Link)]
         public OfficialFileAction Action { get; set; }
 
@@ -75,9 +75,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<OfficialFileHostDefinition>(this)
-                          .AddPropertyValue(p => p.OfficialFileName)
-                          .AddPropertyValue(p => p.OfficialFileUrl)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("OfficialFileName", OfficialFileName)
+                          .AddRawPropertyValue("OfficialFileUrl", OfficialFileUrl)
                           .ToString();
         }
 

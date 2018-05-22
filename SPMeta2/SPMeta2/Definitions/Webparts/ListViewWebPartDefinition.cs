@@ -79,13 +79,13 @@ namespace SPMeta2.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<ListViewWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.ListTitle)
-                          .AddPropertyValue(p => p.ListUrl)
-                          .AddPropertyValue(p => p.ListId)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("ListTitle", ListTitle)
+                          .AddRawPropertyValue("ListUrl", ListUrl)
+                          .AddRawPropertyValue("ListId", ListId)
 
-                          .AddPropertyValue(p => p.ViewName)
-                          .AddPropertyValue(p => p.ViewId)
+                          .AddRawPropertyValue("ViewName", ViewName)
+                          .AddRawPropertyValue("ViewId", ViewId)
                           .ToString();
         }
 

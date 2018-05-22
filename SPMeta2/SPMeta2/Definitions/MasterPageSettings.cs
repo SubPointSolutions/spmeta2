@@ -19,7 +19,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
 
     [ParentHostCapability(typeof(WebDefinition))]
@@ -53,11 +53,11 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<MasterPageSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.SiteMasterPageUrl)
-                          .AddPropertyValue(p => p.SiteMasterPageInheritFromMaster)
-                          .AddPropertyValue(p => p.SystemMasterPageUrl)
-                          .AddPropertyValue(p => p.SystemMasterPageInheritFromMaster)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("SiteMasterPageUrl", SiteMasterPageUrl)
+                          .AddRawPropertyValue("SiteMasterPageInheritFromMaster", SiteMasterPageInheritFromMaster)
+                          .AddRawPropertyValue("SystemMasterPageUrl", SystemMasterPageUrl)
+                          .AddRawPropertyValue("SystemMasterPageInheritFromMaster", SystemMasterPageInheritFromMaster)
                           .ToString();
         }
 

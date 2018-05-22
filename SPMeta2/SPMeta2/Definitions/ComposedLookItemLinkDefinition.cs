@@ -40,8 +40,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ComposedLookItemLinkDefinition>(this)
-                          .AddPropertyValue(p => p.ComposedLookItemName)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("ComposedLookItemName", ComposedLookItemName)
                           .ToString();
         }
 

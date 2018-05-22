@@ -42,12 +42,12 @@ namespace SPMeta2.Standard.Definitions.Fields
         #endregion
 
         #region properties
-        
+
         [ExpectValidation]
         [ExpectRequired]
         [DataMember]
         public override sealed string FieldType { get; set; }
-        
+
         [ExpectValidation]
         [DataMember]
         public override string ValidationMessage
@@ -70,7 +70,7 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<SummaryLinkFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
                           .ToString();
         }

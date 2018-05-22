@@ -85,7 +85,7 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<HTMLFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
                           .ToString();
         }

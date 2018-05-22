@@ -52,8 +52,8 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<CurrencyFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.CurrencyLocaleId)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("CurrencyLocaleId", CurrencyLocaleId)
                           .ToString();
         }
 

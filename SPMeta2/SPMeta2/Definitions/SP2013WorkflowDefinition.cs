@@ -100,9 +100,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SP2013WorkflowDefinition>(this)
-                          .AddPropertyValue(p => p.DisplayName)
-                          .AddPropertyValue(p => p.Override)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("DisplayName", DisplayName)
+                          .AddRawPropertyValue("Override", Override)
 
                           .ToString();
         }

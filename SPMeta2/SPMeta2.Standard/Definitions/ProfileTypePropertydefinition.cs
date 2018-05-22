@@ -61,10 +61,10 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ProfileTypePropertyDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.IsVisibleOnEditor)
-                          .AddPropertyValue(p => p.IsVisibleOnViewer)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("IsVisibleOnEditor", IsVisibleOnEditor)
+                          .AddRawPropertyValue("IsVisibleOnViewer", IsVisibleOnViewer)
                           .ToString();
         }
 

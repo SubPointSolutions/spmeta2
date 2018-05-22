@@ -78,11 +78,11 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<DesignPackageDefinition>(this)
-                          .AddPropertyValue(p => p.FileName)
-                          .AddPropertyValue(p => p.SolutionId)
-                          .AddPropertyValue(p => p.Install)
-                          .AddPropertyValue(p => p.Apply)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("FileName", FileName)
+                          .AddRawPropertyValue("SolutionId", SolutionId)
+                          .AddRawPropertyValue("Install", Install)
+                          .AddRawPropertyValue("Apply", Apply)
                           .ToString();
         }
 

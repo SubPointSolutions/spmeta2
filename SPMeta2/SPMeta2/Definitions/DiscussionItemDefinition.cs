@@ -56,8 +56,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<DiscussionItemDefinition>(this)
-                          .AddPropertyValue(p => p.Body)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Body", Body)
                           .ToString();
         }
 

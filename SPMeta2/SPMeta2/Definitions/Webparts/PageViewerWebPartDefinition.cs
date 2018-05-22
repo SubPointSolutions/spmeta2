@@ -52,9 +52,9 @@ namespace SPMeta2.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<PageViewerWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.ContentLink)
-                          .AddPropertyValue(p => p.SourceType)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("ContentLink", ContentLink)
+                          .AddRawPropertyValue("SourceType", SourceType)
                           .ToString();
         }
 

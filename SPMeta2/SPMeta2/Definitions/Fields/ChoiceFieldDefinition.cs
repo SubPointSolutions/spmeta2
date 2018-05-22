@@ -53,8 +53,8 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<ChoiceFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.EditFormat)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("EditFormat", EditFormat)
                           .ToString();
         }
 

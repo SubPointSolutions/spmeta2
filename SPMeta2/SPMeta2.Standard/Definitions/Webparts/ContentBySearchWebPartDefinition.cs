@@ -83,7 +83,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<ContentBySearchWebPartDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
                           .ToString();
         }

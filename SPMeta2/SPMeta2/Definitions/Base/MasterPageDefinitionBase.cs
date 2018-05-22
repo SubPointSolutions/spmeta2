@@ -58,9 +58,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<MasterPageDefinitionBase>(this, base.ToString())
-                          .AddPropertyValue(p => p.Description)
-                          .AddPropertyValue(p => p.DefaultCSSFile)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("Description", Description)
+                          .AddRawPropertyValue("DefaultCSSFile", DefaultCSSFile)
                           .ToString();
         }
 

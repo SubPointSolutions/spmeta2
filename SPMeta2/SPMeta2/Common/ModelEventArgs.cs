@@ -38,16 +38,16 @@ namespace SPMeta2.Common
 
         public override string ToString()
         {
-            return new ToStringResult<ModelEventArgs>(this)
-                         .AddPropertyValue(p => p.EventType)
+            return new ToStringResultRaw()
+                         .AddRawPropertyValue("EventType", EventType)
 
-                         .AddPropertyValue(p => p.Object)
-                         .AddPropertyValue(p => p.ObjectType)
+                         .AddRawPropertyValue("Object", Object)
+                         .AddRawPropertyValue("ObjectType", ObjectType)
 
-                         .AddPropertyValue(p => p.ObjectDefinition)
-                         .AddPropertyValue(p => p.ModelHost)
-                         .AddPropertyValue(p => p.Model)
-                         .AddPropertyValue(p => p.CurrentModelNode)
+                         .AddRawPropertyValue("ObjectDefinition", ObjectDefinition)
+                         .AddRawPropertyValue("ModelHost", ModelHost)
+                         .AddRawPropertyValue("Model", Model)
+                         .AddRawPropertyValue("CurrentModelNode", CurrentModelNode)
 
                          .ToString();
         }

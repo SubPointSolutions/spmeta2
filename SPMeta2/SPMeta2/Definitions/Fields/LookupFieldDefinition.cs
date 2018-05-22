@@ -175,10 +175,10 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<LookupFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.LookupWebId)
-                          .AddPropertyValue(p => p.LookupList)
-                          .AddPropertyValue(p => p.LookupField)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("LookupWebId", LookupWebId)
+                          .AddRawPropertyValue("LookupList", LookupList)
+                          .AddRawPropertyValue("LookupField", LookupField)
                           .ToString();
         }
 

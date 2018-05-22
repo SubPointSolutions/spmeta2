@@ -18,7 +18,7 @@ namespace SPMeta2.Definitions.ContentTypes
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
 
     [ParentHostCapability(typeof(ListDefinition))]
@@ -46,8 +46,8 @@ namespace SPMeta2.Definitions.ContentTypes
 
         public override string ToString()
         {
-            return new ToStringResult<RemoveContentTypeLinksDefinition>(this)
-                          .AddPropertyValue(p => p.ContentTypes)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("ContentTypes", ContentTypes)
                           .ToString();
         }
 

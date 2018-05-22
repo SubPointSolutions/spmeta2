@@ -110,12 +110,12 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ListItemDefinition>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.Overwrite)
-                          .AddPropertyValue(p => p.SystemUpdate)
-                          .AddPropertyValue(p => p.SystemUpdateIncrementVersionNumber)
-                          .AddPropertyValue(p => p.UpdateOverwriteVersion)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("Overwrite", Overwrite)
+                          .AddRawPropertyValue("SystemUpdate", SystemUpdate)
+                          .AddRawPropertyValue("SystemUpdateIncrementVersionNumber", SystemUpdateIncrementVersionNumber)
+                          .AddRawPropertyValue("UpdateOverwriteVersion", UpdateOverwriteVersion)
                           .ToString();
         }
 

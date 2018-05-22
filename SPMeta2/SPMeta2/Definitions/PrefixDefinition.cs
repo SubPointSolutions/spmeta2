@@ -59,9 +59,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<PrefixDefinition>(this)
-                          .AddPropertyValue(p => p.Path)
-                          .AddPropertyValue(p => p.PrefixType)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Path", Path)
+                          .AddRawPropertyValue("PrefixType", PrefixType)
 
                           .ToString();
         }

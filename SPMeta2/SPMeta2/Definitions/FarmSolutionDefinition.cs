@@ -127,10 +127,10 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<FarmSolutionDefinition>(this)
-                          .AddPropertyValue(p => p.FileName)
-                          .AddPropertyValue(p => p.SolutionId)
-                          .AddPropertyValue(p => p.LCID)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("FileName", FileName)
+                          .AddRawPropertyValue("SolutionId", SolutionId)
+                          .AddRawPropertyValue("LCID", LCID)
                           .ToString();
         }
 

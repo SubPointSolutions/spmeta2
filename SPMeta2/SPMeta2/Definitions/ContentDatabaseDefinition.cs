@@ -73,11 +73,11 @@ namespace SPMeta2.Definitions
       
         public override string ToString()
         {
-            return new ToStringResult<ContentDatabaseDefinition>(this)
-                          .AddPropertyValue(p => p.ServerName)
-                          .AddPropertyValue(p => p.DbName)
-                          .AddPropertyValue(p => p.WarningSiteCollectionNumber)
-                          .AddPropertyValue(p => p.MaximumSiteCollectionNumber)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("ServerName", ServerName)
+                          .AddRawPropertyValue("DbName", DbName)
+                          .AddRawPropertyValue("WarningSiteCollectionNumber", WarningSiteCollectionNumber)
+                          .AddRawPropertyValue("MaximumSiteCollectionNumber", MaximumSiteCollectionNumber)
                           .ToString();
         }
 

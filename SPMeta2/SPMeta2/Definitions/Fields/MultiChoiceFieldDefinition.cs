@@ -92,9 +92,9 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<MultiChoiceFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.FillInChoice)
-                          .AddPropertyValue(p => p.Choices)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("FillInChoice", FillInChoice)
+                          .AddRawPropertyValue("Choices", Choices)
                           .ToString();
         }
 

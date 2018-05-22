@@ -57,8 +57,8 @@ namespace SPMeta2.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<ScriptEditorWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.Content)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("Content", Content)
 
                           .ToString();
         }

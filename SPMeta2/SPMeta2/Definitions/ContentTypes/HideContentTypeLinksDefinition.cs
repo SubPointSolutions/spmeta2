@@ -46,8 +46,8 @@ namespace SPMeta2.Definitions.ContentTypes
 
         public override string ToString()
         {
-            return new ToStringResult<HideContentTypeLinksDefinition>(this)
-                          .AddPropertyValue(p => p.ContentTypes)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("ContentTypes", ContentTypes)
                           .ToString();
         }
 

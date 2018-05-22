@@ -19,7 +19,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(WebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
 
@@ -33,7 +33,7 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<TopNavigationNodeDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
                           .ToString();
         }
 

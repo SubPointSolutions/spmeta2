@@ -40,8 +40,8 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<CustomDocumentIdProviderDefinition>(this)
-                          .AddPropertyValue(p => p.DocumentProviderType)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("DocumentProviderType", DocumentProviderType)
                           .ToString();
         }
 

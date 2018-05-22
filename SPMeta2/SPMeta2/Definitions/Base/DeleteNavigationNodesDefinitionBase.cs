@@ -49,7 +49,7 @@ namespace SPMeta2.Definitions.Base
         // ReSharper disable once RedundantOverridenMember
         public override string ToString()
         {
-            return new ToStringResult<DeleteNavigationNodesDefinitionBase>(this)
+            return new ToStringResultRaw()
                          .ToString();
         }
 

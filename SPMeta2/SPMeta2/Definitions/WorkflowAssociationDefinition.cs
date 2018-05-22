@@ -85,11 +85,11 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WorkflowAssociationDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.WorkflowTemplateName)
-                          .AddPropertyValue(p => p.TaskListTitle)
-                          .AddPropertyValue(p => p.HistoryListTitle)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("WorkflowTemplateName", WorkflowTemplateName)
+                          .AddRawPropertyValue("TaskListTitle", TaskListTitle)
+                          .AddRawPropertyValue("HistoryListTitle", HistoryListTitle)
                           .ToString();
         }
 

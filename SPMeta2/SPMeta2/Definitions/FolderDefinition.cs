@@ -62,8 +62,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<FolderDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
 
                           .ToString();
         }

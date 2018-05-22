@@ -152,21 +152,21 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<TaxonomyFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
-                          .AddPropertyValue(p => p.IsMulti)
+                          .AddRawPropertyValue("IsMulti", IsMulti)
 
-                          .AddPropertyValue(p => p.SspName)
-                          .AddPropertyValue(p => p.SspId)
-                          .AddPropertyValue(p => p.UseDefaultSiteCollectionTermStore)
+                          .AddRawPropertyValue("SspName", SspName)
+                          .AddRawPropertyValue("SspId", SspId)
+                          .AddRawPropertyValue("UseDefaultSiteCollectionTermStore", UseDefaultSiteCollectionTermStore)
 
-                          .AddPropertyValue(p => p.TermSetName)
-                          .AddPropertyValue(p => p.TermSetId)
-                          .AddPropertyValue(p => p.TermSetLCID)
+                          .AddRawPropertyValue("TermSetName", TermSetName)
+                          .AddRawPropertyValue("TermSetId", TermSetId)
+                          .AddRawPropertyValue("TermSetLCID", TermSetLCID)
 
-                          .AddPropertyValue(p => p.TermName)
-                          .AddPropertyValue(p => p.TermId)
-                          .AddPropertyValue(p => p.TermLCID)
+                          .AddRawPropertyValue("TermName", TermName)
+                          .AddRawPropertyValue("TermId", TermId)
+                          .AddRawPropertyValue("TermLCID", TermLCID)
 
                           .ToString();
         }

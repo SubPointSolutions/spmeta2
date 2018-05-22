@@ -43,8 +43,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SuiteBarDefinition>(this)
-                          .AddPropertyValue(p => p.SuiteBarBrandingElementHtml)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("SuiteBarBrandingElementHtml", SuiteBarBrandingElementHtml)
                           .ToString();
         }
 

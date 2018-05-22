@@ -43,8 +43,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<DeveloperDashboardSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.DisplayLevel)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("DisplayLevel", DisplayLevel)
                           .ToString();
         }
 

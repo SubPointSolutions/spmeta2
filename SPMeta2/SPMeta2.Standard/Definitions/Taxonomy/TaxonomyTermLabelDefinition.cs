@@ -64,10 +64,10 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         public override string ToString()
         {
-            return new ToStringResult<TaxonomyTermLabelDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.LCID)
-                          .AddPropertyValue(p => p.IsDefault)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("LCID", LCID)
+                          .AddRawPropertyValue("IsDefault", IsDefault)
                           .ToString();
         }
 

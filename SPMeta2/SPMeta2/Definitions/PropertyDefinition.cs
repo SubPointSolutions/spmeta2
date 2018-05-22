@@ -71,10 +71,10 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<PropertyDefinition>(this)
-                          .AddPropertyValue(p => p.Key)
-                          .AddPropertyValue(p => p.Value)
-                          .AddPropertyValue(p => p.Overwrite)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Key", Key)
+                          .AddRawPropertyValue("Value", Value)
+                          .AddRawPropertyValue("Overwrite", Overwrite)
 
                           .ToString();
         }

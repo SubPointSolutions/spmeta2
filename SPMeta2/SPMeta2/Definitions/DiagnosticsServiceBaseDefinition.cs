@@ -37,8 +37,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<DiagnosticsServiceBaseDefinition>(this)
-                          .AddPropertyValue(p => p.AssemblyQualifiedName)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("AssemblyQualifiedName", AssemblyQualifiedName)
 
                           .ToString();
         }

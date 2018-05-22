@@ -66,10 +66,10 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<DocumentSetDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.ContentTypeId)
-                          .AddPropertyValue(p => p.ContentTypeName)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("ContentTypeId", ContentTypeId)
+                          .AddRawPropertyValue("ContentTypeName", ContentTypeName)
                           .ToString();
         }
 

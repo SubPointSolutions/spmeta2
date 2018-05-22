@@ -30,7 +30,7 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<FarmDefinition>(this)
+            return new ToStringResultRaw()
                           .ToString();
         }
 

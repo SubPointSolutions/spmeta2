@@ -45,8 +45,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SupportedUICultureDefinition>(this)
-                          .AddPropertyValue(p => p.LCID)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("LCID", LCID)
                           .ToString();
         }
 

@@ -638,6 +638,7 @@
     <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ResourceUtils.cs" />
     <Compile Include="Utils\ToStringResult.cs" />
+    <Compile Include="Utils\ToStringResultRaw.cs" />
     <Compile Include="Utils\UrlUtility.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />
