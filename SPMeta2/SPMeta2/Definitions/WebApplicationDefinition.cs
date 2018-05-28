@@ -145,7 +145,9 @@ namespace SPMeta2.Definitions
         public List<string> AllowedInlineDownloadedMimeTypes { get; set; }
 
         /// <summary>
-        /// 
+        /// Indicates if AllowedInlineDownloadedMimeTypes property should overwrite existing values in SPWebApplication
+        /// Null, false - values willbe adde don top
+        /// true - existing values are deleted, and new values are added
         /// </summary>
         [ExpectValidation]
         [DataMember]
