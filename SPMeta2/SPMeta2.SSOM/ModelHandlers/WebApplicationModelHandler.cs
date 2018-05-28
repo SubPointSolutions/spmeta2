@@ -36,6 +36,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeployWebApplication(farmModelHost, farmModelHost.HostFarm, webApplicationDefinition);
         }
 
+        protected virtual SPWebApplication LookupWebApplication(WebApplicationDefinition definition)
+        {
+            var webApps = SPWebService.ContentService.WebApplications;
+            return FindWebApplication(definition, webApps);
+        }
+
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
             var modelHost = modelHostContext.ModelHost;
@@ -53,9 +59,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
 
             var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
-
-            var webApps = SPWebService.ContentService.WebApplications;
-            var existingWebApp = FindWebApplication(webApplicationDefinition, webApps);
+            var existingWebApp = LookupWebApplication(webApplicationDefinition);
 
             if (existingWebApp == null)
             {
@@ -76,8 +80,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             SPFarm farm,
             WebApplicationDefinition definition)
         {
-            var webApps = SPWebService.ContentService.WebApplications;
-            var existingWebApp = FindWebApplication(definition, webApps);
+            var existingWebApp = LookupWebApplication(definition);
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -132,6 +135,8 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var webApp = webAppBuilder.Create();
                 webApp.Provision();
 
+                ProcessWebApplicationProperties(existingWebApp, definition);
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -142,9 +147,13 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = definition,
                     ModelHost = farmModelHost
                 });
+
+                webApp.Update();
             }
             else
             {
+                ProcessWebApplicationProperties(existingWebApp, definition);
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -155,7 +164,28 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ObjectDefinition = definition,
                     ModelHost = farmModelHost
                 });
+
+                existingWebApp.Update();
             }
+        }
+
+        protected virtual void ProcessAllowedInlineDownloadedMimeTypes(SPWebApplication webApp, WebApplicationDefinition definition)
+        {
+            if (definition.AllowedInlineDownloadedMimeTypes != null && definition.AllowedInlineDownloadedMimeTypes.Any())
+            {
+                // override if only ShouldOverrideAllowedInlineDownloadedMimeTypes is set to tru
+                if (definition.ShouldOverrideAllowedInlineDownloadedMimeTypes == true)
+                    webApp.AllowedInlineDownloadedMimeTypes.Clear();
+
+                foreach (var value in definition.AllowedInlineDownloadedMimeTypes)
+                    if (!webApp.AllowedInlineDownloadedMimeTypes.Contains(value))
+                        webApp.AllowedInlineDownloadedMimeTypes.Add(value);
+            }
+        }
+
+        protected virtual void ProcessWebApplicationProperties(SPWebApplication webApp, WebApplicationDefinition definition)
+        {
+            ProcessAllowedInlineDownloadedMimeTypes(webApp, definition);
         }
 
         private static SPWebApplication FindWebApplication(WebApplicationDefinition definition, SPWebApplicationCollection webApps)

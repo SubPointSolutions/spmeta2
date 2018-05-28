@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
@@ -18,7 +19,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHost(typeof(FarmDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -26,6 +27,15 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(FarmDefinition))]
     public class WebApplicationDefinition : DefinitionBase
     {
+        #region constructors
+
+        public WebApplicationDefinition()
+        {
+            AllowedInlineDownloadedMimeTypes = new List<string>();
+        }
+
+        #endregion
+
         #region properties
 
         /// <summary>
@@ -124,6 +134,22 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [DataMember]
         public bool UseNTLMExclusively { get; set; }
+
+        /// <summary>
+        /// Maps AllowedInlineDownloadedMimeTypes value for SPWebApplication
+        /// By default adds all values on top of existing once
+        /// Use ShouldOverrideAllowedInlineDownloadedMimeTypes to force override this property array
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public List<string> AllowedInlineDownloadedMimeTypes { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public bool? ShouldOverrideAllowedInlineDownloadedMimeTypes { get; set; }
 
         #endregion
 
