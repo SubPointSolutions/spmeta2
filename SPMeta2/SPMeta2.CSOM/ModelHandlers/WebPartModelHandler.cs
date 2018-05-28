@@ -86,8 +86,6 @@ namespace SPMeta2.CSOM.ModelHandlers
         //    WithExistingWebPart(listItem.File, webPartModel, action);
         //}
 
-
-
         protected void WithExistingWebPart(File pageFile, WebPartDefinition webPartModel,
              Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
         {
@@ -110,6 +108,14 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             if (listItemModelHost.HostFile != null)
                 return listItemModelHost.HostFile;
+
+            // additional check for edge cases
+            // these need to be raised and handled appropriately 
+
+            // WebpartModelHandler null reference exception #1118
+            // https://github.com/SubPointSolutions/spmeta2/issues/1118
+            if (listItemModelHost.HostListItem == null || (listItemModelHost.HostListItem.ServerObjectIsNull == true))
+                throw new SPMeta2Exception("Cannot find a HostFile/HostListItem for the giving page (ListItemModelHost). Both HostFile/HostListItem are null. Please report this issue at https://github.com/SubPointSolutions/spmeta2/issues");
 
             return listItemModelHost.HostListItem.File;
         }
