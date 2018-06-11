@@ -4,7 +4,7 @@ FileName: custom-logging.html
 Order: 600
 ---
 
-#### Overview
+# Logging
 Logging is an essential part of software development. 
 It provides developers and support teams a deeper overview and enable them to see what is happening in the application. 
 

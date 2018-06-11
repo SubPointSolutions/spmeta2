@@ -4,7 +4,7 @@ FileName: regression-testing.html
 Order: 700
 ---
 
-### Overview
+# Regression testing
 Regression testing is a cornerstone of the SPMeta2 library and its QA process. 
 The sole purpose of the regression testing is to ensure that provision works exactly as it supposed to work under both CSOM/SSOM for both SharePoint 2013 and SharePoint online tenants.
 Hence, we use a mixture of unit testing and integration testing with real SharePoint 2013 farms and SharePoint online tenants to ensure the outstanding quality of the SPMeta2 library. Altogether, we call that 'regression testing'.

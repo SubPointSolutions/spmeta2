@@ -3,7 +3,7 @@ Title: Writing a console app
 Order: 1120
 ---
 
-### Writing a simple console app
+# Writing a simple console app
 
 SPMeta2 supports SharePoint 2010, SharePoint 2013 and SharePoint Online. 
 We use NuGet to deliver all the packages, handle versioning, updates and patches. 
