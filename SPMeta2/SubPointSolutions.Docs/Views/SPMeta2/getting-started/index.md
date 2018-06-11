@@ -1,4 +1,6 @@
-﻿# Essentials
+﻿<mermaid />
+
+# Essentials
 
 SPMeta2 is a hassle-free fluent API for code-based SharePoint artefact provisioning.
 It offers a consistent provisioning API via SSOM/CSOM for SharePoin 2010, 2013 and O365.
@@ -10,10 +12,12 @@ Here is a big pucture on how SPMeta2 library works.
 
 SPMeta2 introduces a domain of c# POCO objects, then it maps every single POCO object on SharePoint artifacts.
 
-<img src='http://g.gravizo.com/g?
- digraph G {
-   rankdir="LR";
-   "CSharp POCO objects" -> "SPMeta2" -> SharePoint;    } '></img>
+```mermaid
+graph LR;
+    A[C# POCO objects]-->B[SPMeta2];
+    B-->C[SharePoint];
+```    
+<a target="_blank" href="https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtDIyBQT0NPIG9iamVjdHNdLS0-QltTUE1ldGEyXTtcbiAgICBCLS0-Q1tTaGFyZVBvaW50XTsiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ">live editor for this diagram</a>
 
 Have a look on the same idea expressed in a c# code. 
 Don not focus on understanding every single bit of the code, it will be much clear to you as we refine ideas later in the article.
@@ -26,15 +30,16 @@ Let's zoom in and have a closer look.
 SPMeta2 provides c# POCP objects, we call them **definitions** for every SharePoint artifact.
 So you describe what you want to provision in definitions, and then SPMeta2 takes care about everything else.
 
-<img src='http://g.gravizo.com/g? digraph G {
-   rankdir="LR"; "Web definition" -> "SPMeta2";  
-   "Field definition" -> "SPMeta2";  
-   "Content type definition" -> "SPMeta2";  
-   "List definition" -> "SPMeta2";  
-   "List view definition" -> "SPMeta2";  
-   "Web part page definition" -> "SPMeta2";  
-   "Web part definition" -> "SPMeta2"; 
-   "... other definitions ..." -> "SPMeta2";  "SPMeta2" -> SharePoint;  }' ></img>
+```mermaid
+graph LR;
+    a1[Web definition]-->B[SPMeta2];
+    a2[Field definition]-->B;
+    a3[ContentType definition]-->B;
+    a4[List definition]-->B;
+    a6[... other definitions ...]-->B;
+    B-->C[SharePoint];
+```    
+<a target="_blank" href="https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgYTFbV2ViIGRlZmluaXRpb25dLS0-QltTUE1ldGEyXTtcbiAgICBhMltGaWVsZCBkZWZpbml0aW9uXS0tPkI7XG4gICAgYTNbQ29udGVudFR5cGUgZGVmaW5pdGlvbl0tLT5CO1xuICAgIGE0W0xpc3QgZGVmaW5pdGlvbl0tLT5CO1xuICAgIGE2Wy4uLiBvdGhlciBkZWZpbml0aW9ucyAuLi5dLS0-QjtcbiAgICBCLS0-Q1tTaGFyZVBvaW50XTsiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ">live editor for this diagram</a>
 
 And the same idea in the code. Now field definition and content type definition make sense, don't they?
 Don't focus on understanding every single bit of the code, it will be much clear to you as we refine ideas later in the article.
@@ -55,18 +60,18 @@ For intance, here a few to mentions:
 Having definitions of not enought, we need to describe relationshop between them, so that SPMeta2 would know how to provision them correctly. 
 Here is a refined view on how SPMeta2 works for site and web level provision:
 
-<img src='http://g.gravizo.com/g?
- digraph G {
-   rankdir="LR";
-   "SPMeta2" -> SharePoint;   
-   "Site model" -> "SPMeta2";
-   "Web model" -> "SPMeta2";
-   "Field definition"  -> "Site model";  
-   "Content type definition" -> "Site model";  
-   "User Custom Action" -> "Site model";  
-   "List definition" -> "Web model";  
-   "List view definition" -> "Web model";  
-   "Web partpage" -> "Web model"; }' ></img>
+```mermaid
+graph LR;
+    a1[Field definition]-->site[Site model];
+    a2[ContentType definition]-->site;
+    a3[List definition]-->web[Web model];
+    a4[List view definition]-->web;
+    web-->s[SPMeta2]
+    site-->s[SPMeta2]
+    s-->C[SharePoint];
+```
+
+<a target="_blank" href="https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgYTFbRmllbGQgZGVmaW5pdGlvbl0tLT5zaXRlW1NpdGUgbW9kZWxdO1xuICAgIGEyW0NvbnRlbnRUeXBlIGRlZmluaXRpb25dLS0-c2l0ZTtcbiAgICBhM1tMaXN0IGRlZmluaXRpb25dLS0-d2ViW1dlYiBtb2RlbF07XG4gICAgYTRbTGlzdCB2aWV3IGRlZmluaXRpb25dLS0-d2ViO1xuICAgIHdlYi0tPnNbU1BNZXRhMl1cbiAgICBzaXRlLS0-c1tTUE1ldGEyXVxuICAgIHMtLT5DW1NoYXJlUG9pbnRdOyIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19">live editor for this diagram</a>
 
 And the same idea in the code. NewSiteModel(), AddField() and AddContentType() help to build a relationships between artifacts
 Don't focus on understanding every single bit of the code, it will be much clear to you as we refine ideas later in the article.
@@ -79,23 +84,23 @@ We can have SharePoint 2010, SharePoint 2013 or SharePoint Online along with eit
 SPMeta2 supports both SSOM and CSOM API abstracting them via 'provisioning services' implementations.
 
 Here is an idea for SSOM or CSOM based provision:
+```mermaid
+graph LR;
+    a1[Field definition]-->site[Site model];
+    a2[ContentType definition]-->site;
+    a3[List definition]-->web[Web model];
+    a4[List view definition]-->web;
+    web-->s[SPMeta2]
+    site-->s[SPMeta2]
+    s --> csom[CSOM service]
+    s -->ssom[SSOM service]
+    csom-->s2[SharePoint Online];
+    csom-->s1[SharePoint 2010 / 2013 / 2016];
+    ssom-->s3[SharePoint 2010 / 2013 / 2016];
 
-<img src='http://g.gravizo.com/g?
- digraph G {
-   "Site model" -> "Choose your provision strategy";
-   "Web model" -> "Choose your provision strategy";
-   "Field definition" -> "Site model";  
-   "Content type definition" -> "Site model";  
-   "User Custom Action" -> "Site model";  
-   "List definition" -> "Web model";  
-   "List view definition" -> "Web model";  
-   "Web partpage" -> "Web model";  
-    "Choose your provision strategy" -> "CSOM provision service";   
-    "Choose your provision strategy" -> "SSOM provision service";   
-    "CSOM provision service" -> "SharePoint 2013";
-    "CSOM provision service" -> "SharePoint Online";
-    "SSOM provision service" -> "SharePoint 2010";
-    "SSOM provision service" -> "SharePoint 2013; }' ></img>
+```
+
+<a target="_blank" href="https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgYTFbRmllbGQgZGVmaW5pdGlvbl0tLT5zaXRlW1NpdGUgbW9kZWxdO1xuICAgIGEyW0NvbnRlbnRUeXBlIGRlZmluaXRpb25dLS0-c2l0ZTtcbiAgICBhM1tMaXN0IGRlZmluaXRpb25dLS0-d2ViW1dlYiBtb2RlbF07XG4gICAgYTRbTGlzdCB2aWV3IGRlZmluaXRpb25dLS0-d2ViO1xuICAgIHdlYi0tPnNbU1BNZXRhMl1cbiAgICBzaXRlLS0-c1tTUE1ldGEyXVxuICAgIHMgLS0-IGNzb21bQ1NPTSBzZXJ2aWNlXVxuICAgIHMgLS0-c3NvbVtTU09NIHNlcnZpY2VdXG4gICAgY3NvbS0tPnMyW1NoYXJlUG9pbnQgT25saW5lXTtcbiAgICBjc29tLS0-czFbU2hhcmVQb2ludCAyMDEwIC8gMjAxMyAvIDIwMTZdO1xuICAgIHNzb20tLT5zM1tTaGFyZVBvaW50IDIwMTAgLyAyMDEzIC8gMjAxNl07XG4iLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ">live editor for this diagram</a>
 
 Finally, the code should be absolutely clear to you. We create definitions, we build a logical model and then we use a provision service to push the model to the SharePoint site. Easy enough?
 

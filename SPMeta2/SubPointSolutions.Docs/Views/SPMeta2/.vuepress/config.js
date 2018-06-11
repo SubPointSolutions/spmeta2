@@ -3,9 +3,12 @@ module.exports = {
     base: "/spmeta2/",
 
     markdown: {
-        lineNumbers: true
+        lineNumbers: true,
+        config: md => {
+            md.use(require('markdown-it-mermaid').default)
+        }
     },
-    
+
     themeConfig: {
         
         // does not work under Docker container, hmm
@@ -28,7 +31,6 @@ module.exports = {
                 title: 'SPMeta2',
                 collapsable: false,
                 children: [
-                  '/',
                   '/getting-started/',
                   '/getting-started/writing-console-app',
                   '/getting-started/license'
