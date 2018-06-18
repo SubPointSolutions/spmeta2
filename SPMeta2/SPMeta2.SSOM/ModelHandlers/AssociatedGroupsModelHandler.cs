@@ -13,69 +13,69 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
-    //public class AssociatedGroupsModelHandler : SSOMModelHandlerBase
-    //{
-    //    #region methods
+    public class AssociatedGroupsModelHandler : SSOMModelHandlerBase
+    {
+        #region methods
 
-    //    public override Type TargetType
-    //    {
-    //        get { return typeof(AssociatedGroupsDefinition); }
-    //    }
-
-
-    //    public override void DeployModel(object modelHost, DefinitionBase model)
-    //    {
-    //        var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-    //        var groupsDefinition = modelHost.WithAssertAndCast<AssociatedGroupsDefinition>("modelHost", value => value.RequireNotNull());
-
-    //        DeployAssociatedGroups(modelHost, webModelHost, groupsDefinition);
-    //    }
-
-    //    protected virtual SPGroup FindGroupByName(SPSite site, SPWeb web, string groupName)
-    //    {
-    //        return null;
-    //    }
-
-    //    protected virtual void DeployAssociatedGroups(object modelHost, WebModelHost webModelHost, AssociatedGroupsDefinition model)
-    //    {
-    //        var web = webModelHost.HostWeb;
-    //        var site = web.Site;
-
-    //        InvokeOnModelEvent(this, new ModelEventArgs
-    //        {
-    //            CurrentModelNode = null,
-    //            Model = null,
-    //            EventType = ModelEventType.OnProvisioning,
-    //            Object = web,
-    //            ObjectType = typeof(SPWeb),
-    //            ObjectDefinition = model,
-    //            ModelHost = modelHost
-    //        });
-
-    //        if (!string.IsNullOrEmpty(model.MemberGroupName))
-    //            web.AssociatedMemberGroup = FindGroupByName(site, web, model.MemberGroupName);
-
-    //        if (!string.IsNullOrEmpty(model.OwnerGroupName))
-    //            web.AssociatedOwnerGroup = FindGroupByName(site, web, model.OwnerGroupName);
-
-    //        if (!string.IsNullOrEmpty(model.VisitorGroupName))
-    //            web.AssociatedVisitorGroup = FindGroupByName(site, web, model.VisitorGroupName);
-
-    //        InvokeOnModelEvent(this, new ModelEventArgs
-    //        {
-    //            CurrentModelNode = null,
-    //            Model = null,
-    //            EventType = ModelEventType.OnProvisioning,
-    //            Object = web,
-    //            ObjectType = typeof(SPWeb),
-    //            ObjectDefinition = model,
-    //            ModelHost = modelHost
-    //        });
+        public override Type TargetType
+        {
+            get { return typeof(AssociatedGroupsDefinition); }
+        }
 
 
-    //        web.Update();
-    //    }
+        public override void DeployModel(object modelHost, DefinitionBase model)
+        {
+            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+            var groupsDefinition = modelHost.WithAssertAndCast<AssociatedGroupsDefinition>("modelHost", value => value.RequireNotNull());
 
-    //    #endregion
-    //}
+            DeployAssociatedGroups(modelHost, webModelHost, groupsDefinition);
+        }
+
+        protected virtual SPGroup FindGroupByName(SPSite site, SPWeb web, string groupName)
+        {
+            return web.SiteGroups[groupName];
+        }
+
+        protected virtual void DeployAssociatedGroups(object modelHost, WebModelHost webModelHost, AssociatedGroupsDefinition model)
+        {
+            var web = webModelHost.HostWeb;
+            var site = web.Site;
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = web,
+                ObjectType = typeof(SPWeb),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
+            if (!string.IsNullOrEmpty(model.MemberGroupName))
+                web.AssociatedMemberGroup = FindGroupByName(site, web, model.MemberGroupName);
+
+            if (!string.IsNullOrEmpty(model.OwnerGroupName))
+                web.AssociatedOwnerGroup = FindGroupByName(site, web, model.OwnerGroupName);
+
+            if (!string.IsNullOrEmpty(model.VisitorGroupName))
+                web.AssociatedVisitorGroup = FindGroupByName(site, web, model.VisitorGroupName);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = web,
+                ObjectType = typeof(SPWeb),
+                ObjectDefinition = model,
+                ModelHost = modelHost
+            });
+
+
+            web.Update();
+        }
+
+        #endregion
+    }
 }

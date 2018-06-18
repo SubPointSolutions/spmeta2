@@ -116,6 +116,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefinitionGenerators\AssociatedGroupsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SuiteBarDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\OfficialFileHostDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SharePointDesignerSettingsDefinitionGenerator.cs" />
