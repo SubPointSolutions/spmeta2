@@ -502,7 +502,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         protected virtual Group ResolveSecurityGroup(Web web, String groupName)
         {
+#if !NET35
             return web.SiteGroups.GetByName(groupName);
+#endif
+
+#if NET35
+            // TODO, https://github.com/SubPointSolutions/spmeta2/issues/1108
+            throw new SPMeta2NotImplementedException("This feature is not implemented yet for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/1108"); 
+#endif
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)
