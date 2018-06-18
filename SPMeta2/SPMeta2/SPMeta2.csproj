@@ -145,6 +145,7 @@
     <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />
+    <Compile Include="Definitions\AssociatedGroupsDefinition.cs" />
     <Compile Include="Definitions\SuiteBarDefinition.cs" />
     <Compile Include="Definitions\OfficialFileHostDefinition.cs" />
     <Compile Include="Definitions\SharePointDesignerSettingsDefinition.cs" />

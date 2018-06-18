@@ -174,13 +174,40 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         [ExpectValidation]
-       // [ExpectUpdateAsEmailAddress]
+        // [ExpectUpdateAsEmailAddress]
         public string RequestAccessEmail { get; set; }
 
         [DataMember]
         [ExpectNullable]
         [ExpectValidation]
         public bool? MembersCanShare { get; set; }
+
+        /// <summary>
+        /// Name of the security group to be set as AssociatedMemberGroup, group must exist 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        [IdentityKey]
+        [ExpectUpdateAsTestSecurityGroup]
+        public string AssociatedMemberGroupName { get; set; }
+
+        /// <summary>
+        /// Name of the security group to be set as AssociatedOwnerGroup, group must exist 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        [IdentityKey]
+        [ExpectUpdateAsTestSecurityGroup]
+        public string AssociatedOwnerGroupName { get; set; }
+
+        /// <summary>
+        /// Name of the security group to be set as AssociatedOwnerGroup, group must exist 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        [IdentityKey]
+        [ExpectUpdateAsTestSecurityGroup]
+        public string AssociatedVisitorGroupName { get; set; }
 
         #endregion
 

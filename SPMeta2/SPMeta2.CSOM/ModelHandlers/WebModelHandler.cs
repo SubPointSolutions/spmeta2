@@ -480,6 +480,29 @@ namespace SPMeta2.CSOM.ModelHandlers
                 props["vti_indexedpropertykeys"] = IndexedPropertyUtils.GetEncodedValueForSearchIndexProperty(currentIndexedProperties);
             }
 #endif
+
+            // skipping check on web.HasUniqueRoleAssignments
+            // we might have to deal with newrly created web
+            if (webModel.UseUniquePermission)
+            {
+                // safe check - if not then we'll get the following exception
+                // ---> System.InvalidOperationException: 
+                // You cannot set this property since the web does not have unique permissions.
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedMemberGroupName))
+                    web.AssociatedMemberGroup = ResolveSecurityGroup(web, webModel.AssociatedMemberGroupName);
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedOwnerGroupName))
+                    web.AssociatedOwnerGroup = ResolveSecurityGroup(web, webModel.AssociatedOwnerGroupName);
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedVisitorGroupName))
+                    web.AssociatedVisitorGroup = ResolveSecurityGroup(web, webModel.AssociatedVisitorGroupName);
+            }
+        }
+
+        protected virtual Group ResolveSecurityGroup(Web web, String groupName)
+        {
+            return web.SiteGroups.GetByName(groupName);
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)

@@ -63,7 +63,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private static void MapProperties(SPWeb web, WebDefinition webModel)
+        protected virtual void MapProperties(SPWeb web, WebDefinition webModel)
         {
             // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
             CultureUtils.WithCulture(web.UICulture, () =>
@@ -111,6 +111,27 @@ namespace SPMeta2.SSOM.ModelHandlers
                 }
             }
 #endif
+
+            if (webModel.UseUniquePermission && web.HasUniqueRoleAssignments)
+            {
+                // safe check - if not then we'll get the following exception
+                // ---> System.InvalidOperationException: 
+                // You cannot set this property since the web does not have unique permissions.
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedMemberGroupName))
+                    web.AssociatedMemberGroup = ResolveSecurityGroup(web, webModel.AssociatedMemberGroupName);
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedOwnerGroupName))
+                    web.AssociatedOwnerGroup = ResolveSecurityGroup(web, webModel.AssociatedOwnerGroupName);
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedVisitorGroupName))
+                    web.AssociatedVisitorGroup = ResolveSecurityGroup(web, webModel.AssociatedVisitorGroupName);
+            }
+        }
+
+        protected virtual SPGroup ResolveSecurityGroup(SPWeb web, string groupName)
+        {
+            return web.SiteGroups[groupName];
         }
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)

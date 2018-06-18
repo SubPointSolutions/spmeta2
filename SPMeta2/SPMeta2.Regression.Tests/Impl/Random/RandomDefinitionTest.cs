@@ -730,6 +730,17 @@ namespace SPMeta2.Regression.Tests.Impl.Random
 
         [TestMethod]
         [TestCategory("Regression.Rnd.Web")]
+        public void CanDeployRandom_WebDefinitionWithAssociatedGroups()
+        {
+            TestRandomDefinition<WebDefinition>(def =>
+            {
+                // that would enable path to set and then change AssociatedXXXGroup properties
+                def.UseUniquePermission = true;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Rnd.Web")]
         public void CanDeployRandom_RootWebDefinition()
         {
             TestRandomDefinition<RootWebDefinition>();

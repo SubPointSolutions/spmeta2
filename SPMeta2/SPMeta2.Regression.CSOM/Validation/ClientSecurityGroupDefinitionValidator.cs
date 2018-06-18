@@ -43,9 +43,12 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                     .ShouldBeEqualIfHasValue(m => m.AllowMembersEditMembership, o => o.AllowMembersEditMembership)
                     .ShouldBeEqualIfHasValue(m => m.AllowRequestToJoinLeave, o => o.AllowRequestToJoinLeave)
-                    .ShouldBeEqualIfHasValue(m => m.AutoAcceptRequestToJoinLeave, o => o.AutoAcceptRequestToJoinLeave)
+                    .ShouldBeEqualIfHasValue(m => m.AutoAcceptRequestToJoinLeave, o => o.AutoAcceptRequestToJoinLeave);
 
-                    .ShouldBeEqual((p, s, d) =>
+                if (!string.IsNullOrEmpty(definition.Owner))
+                {
+
+                    assert.ShouldBeEqual((p, s, d) =>
                     {
                         var srcProp = s.GetExpressionValue(def => def.Owner);
                         var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
@@ -68,9 +71,14 @@ namespace SPMeta2.Regression.CSOM.Validation
                             Dst = dstProp,
                             IsValid = isValid
                         };
-                    })
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.Owner, "Owner is null or empty");
+                }
 
-                    .SkipProperty(m => m.DefaultUser, "DefaultUser cannot be setup via CSOM API. Skipping.");
+                assert.SkipProperty(m => m.DefaultUser, "DefaultUser cannot be setup via CSOM API. Skipping.");
             }
             else if (modelHost is SecurityGroupModelHost)
             {
