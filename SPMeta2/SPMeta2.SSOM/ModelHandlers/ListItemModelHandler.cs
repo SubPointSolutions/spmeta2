@@ -104,7 +104,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list item");
 
-                var newItem = list.Items.Add(folder.ServerRelativeUrl, SPFileSystemObjectType.File, null);
+                var newItem = list.AddItem(folder.ServerRelativeUrl, SPFileSystemObjectType.File, null);
 
                 MapListItemProperties(newItem, listItemModel);
 
