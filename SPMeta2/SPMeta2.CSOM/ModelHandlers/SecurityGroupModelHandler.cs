@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Utilities;
+
 using SPMeta2.Common;
-using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.ModelHosts;
 using SPMeta2.Services;
 using SPMeta2.Utils;
@@ -34,7 +33,7 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             var modelHost = modelHostContext.ModelHost as ModelHostBase;
             var model = modelHostContext.Model;
-            var childModelType = modelHostContext.ChildModelType;
+            //var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
             var webModelHost = modelHost.WithAssertAndCast<SiteModelHost>("modelHost", value => value.RequireNotNull());
@@ -71,22 +70,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var siteModelHost = modelHost as SiteModelHost;
-
             if (modelHost is SiteModelHost)
             {
-                DeploySiteGroup(modelHost, modelHost as SiteModelHost, model);
+                DeploySiteGroup(modelHost, (SiteModelHost) modelHost, model);
             }
             else if (modelHost is SecurityGroupModelHost)
             {
-                DeploySiteGroupUnderSiteGroup(modelHost, modelHost as SecurityGroupModelHost, model);
+                DeploySiteGroupUnderSiteGroup(modelHost, (SecurityGroupModelHost) modelHost, model);
             }
             else
             {
                 throw new SPMeta2UnsupportedModelHostException("modelHost");
             }
-
-
         }
 
         private void DeploySiteGroupUnderSiteGroup(object modelHost, SecurityGroupModelHost securityGroupModelHost, DefinitionBase model)
@@ -161,7 +156,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             Principal groupOwner = null;
 
             if (!string.IsNullOrEmpty(securityGroupModel.Owner) &&
-                (securityGroupModel.Owner.ToUpper() != securityGroupModel.Name.ToUpper()))
+                securityGroupModel.Owner.ToUpper() != securityGroupModel.Name.ToUpper())
             {
                 groupOwner = ResolvePrincipal(context, web, securityGroupModel.Owner);
 
@@ -230,8 +225,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (groupOwner != null)
                 currentGroup.Owner = groupOwner;
-
-
+            
             InvokeOnModelEvent(this, new ModelEventArgs
             {
                 CurrentModelNode = null,
@@ -245,6 +239,36 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             currentGroup.Update();
             context.ExecuteQueryWithTrace();
+
+            // Assign group to AssociatedXXXGroup property of web
+            // https://github.com/SubPointSolutions/spmeta2/issues/1108
+
+            if (securityGroupModel.IsAssociatedMemberGroup)
+                web.AssociatedMemberGroup = currentGroup;
+
+            if (securityGroupModel.IsAssociatedOwnerGroup)
+                web.AssociatedOwnerGroup = currentGroup;
+
+            if (securityGroupModel.IsAssociatedVisitorsGroup)
+                web.AssociatedVisitorGroup = currentGroup;
+
+            // Does this need to be called? Would it work using the securityGroupModel
+            //InvokeOnModelEvent(this, new ModelEventArgs
+            //{
+            //    CurrentModelNode = null,
+            //    Model = null,
+            //    EventType = ModelEventType.OnProvisioned,
+            //    Object = web,
+            //    ObjectType = typeof(SPWeb),
+            //    ObjectDefinition = securityGroupModel,
+            //    ModelHost = modelHost
+            //});
+
+            if (securityGroupModel.IsAssociatedMemberGroup || securityGroupModel.IsAssociatedOwnerGroup || securityGroupModel.IsAssociatedVisitorsGroup)
+            {
+                web.Update();
+                context.ExecuteQueryWithTrace();
+            }
         }
 
         private Principal ResolvePrincipal(ClientRuntimeContext context, Web web, string owner)
@@ -267,10 +291,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 context.ExecuteQueryWithTrace();
 
                 if (principalInfos.Count > 0)
-                //if (principalInfos.Value != null)
                 {
                     var info = principalInfos[0];
-                    //var info = principalInfos.Value;
 
                     targetSources[targetSource] = info;
 
@@ -299,7 +321,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             foreach (var securityGroup in siteGroups)
             {
-                if (System.String.Compare(securityGroup.Title, securityGroupTitle, System.StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Compare(securityGroup.Title, securityGroupTitle, StringComparison.OrdinalIgnoreCase) == 0)
                     return securityGroup;
             }
 

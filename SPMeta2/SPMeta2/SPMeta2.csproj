@@ -672,7 +672,7 @@
     <Compile Include="Validation\Validators\Definitions\FolderDefinitionValidator.cs" />
     <Compile Include="Validation\Validators\Definitions\ListDefinitionValidator.cs" />
     <Compile Include="Validation\Validators\Definitions\QuickLaunchNavigationNodeDefinitionValidator.cs" />
-    <Compile Include="Validation\Validators\Definitions\SecurityGroupDefinitionDefinitionValidator.cs" />
+    <Compile Include="Validation\Validators\Definitions\SecurityGroupDefinitionValidator.cs" />
     <Compile Include="Validation\Validators\Definitions\SecurityRoleDefinitionValidator.cs" />
     <Compile Include="Validation\Validators\DefinitionValidatorBase.cs" />
     <Compile Include="Validation\Validators\Relationships\ContentTypeDefinitionModelNodeValidator.cs" />

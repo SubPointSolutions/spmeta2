@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using SPMeta2.Definitions;
 using SPMeta2.Extensions;
 using SPMeta2.ModelHosts;
@@ -30,9 +31,9 @@ namespace SPMeta2.Validation.Services
 
         #region properties
 
-        private List<ValidatorBase<DefinitionBase>> DefinitionValidators = new List<ValidatorBase<DefinitionBase>>();
-        private List<RelationshipValidatorBase> RelationshipValidators = new List<RelationshipValidatorBase>();
-        private List<CollectionValidatorBase> CollectionValidators = new List<CollectionValidatorBase>();
+        private readonly List<ValidatorBase<DefinitionBase>> _definitionValidators = new List<ValidatorBase<DefinitionBase>>();
+        private readonly List<RelationshipValidatorBase> _relationshipValidators = new List<RelationshipValidatorBase>();
+        private readonly List<CollectionValidatorBase> _collectionValidators = new List<CollectionValidatorBase>();
 
         public List<ValidationResult> Result { get; set; }
 
@@ -52,19 +53,19 @@ namespace SPMeta2.Validation.Services
             var currentAssembly = Assembly.GetExecutingAssembly();
 
             foreach (var vType in ReflectionUtils.GetTypesFromAssembly<DefinitionBaseValidator>(currentAssembly))
-                DefinitionValidators.Add(Activator.CreateInstance(vType) as DefinitionBaseValidator);
+                _definitionValidators.Add(Activator.CreateInstance(vType) as DefinitionBaseValidator);
 
             foreach (var vType in ReflectionUtils.GetTypesFromAssembly<RelationshipValidatorBase>(currentAssembly))
-                RelationshipValidators.Add(Activator.CreateInstance(vType) as RelationshipValidatorBase);
+                _relationshipValidators.Add(Activator.CreateInstance(vType) as RelationshipValidatorBase);
 
             foreach (var vType in ReflectionUtils.GetTypesFromAssembly<CollectionValidatorBase>(currentAssembly))
-                CollectionValidators.Add(Activator.CreateInstance(vType) as CollectionValidatorBase);
+                _collectionValidators.Add(Activator.CreateInstance(vType) as CollectionValidatorBase);
         }
 
         private void ProcessModelDeployment(object modelHost, ModelNode model, List<ValidationResult> result)
         {
             var modelNode = model;
-            var modelDefinition = modelNode.Value;
+            //var modelDefinition = modelNode.Value;
 
             ValidateModelNode(modelNode, result);
 
@@ -85,18 +86,18 @@ namespace SPMeta2.Validation.Services
 
         private void ValidateModelNode(ModelNode modelNode, List<ValidationResult> result)
         {
-            var modelDefinition = modelNode.Value;
+            //var modelDefinition = modelNode.Value;
 
-            foreach (var v in DefinitionValidators)
+            foreach (var v in _definitionValidators)
                 v.Validate(modelNode.Value, result);
 
-            foreach (var v in RelationshipValidators)
+            foreach (var v in _relationshipValidators)
                 v.Validate(modelNode, result);
         }
 
-        private void ValidateModelNodeCollections(IEnumerable<ModelNode> modelNodeCollection, List<ValidationResult> result)
+        private void ValidateModelNodeCollections(List<ModelNode> modelNodeCollection, List<ValidationResult> result)
         {
-            foreach (var v in CollectionValidators)
+            foreach (var v in _collectionValidators)
                 v.Validate(modelNodeCollection.Select(m => m.Value), result);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using SPMeta2.Models;
 
 namespace SPMeta2.Extensions
@@ -18,7 +19,7 @@ namespace SPMeta2.Extensions
         /// <typeparam name="TChildModelType"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static IEnumerable<ModelNode> GetChildModels<TChildModelType>(this ModelNode model)
+        public static List<ModelNode> GetChildModels<TChildModelType>(this ModelNode model)
         {
             return GetChildModels(model, typeof(TChildModelType));
         }
@@ -29,9 +30,9 @@ namespace SPMeta2.Extensions
         /// <param name="model"></param>
         /// <param name="modelType"></param>
         /// <returns></returns>
-        public static IEnumerable<ModelNode> GetChildModels(this ModelNode model, Type modelType)
+        public static List<ModelNode> GetChildModels(this ModelNode model, Type modelType)
         {
-            return model.ChildModels.Where(m => m.Value.GetType() == modelType);
+            return model.ChildModels.Where(m => m.Value.GetType() == modelType).ToList();
         }
 
         /// <summary>
@@ -40,9 +41,9 @@ namespace SPMeta2.Extensions
         /// <typeparam name="TChildModelType"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static IEnumerable<TChildModelType> GetChildModelsAsType<TChildModelType>(this ModelNode model)
+        public static List<TChildModelType> GetChildModelsAsType<TChildModelType>(this ModelNode model)
         {
-            return GetChildModels(model, typeof(TChildModelType)).Cast<TChildModelType>();
+            return GetChildModels(model, typeof(TChildModelType)).Cast<TChildModelType>().ToList();
         }
 
         #endregion
