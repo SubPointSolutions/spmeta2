@@ -130,7 +130,7 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return string.Format("Name:[{0}] Description:[{1}]", Name, Description);
+            return string.Format("Name:[{0}] Description:[{1}] Owner:[{2}]", Name, Description, Owner);
         }
 
         #endregion
