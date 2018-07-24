@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Services;
 using SPMeta2.Utils;
-using System.Collections.Generic;
-using SPMeta2.Definitions.Fields;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -78,7 +80,6 @@ namespace SPMeta2.CSOM.ModelHandlers
             return typeof(Field);
         }
 
-
         protected Site ExtractSiteFromHost(object modelHost)
         {
             if (modelHost is SiteModelHost)
@@ -130,8 +131,8 @@ namespace SPMeta2.CSOM.ModelHandlers
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Casting field model definition");
             var fieldModel = model.WithAssertAndCast<FieldDefinition>("model", value => value.RequireNotNull());
 
-            Field currentField = null;
-            ClientRuntimeContext context = null;
+            Field currentField;
+            ClientRuntimeContext context;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -149,22 +150,21 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var listHost = modelHost as ListModelHost;
                 context = listHost.HostList.Context;
 
-                currentField = DeployListField(modelHost as ListModelHost, fieldModel);
+                currentField = DeployListField(listHost, fieldModel);
             }
             else if (modelHost is WebModelHost)
             {
                 var webHost = modelHost as WebModelHost;
                 context = webHost.HostWeb.Context;
 
-                currentField = DeployWebField(webHost as WebModelHost, fieldModel);
+                currentField = DeployWebField(webHost, fieldModel);
             }
-
             else if (modelHost is SiteModelHost)
             {
                 var siteHost = modelHost as SiteModelHost;
                 context = siteHost.HostSite.Context;
 
-                currentField = DeploySiteField(siteHost as SiteModelHost, fieldModel);
+                currentField = DeploySiteField(siteHost, fieldModel);
             }
             else
             {
@@ -363,6 +363,17 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             //if (definition.ShowInVersionHistory.HasValue)
             //    field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;
+
+            // update/set additional attributes
+            if (definition.AdditionalAttributes.Any())
+            {
+                var schemaXml = XElement.Parse(field.SchemaXml);
+
+                foreach (var fieldAttr in definition.AdditionalAttributes)
+                    schemaXml.SetAttribute(fieldAttr.Name, fieldAttr.Value);
+
+                field.SchemaXml = schemaXml.ToString();
+            }
 
             ProcessLocalization(field, definition);
         }

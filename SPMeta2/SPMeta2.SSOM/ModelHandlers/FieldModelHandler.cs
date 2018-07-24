@@ -460,6 +460,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.ShowInVersionHistory.HasValue)
                 field.ShowInVersionHistory = definition.ShowInVersionHistory.Value;
 
+            // update/set additional attributes
+            if (definition.AdditionalAttributes.Any())
+            {
+                var schemaXml = XElement.Parse(field.SchemaXml);
+
+                foreach (var fieldAttr in definition.AdditionalAttributes)
+                    schemaXml.SetAttribute(fieldAttr.Name, fieldAttr.Value);
+
+                field.SchemaXml = schemaXml.ToString();
+            }
 
             // process localiation
         }
