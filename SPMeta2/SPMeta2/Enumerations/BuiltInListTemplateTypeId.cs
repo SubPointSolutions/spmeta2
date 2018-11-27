@@ -38,6 +38,7 @@
         public static int GanttTasks = 150;
         public static int HelpLibrary = 151;
         public static int AccessRequest = 160;
+        public static int PromotedLinks = 170;
         public static int TasksWithTimelineAndHierarchy = 171;
         public static int MaintenanceLogs = 175;
         public static int Meetings = 200;
