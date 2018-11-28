@@ -836,7 +836,15 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
         }
 
-
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Lists")]
+        public void CanDeploy_PromotedLinkList()
+        {
+            TestRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.PromotedLinks;
+            });
+        }
 
         #endregion
 
