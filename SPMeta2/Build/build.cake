@@ -1,10 +1,7 @@
 ﻿// load up common tools
 #load tools/SubPointSolutions.CakeBuildTools/scripts/SubPointSolutions.CakeBuild.Core.cake
 
-// clear default doc merge task
-defaultActionDocsMerge.Task.Actions.Clear();
-
-// replace default buil
+// replace default build
 defaultActionBuild.Task.Actions.Clear();
 defaultActionBuild
     .Does(() => 
