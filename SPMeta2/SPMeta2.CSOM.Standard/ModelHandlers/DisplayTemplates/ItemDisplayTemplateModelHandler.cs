@@ -25,7 +25,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates
 
             var typedDefinition = definition.WithAssertAndCast<ItemDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
-            item[BuiltInInternalFieldNames.ContentTypeId] = "0x0101002039C03B61C64EC4A04F5361F38510660300500DA5E";
+            item[BuiltInInternalFieldNames.ContentTypeId] = "0x0101002039C03B61C64EC4A04F5361F385106603";
             //item["DisplayTemplateLevel"] = "Item";
 
 

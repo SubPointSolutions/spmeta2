@@ -25,7 +25,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.DisplayTemplates
 
             var typedDefinition = definition.WithAssertAndCast<FilterDisplayTemplateDefinition>("model", value => value.RequireNotNull());
 
-            item[BuiltInInternalFieldNames.ContentTypeId] = "0x0101002039C03B61C64EC4A04F5361F38510660400F643FF79F6BD764F8A469B6F153396EE";
+            item[BuiltInInternalFieldNames.ContentTypeId] = "0x0101002039C03B61C64EC4A04F5361F385106604";
 
 
             if (!string.IsNullOrEmpty(typedDefinition.CrawlerXSLFileURL))
