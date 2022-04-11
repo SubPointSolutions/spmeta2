@@ -99,17 +99,17 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<BusinessDataFieldDefinition>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.Description)
-                          .AddPropertyValue(p => p.InternalName)
-                          .AddPropertyValue(p => p.Id)
-                          .AddPropertyValue(p => p.Group)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("Description", Description)
+                          .AddRawPropertyValue("InternalName", InternalName)
+                          .AddRawPropertyValue("Id", Id)
+                          .AddRawPropertyValue("Group", Group)
 
-                          .AddPropertyValue(p => p.SystemInstanceName)
-                          .AddPropertyValue(p => p.EntityNamespace)
-                          .AddPropertyValue(p => p.EntityName)
-                          .AddPropertyValue(p => p.BdcFieldName)
+                          .AddRawPropertyValue("SystemInstanceName", SystemInstanceName)
+                          .AddRawPropertyValue("EntityNamespace", EntityNamespace)
+                          .AddRawPropertyValue("EntityName", EntityName)
+                          .AddRawPropertyValue("BdcFieldName", BdcFieldName)
                           .ToString();
         }
 

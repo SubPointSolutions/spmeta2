@@ -33,7 +33,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Extended
 
                 var isValid = true;
 
-                TraceUtils.WithScope(trace =>
+                IndentableTrace.WithScope(trace =>
                 {
                     trace.WriteLine(string.Format("Checking InitGridFromView presence:[{0}]", pageUrl));
 

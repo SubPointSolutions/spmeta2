@@ -7,12 +7,13 @@ using System.Text;
 
 using Microsoft.SharePoint.Client;
 using SPMeta2.Services;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
 {
     public class TokenReplacementServiceTestBase
     {
-        protected TokenReplacementServiceBase Service { get; set; }
+        protected virtual TokenReplacementServiceBase Service { get; set; }
 
         protected bool HasAllTestsForTokens(string methodPrefix, IEnumerable<TokenInfo> tokens,
             IEnumerable<MethodInfo> methods)
@@ -27,7 +28,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
                     methodPrefix);
                 var method = methods.FirstOrDefault(m => m.Name.ToUpper() == methodName.ToUpper());
 
-                Trace.WriteLine(methodName + " : " + (method != null));
+                RegressionUtils.WriteLine(methodName + " : " + (method != null));
 
                 if (method == null)
                     isValid = false;
@@ -59,7 +60,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
         {
             var result = true;
 
-            Trace.WriteLine(message);
+            RegressionUtils.WriteLine(message);
 
             var valueResult = Service.ReplaceTokens(new TokenReplacementContext
             {
@@ -69,7 +70,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
 
             result = expectedUrl.ToUpper() == valueResult.Value.ToUpper();
 
-            Trace.WriteLine(string.Format("[{0}] - [{1}] - token:[{2}] expected value:[{3}] replaced value:[{4}]",
+            RegressionUtils.WriteLine(string.Format("[{0}] - [{1}] - token:[{2}] expected value:[{3}] replaced value:[{4}]",
                 new object[]
                 {
                     message,
@@ -87,8 +88,8 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
             var isValid = true;
 
             // ~sitecollection -> string.Empty on the root web
-            isValid &= ShouldPass("~sitecollection -> string.Empty", context, "~sitecollection", string.Empty);
-            isValid &= ShouldPass("~SiteCollection -> string.Empty", context, "~SiteCollection", string.Empty);
+            isValid &= ShouldPass("~sitecollection -> string.Empty", context, "~sitecollection", "/");
+            isValid &= ShouldPass("~SiteCollection -> string.Empty", context, "~SiteCollection", "/");
 
             // ~sitecollection/something -> /something on the root web
             isValid &= ShouldPass("~sitecollection/something1 -> /something1", context, "~sitecollection/something1", "/something1");
@@ -124,13 +125,21 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services.Base
         {
             var isValid = true;
 
-            // ~site -> string.Empty on the root web
-            isValid &= ShouldPass("~site -> string.Empty", context, "~site", string.Empty);
-            isValid &= ShouldPass("~Site -> string.Empty", context, "~Site", string.Empty);
+            // ~site -> / on the root web
+            isValid &= ShouldPass("~site -> string.Empty", context, "~site", "/");
+            isValid &= ShouldPass("~Site -> string.Empty", context, "~Site", "/");
+
+            // ~site/ -> / on the root web
+            isValid &= ShouldPass("~site/ -> string.Empty", context, "~site/", "/");
+            isValid &= ShouldPass("~Site/ -> string.Empty", context, "~Site/", "/");
 
             // ~site/something -> /something on the root web
             isValid &= ShouldPass("~site/something1 -> /something1", context, "~site/something1", "/something1");
             isValid &= ShouldPass("~Site/something2 -> /something2", context, "~Site/something2", "/something2");
+
+            // ~site/something/ -> /something on the root web
+            isValid &= ShouldPass("~site/something1/ -> /something1", context, "~site/something1/", "/something1");
+            isValid &= ShouldPass("~Site/something2/ -> /something2", context, "~Site/something2/", "/something2");
 
             // same same
             isValid &= ShouldPass("site/something1 -> site/something1", context, "site/something1", "site/something1");

@@ -16,6 +16,7 @@ using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Enumerations;
+using SPMeta2.SSOM.Services;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -118,21 +119,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             return Regex.Replace(url, ".aspx", string.Empty, RegexOptions.IgnoreCase);
         }
 
-        protected SPView FindView(SPList targetList, ListViewDefinition listViewModel)
+        protected virtual SPView FindView(SPList targetList, ListViewDefinition listViewModel)
         {
-            // lookup by title
-            var currentView = targetList.Views.FindByName(listViewModel.Title);
+            var service = ServiceContainer.Instance.GetService<SSOMListViewLookupService>();
+            var result = service.FindView(targetList, listViewModel);
 
-            // lookup by URL match
-            if (currentView == null && !string.IsNullOrEmpty(listViewModel.Url))
-            {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving view by URL: [{0}]", listViewModel.Url);
-
-                var safeUrl = listViewModel.Url.ToUpper();
-                currentView = targetList.Views.OfType<SPView>().FirstOrDefault(w => w.Url.ToUpper().EndsWith(safeUrl));
-            }
-
-            return currentView;
+            return result;
         }
 
         protected void ProcessView(object modelHost, SPList targetList, ListViewDefinition listViewModel)
@@ -160,6 +152,27 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var isPersonalView = false;
                 var viewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType),
                     string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
+
+                // nasty hack
+
+                // The provision of calendars is not working properly #935
+                // https://github.com/SubPointSolutions/spmeta2/issues/935
+                if (listViewModel.Types.Count() > 0)
+                {
+                    SPViewCollection.SPViewType? finalType = null;
+
+                    foreach (var type in listViewModel.Types)
+                    {
+                        var tmpViewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType), type);
+
+                        if (finalType == null)
+                            finalType = tmpViewType;
+                        else
+                            finalType = finalType | tmpViewType;
+                    }
+
+                    viewType = finalType.Value;
+                }
 
                 // TODO, handle personal view creation
                 currentView = targetList.Views.Add(
@@ -204,6 +217,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void MapProperties(SPList targetList, SPView currentView, ListViewDefinition listViewModel)
         {
+            if (listViewModel.MobileDefaultView.HasValue)
+                currentView.MobileDefaultView = listViewModel.MobileDefaultView.Value;
+
             // if any fields specified, overwrite
             if (listViewModel.Fields.Any())
             {
@@ -227,10 +243,10 @@ namespace SPMeta2.SSOM.ModelHandlers
             // There is no value in setting Aggregations if AggregationsStatus is not to "On"
             if (!string.IsNullOrEmpty(listViewModel.AggregationsStatus) && listViewModel.AggregationsStatus == "On")
             {
-                currentView.AggregationsStatus = listViewModel.AggregationsStatus;
-
                 if (!string.IsNullOrEmpty(listViewModel.Aggregations))
                     currentView.Aggregations = listViewModel.Aggregations;
+
+                currentView.AggregationsStatus = listViewModel.AggregationsStatus;
             }
 
             currentView.Hidden = listViewModel.Hidden;
@@ -244,6 +260,9 @@ namespace SPMeta2.SSOM.ModelHandlers
             currentView.RowLimit = (uint)listViewModel.RowLimit;
             currentView.DefaultView = listViewModel.IsDefault;
             currentView.Paged = listViewModel.IsPaged;
+
+            if (listViewModel.IncludeRootFolder.HasValue)
+                currentView.IncludeRootFolder = listViewModel.IncludeRootFolder.Value;
 
 #if !NET35
             if (!string.IsNullOrEmpty(listViewModel.JSLink))

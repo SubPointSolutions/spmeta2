@@ -50,9 +50,9 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<AudienceDefinition>(this)
-                          .AddPropertyValue(p => p.AudienceName)
-                          .AddPropertyValue(p => p.AudienceDescription)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("AudienceName", AudienceName)
+                          .AddRawPropertyValue("AudienceDescription", AudienceDescription)
                           .ToString();
         }
 

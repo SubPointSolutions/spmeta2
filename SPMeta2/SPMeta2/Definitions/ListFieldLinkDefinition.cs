@@ -85,8 +85,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ListFieldLinkDefinition>(this)
-                          .AddPropertyValue(p => p.FieldId)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("FieldId", FieldId)
                           .ToString();
         }
 

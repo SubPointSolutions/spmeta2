@@ -52,11 +52,11 @@ namespace SPMeta2.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<ClientWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.FeatureId)
-                          .AddPropertyValue(p => p.ProductId)
-                          .AddPropertyValue(p => p.ProductWebId)
-                          .AddPropertyValue(p => p.WebPartName)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("FeatureId", FeatureId)
+                          .AddRawPropertyValue("ProductId", ProductId)
+                          .AddRawPropertyValue("ProductWebId", ProductWebId)
+                          .AddRawPropertyValue("WebPartName", WebPartName)
                           .ToString();
         }
 

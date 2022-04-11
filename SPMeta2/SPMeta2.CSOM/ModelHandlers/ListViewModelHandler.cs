@@ -195,6 +195,27 @@ namespace SPMeta2.CSOM.ModelHandlers
                         string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
                 }
 
+                // nasty hack
+
+                // The provision of calendars is not working properly #935
+                // https://github.com/SubPointSolutions/spmeta2/issues/935
+                if (listViewModel.Types.Count() > 0)
+                {
+                    ViewType? finalType = null;
+
+                    foreach (var type in listViewModel.Types)
+                    {
+                        var tmpViewType = (ViewType)Enum.Parse(typeof(ViewType), type);
+
+                        if (finalType == null)
+                            finalType = tmpViewType;
+                        else
+                            finalType = finalType | tmpViewType;
+                    }
+
+                    newView.ViewTypeKind = finalType.Value;
+                }
+
                 currentView = list.Views.Add(newView);
 
                 MapListViewProperties(list, currentView, listViewModel);
@@ -241,8 +262,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (definition.RowLimit > 0)
                 listView.RowLimit = (uint)definition.RowLimit;
 
+            if (definition.MobileDefaultView.HasValue)
+                listView.MobileDefaultView = definition.MobileDefaultView.Value;
+
             listView.DefaultView = definition.IsDefault;
             listView.Paged = definition.IsPaged;
+
+            if (definition.IncludeRootFolder.HasValue)
+                listView.IncludeRootFolder = definition.IncludeRootFolder.Value;
 
             if (!string.IsNullOrEmpty(definition.Query))
                 listView.ViewQuery = definition.Query;
@@ -275,10 +302,10 @@ namespace SPMeta2.CSOM.ModelHandlers
             // There is no value in setting Aggregations if AggregationsStatus is not to "On"
             if (!string.IsNullOrEmpty(definition.AggregationsStatus) && definition.AggregationsStatus == "On")
             {
-                listView.AggregationsStatus = definition.AggregationsStatus;
-
                 if (!string.IsNullOrEmpty(definition.Aggregations))
                     listView.Aggregations = definition.Aggregations;
+
+                listView.AggregationsStatus = definition.AggregationsStatus;
             }
 
             listView.Hidden = definition.Hidden;

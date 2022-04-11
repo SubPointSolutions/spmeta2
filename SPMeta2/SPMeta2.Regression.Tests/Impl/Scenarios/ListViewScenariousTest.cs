@@ -13,6 +13,8 @@ using SPMeta2.Containers;
 using SPMeta2.Containers.Services;
 using SPMeta2.Exceptions;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Definitions.ContentTypes;
+using SPMeta2.Definitions.Webparts;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -175,15 +177,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ListsViews.Types")]
-        public void CanDeploy_ListView_AsRecurrence()
+        public void CanDeploy_ListView_As_CalendarAndRecurrence()
         {
-            throw new SPMeta2NotImplementedException();
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.Hidden = false;
+                def.Type = BuiltInViewType.Html;
 
-            //TestRandomDefinition<ListViewDefinition>(def =>
-            //{
-            //    def.Hidden = false;
-            //    def.Type = BuiltInViewType.Recurrence;
-            //});
+                def.Types = new Collection<string>(new string[]{
+                    BuiltInViewType.Calendar,
+                    BuiltInViewType.Recurrence
+                });
+            });
         }
 
         #endregion
@@ -303,6 +308,42 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region aggregations
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Aggregations")]
+        public void CanDeploy_ListView_With_Aggregation_TitleCount()
+        {
+            // Using Aggregations/AggregationsStatus in ListViewDefinition fails to deploy model (SSOM) #954
+            // https://github.com/SubPointSolutions/spmeta2/issues/954
+            // https://msdn.microsoft.com/en-us/library/office/ms468626.aspx
+
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.AggregationsStatus = BuiltInAggregationsStatus.On;
+                def.Aggregations = "<FieldRef Name='Title' Type='Count'/>";
+            });
+        }
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Aggregations")]
+        public void CanDeploy_ListView_With_Aggregation_TitleSum()
+        {
+            // Using Aggregations/AggregationsStatus in ListViewDefinition fails to deploy model (SSOM) #954
+            // https://github.com/SubPointSolutions/spmeta2/issues/954
+            // https://msdn.microsoft.com/en-us/library/office/ms468626.aspx
+
+            TestRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.AggregationsStatus = BuiltInAggregationsStatus.On;
+                def.Aggregations = "<FieldRef Name='Title' Type='Sum'/>";
+            });
+        }
+
+        #endregion
+
         #region localization
 
         [TestMethod]
@@ -329,6 +370,142 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             });
 
             TestModel(model);
+        }
+
+        #endregion
+
+        #region oot list view modifications
+
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_As_OOTB_Library_MySubmissions()
+        {
+            var listDefinition = BuiltInListViewDefinitions.Libraries.MySubmissions.Inherit(def =>
+            {
+                def.Fields = new Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.Title
+                };
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.Documents, list =>
+                {
+                    list.AddListView(listDefinition);
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Types")]
+        public void CanDeploy_ListView_As_OOTB_Library_ApproveRejectItems()
+        {
+            var listDefinition = BuiltInListViewDefinitions.Libraries.ApproveRejectItems.Inherit(def =>
+            {
+                def.Fields = new Collection<string>
+                {
+                    BuiltInInternalFieldNames.ID,
+                    BuiltInInternalFieldNames.Title
+                };
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddHostList(BuiltInListDefinitions.Documents, list =>
+                {
+                    list.AddListView(listDefinition);
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        #endregion
+
+        #region timeline
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Timeline")]
+        public void CanDeploy_ListView_With_Timeline()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy;
+                def.Hidden = false;
+            });
+
+            var listViewDef = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+
+                def.ViewData = "<FieldRef Name=\"DueDate\" Type=\"TimelineDueDate\" />";
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddListView(listViewDef);
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Timeline")]
+        public void CanDeploy_ListView_Without_Timeline()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy;
+                def.Hidden = false;
+            });
+
+            var listViewDef = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                def.ViewData = "<FieldRef Name=\"PercentComplete\" Type=\"StrikeThroughPercentComplete\" />";
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddListView(listViewDef);
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ListsViews.Timeline")]
+        public void CanDeploy_ListView_Without_Timeline2()
+        {
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.TasksWithTimelineAndHierarchy;
+                def.Hidden = false;
+            });
+
+            var listViewDef = ModelGeneratorService.GetRandomDefinition<ListViewDefinition>(def =>
+            {
+                //def.ViewData = "<FieldRef Name=\"PercentComplete\" Type=\"StrikeThroughPercentComplete\" />";
+            });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(listDef, list =>
+                {
+                    list.AddListView(listViewDef);
+                });
+            });
+
+            TestModel(webModel);
         }
 
         #endregion

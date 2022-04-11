@@ -5,6 +5,7 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
 using SPMeta2.Regression.SSOM;
+using SPMeta2.Containers.Assertion;
 
 namespace SPMeta2.Regression.Validation.ServerModelHandlers
 {
@@ -38,18 +39,54 @@ namespace SPMeta2.Regression.Validation.ServerModelHandlers
                 .ShouldBeEqual(m => m.Name, o => o.GetSiteName())
                 .ShouldBeEqual(m => m.Description, o => o.GetSiteDescription())
                 .ShouldBeEqual(m => m.SiteTemplate, o => o.GetSiteTemplate())
-                .ShouldBeEndOf(m => m.Url, o => o.Url)
+                //.ShouldBeEndOf(m => m.Url, o => o.Url)
                 //.ShouldBePartOf(m => m.PrefixName, o => o.Url)
 
                 .ShouldBePartOf(m => m.OwnerLogin, o => o.GetOwnerLogin())
                 .ShouldBePartOf(m => m.OwnerName, o => o.GetOwnerName())
                 .SkipProperty(m => m.OwnerEmail, "Skipping OwnerEmail validation.")
 
-                .ShouldBePartOf(m => m.SecondaryContactLogin, o => o.GetSecondOwnerLogin())
-                .ShouldBePartOf(m => m.SecondaryContactName, o => o.GeSecondtOwnerName())
+                //.ShouldBePartOf(m => m.SecondaryContactLogin, o => o.GetSecondOwnerLogin())
+                //.ShouldBePartOf(m => m.SecondaryContactName, o => o.GeSecondtOwnerName())
                 .SkipProperty(m => m.SecondaryContactEmail, "Skipping SecondaryContactEmail validation.")
 
                 .ShouldBeEqual(m => m.LCID, o => o.GetSiteLCID());
+
+            if (string.IsNullOrEmpty(definition.Url) || definition.Url == "/")
+            {
+                // Enhance SiteDefinition provision - enable provision under the managed path  #853 
+                // the URL would end with the managed path
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.Url);
+                    var isValid = true;
+
+                    isValid = d.Url.EndsWith(s.PrefixName);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                // should be an end if set
+                assert.ShouldBeEndOf(m => m.Url, o => o.Url);
+            }
+
+            if (!string.IsNullOrEmpty(definition.SecondaryContactLogin))
+                assert.ShouldBePartOf(m => m.SecondaryContactLogin, o => o.GetSecondOwnerLogin());
+            else
+                assert.SkipProperty(m => m.SecondaryContactLogin, "SecondaryContactLogin is null or empty. Skipping.");
+
+            if (!string.IsNullOrEmpty(definition.SecondaryContactName))
+                assert.ShouldBePartOf(m => m.SecondaryContactName, o => o.GeSecondtOwnerName());
+            else
+                assert.SkipProperty(m => m.SecondaryContactName, "SecondaryContactName is null or empty. Skipping.");
 
             if (!string.IsNullOrEmpty(definition.PrefixName))
             {
@@ -85,7 +122,7 @@ namespace SPMeta2.Regression.Validation.ServerModelHandlers
 
         public static string GetOwnerLogin(this SPSite site)
         {
-            return site.Owner.LoginName;
+            return site.Owner.LoginName.ToLower();
         }
 
         public static string GetOwnerName(this SPSite site)
@@ -95,7 +132,7 @@ namespace SPMeta2.Regression.Validation.ServerModelHandlers
 
         public static string GetSecondOwnerLogin(this SPSite site)
         {
-            return site.SecondaryContact.LoginName;
+            return site.SecondaryContact.LoginName.ToLower();
         }
 
         public static string GeSecondtOwnerName(this SPSite site)

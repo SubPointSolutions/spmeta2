@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security;
@@ -24,6 +25,10 @@ using SPMeta2.Utils;
 using SPMeta2.Services.Impl;
 using SPMeta2.Services.Impl.Validation;
 
+using SPMeta2.CSOM.Extensions;
+using SPMeta2.ModelHosts;
+using SPMeta2.Services;
+
 namespace SPMeta2.Containers.CSOM
 {
     public class CSOMProvisionRunner : ProvisionRunnerBase
@@ -42,6 +47,11 @@ namespace SPMeta2.Containers.CSOM
 
             UserName = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.CSOM_UserName);
             UserPassword = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.CSOM_Password);
+        }
+
+        public override ProvisionServiceBase ProvisionService
+        {
+            get { return _provisionService; }
         }
 
         private void InitServices()
@@ -65,7 +75,7 @@ namespace SPMeta2.Containers.CSOM
 
             _provisionService.OnModelNodeProcessing += (sender, args) =>
             {
-                Trace.WriteLine(
+                ContainerTraceUtils.WriteLine(
                     string.Format("Processing: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
                     new object[] {
                                   args.ProcessedModelNodeCount,
@@ -78,7 +88,7 @@ namespace SPMeta2.Containers.CSOM
 
             _provisionService.OnModelNodeProcessed += (sender, args) =>
             {
-                Trace.WriteLine(
+                ContainerTraceUtils.WriteLine(
                    string.Format("Processed: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
                    new object[] {
                                   args.ProcessedModelNodeCount,
@@ -153,9 +163,12 @@ namespace SPMeta2.Containers.CSOM
         /// <param name="model"></param>
         public override void DeploySiteModel(ModelNode model)
         {
+            if (!SiteUrls.Any())
+                throw new SPMeta2Exception("SiteUrls is empty");
+
             foreach (var siteUrl in SiteUrls)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
 
                 for (var provisionGeneration = 0; provisionGeneration < ProvisionGenerationCount; provisionGeneration++)
                 {
@@ -185,7 +198,7 @@ namespace SPMeta2.Containers.CSOM
         {
             foreach (var webUrl in WebUrls)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
                 WithCSOMContext(webUrl, context =>
                 {
@@ -193,11 +206,42 @@ namespace SPMeta2.Containers.CSOM
                         provisionGeneration < ProvisionGenerationCount;
                         provisionGeneration++)
                     {
+                        List list = null;
+
+                        try
+                        {
+                            list = context.Web.QueryAndGetListByTitle("Site Pages");
+                        }
+                        catch (Exception ex) { }
+
+                        if (list == null)
+                        {
+                            try
+                            {
+                                list = context.Web.QueryAndGetListByTitle("Pages");
+                            }
+                            catch (Exception ex) { }
+
+                        }
+
+                        if (list == null)
+                        {
+                            throw new SPMeta2Exception("Cannot find host list");
+                        }
+
                         if (EnableDefinitionProvision)
-                            _provisionService.DeployModel(WebModelHost.FromClientContext(context), model);
+                            _provisionService.DeployListModel(context, list, model);
 
                         if (EnableDefinitionValidation)
-                            _validationService.DeployModel(WebModelHost.FromClientContext(context), model);
+                        {
+                            var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromClientContext(context), h =>
+                            {
+                                h.HostList = list;
+                            });
+
+                            _validationService.DeployModel(listHost, model);
+
+                        }
                     }
                 });
             }
@@ -209,9 +253,12 @@ namespace SPMeta2.Containers.CSOM
         /// <param name="model"></param>
         public override void DeployWebModel(ModelNode model)
         {
+            if (!WebUrls.Any())
+                throw new SPMeta2Exception("WebUrls is empty");
+
             foreach (var webUrl in WebUrls)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
                 WithCSOMContext(webUrl, context =>
                 {

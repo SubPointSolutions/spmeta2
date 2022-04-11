@@ -19,7 +19,9 @@ using Microsoft.SharePoint;
 using System.IO;
 using System.Reflection;
 using System.Xml;
+using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Attributes.Regression;
+using WebPart = System.Web.UI.WebControls.WebParts.WebPart;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -376,9 +378,49 @@ namespace SPMeta2.Regression.SSOM.Validation
                 }
                 else
                 {
-                    // TODO
+
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        // that's a fast hack
+                        // hope we eoudn't have other web part with ParameterBindings :)
+                        var webPart = d as DataFormWebPart;
+                        var isValid = true;
+
+                        var srcProp = s.GetExpressionValue(m => m.ParameterBindings);
+
+                        // one more hack, fix up later
+                        // just checking presense of the strings
+                        foreach (var srcBinding in s.ParameterBindings)
+                        {
+                            var hasName = webPart.ParameterBindings.Contains(srcBinding.Name);
+                            var hasValue = webPart.ParameterBindings.Contains(srcBinding.Location);
+
+                            if (!hasName || !hasValue)
+                            {
+                                isValid = false;
+                            }
+                        }
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
 
+                if (!string.IsNullOrEmpty(definition.AuthorizationFilter))
+                    assert.ShouldBeEqual(m => m.AuthorizationFilter, o => o.AuthorizationFilter);
+                else
+                    assert.SkipProperty(m => m.AuthorizationFilter, "AuthorizationFilter is null or empty. Skipping.");
+
+                if (definition.Hidden.HasValue)
+                    assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
+                else
+                    assert.SkipProperty(m => m.Hidden, "Hidden is null or empty. Skipping.");
             });
         }
 

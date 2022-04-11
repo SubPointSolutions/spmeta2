@@ -101,10 +101,10 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<JobDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.JobType)
-                          .AddPropertyValue(p => p.ScheduleString)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("JobType", JobType)
+                          .AddRawPropertyValue("ScheduleString", ScheduleString)
                           .ToString();
         }
 

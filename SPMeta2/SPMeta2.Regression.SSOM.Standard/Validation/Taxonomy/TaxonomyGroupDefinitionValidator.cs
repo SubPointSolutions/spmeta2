@@ -55,14 +55,15 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation.Taxonomy
                 assert.ShouldBeEqual(m => m.Name, o => o.Name);
             }
 
-            if (definition.Id.HasValue)
-            {
-                assert.ShouldBeEqual(m => m.Id, o => o.Id);
-            }
+            if (!string.IsNullOrEmpty(definition.Description))
+                assert.ShouldBeEqual(m => m.Description, o => o.Description);
             else
-            {
+                assert.SkipProperty(m => m.Description, "Description is null. Skipping property.");
+
+            if (definition.Id.HasValue)
+                assert.ShouldBeEqual(m => m.Id, o => o.Id);
+            else
                 assert.SkipProperty(m => m.Id, "Id is null. Skipping property.");
-            }
         }
     }
 }

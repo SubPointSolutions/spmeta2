@@ -94,9 +94,9 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<PublishingPageLayoutDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.Description)
-                          .AddPropertyValue(p => p.AssociatedContentTypeId)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("Description", Description)
+                          .AddRawPropertyValue("AssociatedContentTypeId", AssociatedContentTypeId)
                           .ToString();
         }
 

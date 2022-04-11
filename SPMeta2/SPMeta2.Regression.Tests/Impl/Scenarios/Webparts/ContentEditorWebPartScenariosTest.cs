@@ -4,8 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
 using SPMeta2.Containers.Standard;
-using SPMeta2.CSOM;
-using SPMeta2.CSOM.DefaultSyntax;
+
+
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Webparts;
 using SPMeta2.Regression.Tests.Definitions;

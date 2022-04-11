@@ -77,7 +77,7 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<ImageFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
                           .ToString();
         }

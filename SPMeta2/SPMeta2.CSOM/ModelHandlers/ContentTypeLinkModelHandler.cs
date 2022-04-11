@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
 using SPMeta2.CSOM.Common;
@@ -9,6 +11,8 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
+using SPMeta2.ModelHosts;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -21,7 +25,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
         {
-            var modelHost = modelHostContext.ModelHost;
+            var modelHost = modelHostContext.ModelHost as CSOMModelHostBase;
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
@@ -32,19 +36,36 @@ namespace SPMeta2.CSOM.ModelHandlers
             var list = listModelHost.HostList;
             var context = list.Context;
 
-            context.Load(list, l => l.ContentTypes);
+            //context.Load(list, l => l.ContentTypes);
+            context.Load(list, l => l.ContentTypes.Include(
+                ct => ct.Id,
+                ct => ct.Name,
+                ct => ct.ReadOnly,
+
+                ct => ct.Parent.Id
+                ));
+
             context.ExecuteQueryWithTrace();
 
-            var listContentType = FindListContentType(list, contentTypeLinkModel);
+            var contentType = FindListContentType(list, contentTypeLinkModel);
 
-            action(new ModelHostContext
+            var contentTypeLinkHost = ModelHostBase.Inherit<ContentTypeLinkModelHost>(modelHost, host =>
             {
-                Site = listModelHost.HostSite,
-                Web = listModelHost.HostWeb,
-                ContentType = listContentType
+                host.HostContentType = contentType;
+                host.HostList = list;
+                host.ShouldUpdateHost = true;
             });
 
-            listContentType.Update(false);
+            action(contentTypeLinkHost);
+
+            if (contentTypeLinkHost.ShouldUpdateHost)
+            {
+                if (!contentType.ReadOnly)
+                {
+                    contentType.Update(false);
+                }
+            }
+
             context.ExecuteQueryWithTrace();
         }
 
@@ -67,15 +88,47 @@ namespace SPMeta2.CSOM.ModelHandlers
                 var web = list.ParentWeb;
 
                 // context.Load(web, w => w.AvailableContentTypes);
-                context.Load(list, l => l.ContentTypes);
+                //context.Load(list, l => l.ContentTypes);
+                context.Load(list, l => l.ContentTypes.Include(
+                    ct => ct.Id,
+                    ct => ct.Name,
+                    ct => ct.ReadOnly,
+
+                    ct => ct.Parent.Id));
 
                 context.ExecuteQueryWithTrace();
 
-                var targetContentType = web.AvailableContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
+                // load by id, then fallback on name
+                ContentType targetContentType = null;
+
+                if (!string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
+                {
+                    targetContentType = web.AvailableContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
+                    context.Load(targetContentType);
+                    context.ExecuteQueryWithTrace();
+                }
+
+                if (targetContentType == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeName))
+                {
+                    var name = contentTypeLinkModel.ContentTypeName;
+
+                    context.Load(web.AvailableContentTypes, c => c.Where(w => w.Name == name));
+                    context.ExecuteQueryWithTrace();
+
+                    targetContentType = web.AvailableContentTypes[0];
+                }
+
+                if (targetContentType == null || targetContentType.ServerObjectIsNull == true)
+                {
+                    TraceService.ErrorFormat((int)LogEventId.ModelProvisionCoreCall,
+                        "Cannot find site content type by ID: [{0}] or Name:[{1}].",
+                        new object[] { contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName });
+
+                    throw new SPMeta2Exception(string.Format("Cannot find site content type by ID: [{0}] or Name:[{1}].",
+                        new object[] { contentTypeLinkModel.ContentTypeId, contentTypeLinkModel.ContentTypeName }));
+                }
+
                 var listContentType = FindListContentType(list, contentTypeLinkModel);
-
-                context.Load(targetContentType);
-                context.ExecuteQueryWithTrace();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -170,6 +223,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                 result = list.ContentTypes.FindByName(contentTypeLinkModel.ContentTypeName);
             }
 
+
+
             // trying to find by content type id
             // will never be resolved, actually
             // list content types have different ID
@@ -178,7 +233,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             //    result = list.ContentTypes.GetById(contentTypeLinkModel.ContentTypeId);
 
             // trying to find by beat match
-            if (result == null)
+            if (result == null && !string.IsNullOrEmpty(contentTypeLinkModel.ContentTypeId))
             {
                 TraceService.InformationFormat((int)LogEventId.ModelProvisionCoreCall,
                     "Trying to find list content type by ContentTypeId: [{0}]", contentTypeLinkModel.ContentTypeId);
@@ -187,10 +242,26 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // http://officespdev.uservoice.com/forums/224641-general/suggestions/6356289-expose-spcontenttypecollection-bestmatch-for-csom
 
                 // TODO, correct best match impl
+
+                // "Item" ContentTypeLink #1016
+                // replacing best match, it does not work on list scoped content types
+
+                // Content type operations within a list
+                // http://docs.subpointsolutions.com/spmeta2/kb/kb-m2-000003.html
+
+                //foreach (var contentType in list.ContentTypes)
+                //{
+                //    if (contentType.Id.ToString().ToUpper().StartsWith(contentTypeLinkModel.ContentTypeId.ToUpper()))
+                //        result = contentType;
+                //}
+
                 foreach (var contentType in list.ContentTypes)
                 {
-                    if (contentType.Id.ToString().ToUpper().StartsWith(contentTypeLinkModel.ContentTypeId.ToUpper()))
+                    if (contentType.Parent.Id.ToString().ToUpper() == contentTypeLinkModel.ContentTypeId.ToUpper())
+                    {
                         result = contentType;
+                        break;
+                    }
                 }
             }
 

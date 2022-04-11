@@ -41,6 +41,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void LoadDefinitionFromV2WebpartFile()
         {
             var webpartXml = ResourceReaderUtils.ReadFromResourceName(GetType().Assembly, RegWebparts.V2.NewsFeed);
@@ -51,6 +52,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void LoadDefinitionFromV3WebpartFile()
         {
             var webpartXml = ResourceReaderUtils.ReadFromResourceName(GetType().Assembly, RegWebparts.V3.TeamTasks);
@@ -65,6 +67,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void CanLoadWebpartDefinitionV2()
         {
             var def = WebpartXmlExtensions
@@ -75,6 +78,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void CanLoadWebpartDefinitionV3()
         {
             var def = WebpartXmlExtensions
@@ -84,6 +88,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void CanSetV2PlainProperty()
         {
             var propName = string.Format("prop_{0}", Guid.NewGuid().ToString("N"));
@@ -103,6 +108,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void CanSetV3PlainProperty()
         {
             var propName = string.Format("prop_{0}", Guid.NewGuid().ToString("N"));
@@ -122,6 +128,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void CanSetV2CDataProperty()
         {
             var propName = string.Format("prop_{0}", Guid.NewGuid().ToString("N"));
@@ -141,6 +148,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void CanSetCDataV3PlainProperty()
         {
             var propName = string.Format("prop_{0}", Guid.NewGuid().ToString("N"));
@@ -164,6 +172,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void CanSetContentEditor_PlainProperty()
         {
             var propName = "ContentLink";
@@ -183,6 +192,7 @@ namespace SPMeta2.Regression.Tests.Impl.Extensions
 
         [TestMethod]
         [TestCategory("Regression.Extensions.WebpartXmlExtensions")]
+        [TestCategory("CI.Core")]
         public void CanSetContentEditor_CDataProperty()
         {
             var propName = "Content";

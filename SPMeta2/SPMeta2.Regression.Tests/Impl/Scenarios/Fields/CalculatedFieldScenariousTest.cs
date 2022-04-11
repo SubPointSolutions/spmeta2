@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
-using SPMeta2.CSOM.DefaultSyntax;
+
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
@@ -80,6 +80,63 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         }
 
         #endregion
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.CalculatedField")]
+        public void CanDeploy_CalculatedField_OutputType_All()
+        {
+            var outputTypes = new[] {
+                BuiltInFieldTypes.Text,
+                BuiltInFieldTypes.Number,
+                BuiltInFieldTypes.Integer,
+                BuiltInFieldTypes.Currency,
+                BuiltInFieldTypes.Boolean, 
+                BuiltInFieldTypes.DateTime
+            };
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                foreach (var outputType in outputTypes)
+                {
+                    var field = GetCalculatedFieldDefinition(def =>
+                    {
+                        def.DateFormat = BuiltInDateTimeFieldFormatType.DateOnly;
+                        def.OutputType = outputType;
+                    });
+
+                    site.AddCalculatedField(field);
+                }
+            });
+
+            TestModel(siteModel);
+            TestModel(siteModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.CalculatedField")]
+        public void CanDeploy_CalculatedField_DateFormat_All()
+        {
+            var formatTypes = new[] {
+                BuiltInDateTimeFieldFormatType.DateOnly,
+                BuiltInDateTimeFieldFormatType.DateTime
+            };
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                foreach (var outputType in formatTypes)
+                {
+                    var field = GetCalculatedFieldDefinition(def =>
+                    {
+                        def.DateFormat = outputType;
+                    });
+
+                    site.AddCalculatedField(field);
+                }
+            });
+
+            TestModel(siteModel);
+            TestModel(siteModel);
+        }
 
         #region formula changes
 

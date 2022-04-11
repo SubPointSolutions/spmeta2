@@ -78,13 +78,13 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SearchResultDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Description)
-                          .AddPropertyValue(p => p.ProviderName)
-                          .AddPropertyValue(p => p.ProviderId)
-                          .AddPropertyValue(p => p.IsDefault)
-                          .AddPropertyValue(p => p.Query)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Description", Description)
+                          .AddRawPropertyValue("ProviderName", ProviderName)
+                          .AddRawPropertyValue("ProviderId", ProviderId)
+                          .AddRawPropertyValue("IsDefault", IsDefault)
+                          .AddRawPropertyValue("Query", Query)
                           .ToString();
         }
 

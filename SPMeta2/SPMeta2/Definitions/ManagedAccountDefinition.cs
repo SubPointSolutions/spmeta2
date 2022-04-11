@@ -39,8 +39,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ManagedAccountDefinition>(this)
-                          .AddPropertyValue(p => p.LoginName)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("LoginName", LoginName)
                           .ToString();
         }
 

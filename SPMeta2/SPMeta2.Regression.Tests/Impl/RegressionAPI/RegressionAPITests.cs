@@ -12,7 +12,7 @@ using SPMeta2.Utils;
 namespace SPMeta2.Regression.Tests.Impl.RegressionAPI
 {
     [TestClass]
-    public class RegressionAPITests : SPMeta2RegresionTestBase
+    public class RegressionAPITests : SPMeta2DefinitionRegresionTestBase
     {
         public RegressionAPITests()
         {
@@ -24,17 +24,18 @@ namespace SPMeta2.Regression.Tests.Impl.RegressionAPI
         [ClassInitialize]
         public static void Init(TestContext context)
         {
-            InternalInit();
+            //InternalInit();
         }
 
         [ClassCleanup]
         public static void Cleanup()
         {
-            InternalCleanup();
+            //InternalCleanup();
         }
 
         [TestMethod]
         [TestCategory("Regression.RegressionAPI")]
+        [TestCategory("CI.Core")]
         public void ExpectUpdateAttributes_ShouldHave_Services()
         {
             var updateAttrTypes = ReflectionUtils.GetTypesFromAssembly<ExpectUpdate>(typeof(ExpectUpdate).Assembly);
@@ -43,7 +44,7 @@ namespace SPMeta2.Regression.Tests.Impl.RegressionAPI
             updateAttrServices.AddRange(ReflectionUtils.GetTypesFromAssembly<ExpectUpdateValueServiceBase>(typeof(ExpectUpdateValueServiceBase).Assembly)
                                                          .Select(t => Activator.CreateInstance(t) as ExpectUpdateValueServiceBase));
 
-            TraceUtils.WithScope(trace =>
+            IndentableTrace.WithScope(trace =>
             {
                 foreach (var attr in updateAttrTypes)
                 {

@@ -44,7 +44,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = urlValue,
-                    Context = listItemModelHost.HostClientContext
+                    Context = listItemModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);

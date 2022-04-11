@@ -138,6 +138,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
 #endif
 
+                if (!string.IsNullOrEmpty(groupModel.Description))
+                    currentGroup.Description = groupModel.Description;
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -153,6 +156,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term Group");
+
+                if (!string.IsNullOrEmpty(groupModel.Description))
+                    currentGroup.Description = groupModel.Description;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

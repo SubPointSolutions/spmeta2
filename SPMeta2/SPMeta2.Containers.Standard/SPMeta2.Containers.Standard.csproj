@@ -76,6 +76,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefinitionGenerators\DesignPackageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\ProfileTypePropertyDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\CorePropertyDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DocumentSetDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\MetadataNavigationSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\FilterDisplayTemplateDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DisplayTemplates\JavaScriptDisplayTemplateDefinitionGenerator.cs" />
@@ -101,6 +105,7 @@
     <Compile Include="DefinitionGenerators\SearchConfigurationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Taxonomy\TaxonomyTermLabelDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebNavigationSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\Webparts\AdvancedSearchBoxDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\CategoryWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\CommunityAdminWebPartDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\CommunityJoinWebPartDefinitionGenerator.cs" />
@@ -162,6 +167,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

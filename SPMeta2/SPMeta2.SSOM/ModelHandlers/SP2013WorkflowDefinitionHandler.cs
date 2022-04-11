@@ -11,6 +11,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -51,6 +52,11 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var workflowServiceManager = new WorkflowServicesManager(web);
             var workflowDeploymentService = workflowServiceManager.GetWorkflowDeploymentService();
+
+            if (workflowDeploymentService == null)
+            {
+                throw new SPMeta2Exception("WorkflowServicesManager.GetWorkflowDeploymentService() returned NULL. Ensure SharePoint 2013 workflow configuration.");
+            }
 
             var currentWorkflowDefinition = GetCurrentWorkflowDefinition(web, workflowDefinitionModel);
 

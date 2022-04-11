@@ -21,13 +21,36 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             Term spObject = null;
 
             if (modelHost is TermModelHost)
+            {
+                var context = (modelHost as TermModelHost).HostClientContext;
                 spObject = FindTermInTerm((modelHost as TermModelHost).HostTerm, definition);
+
+                if (spObject == null && IsSharePointOnlineContext(context))
+                {
+                    TryRetryService.TryWithRetry(() =>
+                    {
+                        spObject = FindTermInTerm((modelHost as TermModelHost).HostTerm, definition);
+                        return spObject != null;
+                    });
+                }
+            }
             else if (modelHost is TermSetModelHost)
+            {
+                var context = (modelHost as TermSetModelHost).HostClientContext;
                 spObject = FindTermInTermSet((modelHost as TermSetModelHost).HostTermSet, definition);
+
+                if (spObject == null && IsSharePointOnlineContext(context))
+                {
+                    TryRetryService.TryWithRetry(() =>
+                    {
+                        spObject = FindTermInTermSet((modelHost as TermSetModelHost).HostTermSet, definition);
+                        return spObject != null;
+                    });
+                }
+            }
             else
             {
                 throw new SPMeta2UnsupportedModelHostException(string.Format("Model host of type: [{0}] is not supported", modelHost.GetType()));
-
             }
 
             TermExtensions.CurrentLCID = definition.LCID;
@@ -35,7 +58,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
                                  .ShouldNotBeNull(spObject)
-                                 //.ShouldBeEqual(m => m.Name, o => o.Name)
+                //.ShouldBeEqual(m => m.Name, o => o.Name)
                                  .ShouldBeEqual(m => m.Description, o => o.GetDefaultLCIDDescription());
 
             assert.SkipProperty(m => m.LCID, "LCID is not accessible from OM. Should be alright while provision.");
@@ -55,9 +78,6 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Taxonomy
                     IsValid = isValid
                 };
             });
-
-
-
 
             if (!string.IsNullOrEmpty(definition.CustomSortOrder))
                 assert.ShouldBeEqual(m => m.CustomSortOrder, o => o.CustomSortOrder);

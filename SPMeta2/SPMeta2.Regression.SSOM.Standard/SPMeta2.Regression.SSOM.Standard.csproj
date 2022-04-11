@@ -126,6 +126,8 @@
     <Compile Include="Extensions\PublishingPageLayoutItemExtensions.cs" />
     <Compile Include="Extensions\PublishingWebExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\DesignPackageDefinitionValidator.cs" />
+    <Compile Include="Validation\DocumentSetDefinitionValidator.cs" />
     <Compile Include="Validation\MetadataNavigationSettingsDefinitionValidator.cs" />
     <Compile Include="Validation\DisplayTemplates\FilterDisplayTemplateDefinitionValidator.cs" />
     <Compile Include="Validation\ManagedPropertyDefinitionValidator.cs" />
@@ -160,6 +162,9 @@
     <Compile Include="Validation\Taxonomy\TaxonomyGroupDefinitionValidator.cs" />
     <Compile Include="Validation\Taxonomy\TaxonomyStoreDefinitionValidator.cs" />
     <Compile Include="Validation\WebNavigationSettingsDefinitionValidator.cs" />
+    <Compile Include="Validation\ProfileTypePropertyValidator.cs" />
+    <Compile Include="Validation\CorePropertyValidator.cs" />
+    <Compile Include="Validation\Webparts\AdvancedSearchBoxValidator.cs" />
     <Compile Include="Validation\Webparts\CategoryWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\CommunityAdminWebPartValidator.cs" />
     <Compile Include="Validation\Webparts\CommunityJoinWebPartValidator.cs" />
@@ -216,6 +221,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

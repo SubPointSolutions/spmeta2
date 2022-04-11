@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
-using SPMeta2.CSOM.DefaultSyntax;
+
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Definitions.Fields;
@@ -15,6 +15,8 @@ using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Extensions;
 using SPMeta2.Syntax.Default.Modern;
+
+using SPMeta2.Regression.Tests.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 {
@@ -63,6 +65,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 {
                     def.LookupField = BuiltInInternalFieldNames.ID;
                     def.PrimaryLookupFieldId = lookupField.Id;
+                    def.AllowMultipleValues = lookupField.AllowMultipleValues;
                 });
 
             var dependentTitleLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
@@ -70,6 +73,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 {
                     def.LookupField = BuiltInInternalFieldNames.Title;
                     def.PrimaryLookupFieldId = lookupField.Id;
+                    def.AllowMultipleValues = lookupField.AllowMultipleValues;
                 });
 
             var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
@@ -168,6 +172,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 {
                     def.LookupField = BuiltInInternalFieldNames.ID;
                     def.PrimaryLookupFieldId = lookupField.Id;
+                    def.LookupWebId = lookupField.LookupWebId;
+                    def.LookupWebUrl = lookupField.LookupWebUrl;
+                    def.LookupList = lookupField.LookupList;
+                    def.LookupListTitle = lookupField.LookupListTitle;
+                    def.LookupListUrl = lookupField.LookupListUrl;
                 });
 
             var dependentTitleLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
@@ -175,6 +184,11 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
                 {
                     def.LookupField = BuiltInInternalFieldNames.Title;
                     def.PrimaryLookupFieldId = lookupField.Id;
+                    def.LookupWebId = lookupField.LookupWebId;
+                    def.LookupWebUrl = lookupField.LookupWebUrl;
+                    def.LookupList = lookupField.LookupList;
+                    def.LookupListTitle = lookupField.LookupListTitle;
+                    def.LookupListUrl = lookupField.LookupListUrl;
                 });
 
             var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
@@ -306,6 +320,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Fields.DependentLookupField.Scope")]
+        [ExpectedException(typeof(SPMeta2NotImplementedException))]
         public void CanDeploy_DependentLookupField_OnWeb()
         {
             throw new SPMeta2NotImplementedException("");
@@ -465,7 +480,87 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         [TestCategory("Regression.Scenarios.Fields.DependentLookupField.Scope")]
         public void CanDeploy_DependentLookupField_OnList()
         {
-            throw new SPMeta2NotImplementedException("");
+            var masterList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+            var childList = ModelGeneratorService.GetRandomDefinition<ListDefinition>();
+
+            var lookupField = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.ShowInNewForm = true;
+                def.ShowInDisplayForm = true;
+                def.ShowInEditForm = true;
+                def.ShowInListSettings = true;
+                def.ShowInViewForms = true;
+
+                def.Hidden = false;
+                def.Required = false;
+                def.AllowMultipleValues = false;
+
+#pragma warning disable 618
+                def.LookupListUrl = masterList.GetListUrl();
+#pragma warning restore 618
+            });
+
+            var dependentIdLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
+                def =>
+                {
+                    def.LookupField = BuiltInInternalFieldNames.ID;
+                    def.PrimaryLookupFieldId = lookupField.Id;
+                });
+
+            var dependentTitleLookupField = ModelGeneratorService.GetRandomDefinition<DependentLookupFieldDefinition>(
+                def =>
+                {
+                    def.LookupField = BuiltInInternalFieldNames.Title;
+                    def.PrimaryLookupFieldId = lookupField.Id;
+                });
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(masterList, list =>
+                {
+                    for (var i = 0; i < 10; i++)
+                    {
+                        list.AddListItem(new ListItemDefinition
+                        {
+                            Title = string.Format("master item {0} - {1}", i, Rnd.String())
+                        });
+                    }
+                });
+
+                web.AddList(childList, list =>
+                {
+                    list.AddField(lookupField);
+                });
+            });
+
+            TestModel(webModel);
+
+            // add dep field
+            var depWebModel = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(childList, list =>
+                {
+                    list.AddField(dependentIdLookupField);
+                    list.AddField(dependentTitleLookupField);
+
+                    list.AddListView(new ListViewDefinition
+                    {
+                        Title = "Test View",
+                        Fields = new Collection<string>
+                        {
+                            BuiltInInternalFieldNames.Edit,
+                            BuiltInInternalFieldNames.ID,
+                            BuiltInInternalFieldNames.Title,
+                            lookupField.InternalName,
+                            dependentIdLookupField.InternalName,
+                            dependentTitleLookupField.InternalName
+                        },
+                        IsDefault = true
+                    });
+                });
+            });
+
+            TestModel(depWebModel);
         }
 
         #endregion

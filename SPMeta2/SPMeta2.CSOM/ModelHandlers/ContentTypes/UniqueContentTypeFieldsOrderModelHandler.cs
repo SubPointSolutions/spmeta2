@@ -10,6 +10,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Definitions.ContentTypes;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
 {
@@ -28,7 +29,7 @@ namespace SPMeta2.CSOM.ModelHandlers.ContentTypes
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var contentTypeHost = modelHost.WithAssertAndCast<ModelHostContext>("model", value => value.RequireNotNull());
+            var contentTypeHost = modelHost.WithAssertAndCast<ContentTypeModelHost>("model", value => value.RequireNotNull());
             var contentTypeOrderDefinition = model.WithAssertAndCast<UniqueContentTypeFieldsOrderDefinition>("model", value => value.RequireNotNull());
 
             var contentType = ExtractContentTypeFromHost(modelHost);

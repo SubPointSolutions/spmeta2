@@ -42,8 +42,12 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                 // Improve CalculatedFieldDefinition with field ref check
                 // https://github.com/SubPointSolutions/spmeta2/issues/648
                 TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Updating formula for a CalculatedField. Ensure FieldReferences are correct.");
-             
+
                 typedField.Formula = typedFieldModel.Formula;
+
+                var dateFormatValue = (SPDateTimeFieldFormatType)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DateFormat);
+
+                typedField.DateFormat = dateFormatValue;
             }
 
             if (typedFieldModel.ShowAsPercentage.HasValue)
@@ -72,8 +76,14 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                 var formulaNode = new XElement(BuiltInFieldAttributes.Formula, typedFieldModel.Formula);
                 fieldTemplate.Add(formulaNode);
 
-                fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format,
-                    (int)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DateFormat));
+
+                // Format="0" when provisioning CalculatedField #969
+                // https://github.com/SubPointSolutions/spmeta2/issues/969
+
+                //fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format,
+                //    (int)Enum.Parse(typeof(SPDateTimeFieldFormatType), typedFieldModel.DateFormat));
+
+                fieldTemplate.SetAttribute(BuiltInFieldAttributes.Format, typedFieldModel.DateFormat);
             }
 
             if (typedFieldModel.ShowAsPercentage.HasValue)

@@ -11,15 +11,17 @@ using SPMeta2.Containers.Services;
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Services.Impl.Validation;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
     [TestClass]
-    public class DefaultRequiredPropertyValidationServiceTests : SPMeta2RegresionScenarioTestBase
+    public class DefaultRequiredPropertyValidationServiceTests : SPMeta2DefinitionRegresionTestBase
     {
         #region constructors
 
@@ -40,6 +42,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultRequiredPropertiesValidationService")]
+        [TestCategory("CI.Core")]
         public void ShouldPass_On_Valid_Field()
         {
             var model = SPMeta2Model.NewSiteModel(site =>
@@ -53,6 +56,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultRequiredPropertiesValidationService")]
+        [TestCategory("CI.Core")]
         public void ShouldFail_On_Invalid_Field_By_InternalName()
         {
             var isValid = false;
@@ -81,6 +85,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultRequiredPropertiesValidationService")]
+        [TestCategory("CI.Core")]
         public void ShouldFail_On_Invalid_Field_Twice()
         {
             var isValid = false;
@@ -111,7 +116,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
                 foreach (var ex in (e.InnerException as AggregateException).InnerExceptions
                                 .OfType<SPMeta2ModelValidationException>())
                 {
-                    Trace.WriteLine("Ex: " + ex.Message + " N:" + ex.Definition);
+                    RegressionUtils.WriteLine("Ex: " + ex.Message + " N:" + ex.Definition);
                 }
             }
 
@@ -121,6 +126,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultRequiredPropertiesValidationService")]
+        [TestCategory("CI.Core")]
         public void ShouldFail_On_Invalid_Field_By_Id()
         {
             var isValid = false;

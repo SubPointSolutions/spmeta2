@@ -47,18 +47,18 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WebPartDefinition>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.Id)
-                          .AddPropertyValue(p => p.ZoneId)
-                          .AddPropertyValue(p => p.ZoneIndex)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("Id", Id)
+                          .AddRawPropertyValue("ZoneId", ZoneId)
+                          .AddRawPropertyValue("ZoneIndex", ZoneIndex)
 
-                          .AddPropertyValue(p => p.WebpartFileName)
-                          .AddPropertyValue(p => p.WebpartType)
+                          .AddRawPropertyValue("WebpartFileName", WebpartFileName)
+                          .AddRawPropertyValue("WebpartType", WebpartType)
                 // TODO, this is too big to put into ToString()
-                //.AddPropertyValue(p => p.WebpartXmlTemplate)
+                //.AddRawPropertyValue("", WebpartXmlTemplate)
 
-                          .AddPropertyValue(p => p.AddToPageContent)
+                          .AddRawPropertyValue("AddToPageContent", AddToPageContent)
                           .ToString();
         }
 

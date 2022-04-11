@@ -87,13 +87,13 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<InformationRightsManagementSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.PolicyTitle)
-                          .AddPropertyValue(p => p.PolicyDescription)
-                          .AddPropertyValue(p => p.GroupName)
-                          .AddPropertyValue(p => p.AllowPrint)
-                          .AddPropertyValue(p => p.AllowScript)
-                          .AddPropertyValue(p => p.AllowWriteCopy)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("PolicyTitle", PolicyTitle)
+                          .AddRawPropertyValue("PolicyDescription", PolicyDescription)
+                          .AddRawPropertyValue("GroupName", GroupName)
+                          .AddRawPropertyValue("AllowPrint", AllowPrint)
+                          .AddRawPropertyValue("AllowScript", AllowScript)
+                          .AddRawPropertyValue("AllowWriteCopy", AllowWriteCopy)
                           .ToString();
         }
 

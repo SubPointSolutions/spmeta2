@@ -29,7 +29,7 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService
                        .NewAssert(definition, spObject)
                        .ShouldBeEqual(m => m.LCID, o => o.GetLCID());
-                 //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
+            //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
 
             // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
             CultureUtils.WithCulture(spObject.UICulture, () =>
@@ -175,6 +175,82 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
             else
                 assert.SkipProperty(m => m.IndexedPropertyKeys, "IndexedPropertyKeys is NULL or empty. Skipping.");
+
+
+            // O365 props
+            assert.SkipProperty(m => m.MembersCanShare, "Skipping O365 prop");
+            assert.SkipProperty(m => m.RequestAccessEmail, "Skipping O365 prop");
+
+            // safe check - if not then we'll get the following exception
+            // ---> System.InvalidOperationException: 
+            // You cannot set this property since the web does not have unique permissions.
+            if (definition.UseUniquePermission && spObject.HasUniqueRoleAssignments)
+            {
+                // AssociatedXXXGroupName
+                if (!string.IsNullOrEmpty(definition.AssociatedMemberGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedMemberGroupName);
+                        var isValid = s.AssociatedVisitorGroupName == d.AssociatedVisitorGroup.Name;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedMemberGroupName, "AssociatedMemberGroupName is null");
+
+                if (!string.IsNullOrEmpty(definition.AssociatedOwnerGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedOwnerGroupName);
+                        var isValid = s.AssociatedOwnerGroupName == d.AssociatedOwnerGroup.Name;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedOwnerGroupName, "AssociatedOwnerGroupName is null");
+
+
+                if (!string.IsNullOrEmpty(definition.AssociatedVisitorGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedVisitorGroupName);
+                        var isValid = s.AssociatedVisitorGroupName == d.AssociatedVisitorGroup.Name;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedVisitorGroupName, "AssociatedVisitorGroup is null");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.AssociatedVisitorGroupName, "AssociatedVisitorGroup is null");
+                assert.SkipProperty(m => m.AssociatedOwnerGroupName, "AssociatedOwnerGroupName is null");
+                assert.SkipProperty(m => m.AssociatedMemberGroupName, "AssociatedMemberGroupName is null");
+            }
         }
     }
 }

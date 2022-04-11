@@ -27,7 +27,7 @@ using SPMeta2.Exceptions;
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
-    public class BooleanFieldDefinitionTests : SPMeta2RegresionTestBase
+    public class BooleanFieldDefinitionTests : SPMeta2ProvisionRegresionTestBase
     {
         #region common
 

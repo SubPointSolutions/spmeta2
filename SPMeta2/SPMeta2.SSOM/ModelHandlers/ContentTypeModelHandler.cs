@@ -10,6 +10,7 @@ using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -53,10 +54,15 @@ namespace SPMeta2.SSOM.ModelHandlers
                     }
                     else
                     {
-                        action(targetContentType);
+                        action(ModelHostBase.Inherit<ContentTypeModelHost>(modelHost as ModelHostBase, host =>
+                        {
+                            host.HostContentType = targetContentType;
+                        }));
                     }
 
-                    targetContentType.Update(true);
+                    if (!targetContentType.ReadOnly)
+                        targetContentType.Update(true);
+
                     tmpRootWeb.Update();
                 }
             }
@@ -105,6 +111,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 // by ID, by Name
                 var targetContentType = tmpWeb.ContentTypes[contentTypeId];
 
+                // fallback to name
                 if (targetContentType == null)
                 {
                     targetContentType = tmpWeb.ContentTypes
@@ -176,6 +183,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     targetContentType.DocumentTemplate = processedDocumentTemplateUrl;
                 }
 
+                ProcessFormProperties(targetContentType, contentTypeModel);
                 ProcessLocalization(targetContentType, contentTypeModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -194,6 +202,27 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                 tmpWeb.Update();
             }
+        }
+
+        protected virtual void ProcessFormProperties(SPContentType targetContentType, ContentTypeDefinition contentTypeModel)
+        {
+            if (!string.IsNullOrEmpty(contentTypeModel.NewFormUrl))
+                targetContentType.NewFormUrl = contentTypeModel.NewFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.NewFormTemplateName))
+                targetContentType.NewFormTemplateName = contentTypeModel.NewFormTemplateName;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.EditFormUrl))
+                targetContentType.EditFormUrl = contentTypeModel.EditFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.EditFormTemplateName))
+                targetContentType.EditFormTemplateName = contentTypeModel.EditFormTemplateName;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DisplayFormUrl))
+                targetContentType.DisplayFormUrl = contentTypeModel.DisplayFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DisplayFormTemplateName))
+                targetContentType.DisplayFormTemplateName = contentTypeModel.DisplayFormTemplateName;
         }
 
         protected virtual void ProcessLocalization(SPContentType obj, ContentTypeDefinition definition)

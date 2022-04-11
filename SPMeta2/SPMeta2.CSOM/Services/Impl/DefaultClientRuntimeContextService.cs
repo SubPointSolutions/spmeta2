@@ -17,13 +17,22 @@ namespace SPMeta2.CSOM.Services.Impl
 
         public DefaultClientRuntimeContextService()
         {
-            ExecuteQueryDelayInMilliseconds = 1000;
+            // changes as per Microsoft recommendations
+            // https://msdn.microsoft.com/en-us/library/office/dn889829.aspx?f=255&MSPPError=-2147217396#BKMK_Bestpracticestohandlethrottling
+            // https://github.com/SubPointSolutions/spmeta2/issues/849
+            // https://www.yammer.com/spmeta2feedback/#/threads/show?threadId=725945901&messageId=725945901
 
-            ExecuteQueryRetryAttempts = 10;
-            ExecuteQueryRetryDelayMultiplier = 1.5;
+            // 5 re-try, 30 sec each and x2 backoff multiplier 
+
+            ExecuteQueryDelayInMilliseconds = 30000;
+
+            ExecuteQueryRetryAttempts = 5;
+            ExecuteQueryRetryDelayMultiplier = 2;
 
             InitAllowedStatusCodes();
             InitAllowedIISResetSocketStatusCodes();
+
+            Context2SharePointOnlineHash = new Dictionary<object, bool>();
         }
 
         private void InitAllowedIISResetSocketStatusCodes()
@@ -40,6 +49,23 @@ namespace SPMeta2.CSOM.Services.Impl
         #endregion
 
         #region properties
+
+
+
+        private RequireCSOMRuntimeVersionDeploymentService _assemblyVersionService;
+
+        protected virtual RequireCSOMRuntimeVersionDeploymentService AssemblyVersionService
+        {
+            get
+            {
+                if (_assemblyVersionService == null)
+                    _assemblyVersionService = new RequireCSOMRuntimeVersionDeploymentService();
+
+                return _assemblyVersionService;
+            }
+        }
+
+        protected Dictionary<object, bool> Context2SharePointOnlineHash { get; set; }
 
         public int ExecuteQueryDelayInMilliseconds { get; set; }
         public int ExecuteQueryRetryAttempts { get; set; }
@@ -64,6 +90,64 @@ namespace SPMeta2.CSOM.Services.Impl
         #endregion
 
         #region methods
+
+        protected virtual bool DetectSharePointOnlineContext(ClientRuntimeContext context)
+        {
+#if NET35
+            return false;
+#endif
+
+#if !NET35
+            // checking based on the current assembly version
+            // using hash to avoid performance degradation
+
+            if (!Context2SharePointOnlineHash.ContainsKey(context))
+            {
+                Context2SharePointOnlineHash.Add(context, false);
+
+                try
+                {
+                    // by assembly version
+                    var version = AssemblyVersionService.GetAssemblyFileVersion(context.GetType().Assembly);
+
+                    // 16.1.0.0 for SharePoint Online
+                    // 16.0.0.0 for SharePoint 2016, we should be safe
+                    // Major.Minor.Build.Revision
+                    // currrent assembly? at least 16 (O365 / SharePoint 2016)
+                    Context2SharePointOnlineHash[context] = version.Major == 16;
+
+                    // if we talk to SharePoint 2016 from old, SP2013 CSOM
+                    // SP2016 CSOM - taxonomy group cannot be found after provision #1103
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1103
+                    if (context.ServerLibraryVersion.Major == 16)
+                    {
+                        Context2SharePointOnlineHash[context] = version.Major == 16;
+                    }
+                }
+                catch (Exception e)
+                {
+                    // fallback 
+                    Context2SharePointOnlineHash[context] = context.Credentials is SharePointOnlineCredentials;
+                }
+            }
+
+            return Context2SharePointOnlineHash[context];
+#endif
+        }
+
+        /// <summary>
+        /// Detects if the context is SharePoint Online one.
+        /// Tries to detect the version of the assembly looking for 16.1, 
+        /// then fallaback to context.Credentials is SharePointOnlineCredentials
+        /// 
+        /// Returns false for the rest of the cases.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override bool IsSharePointOnlineContext(ClientRuntimeContext context)
+        {
+            return DetectSharePointOnlineContext(context);
+        }
 
         protected virtual void InternalExecuteQuery(ClientRuntimeContext context)
         {
@@ -120,6 +204,21 @@ namespace SPMeta2.CSOM.Services.Impl
 
         protected virtual bool ShouldRetryExecuteQuery(Exception ex)
         {
+            // R&D
+            // Fields provision seems to fail on O365 root site collection #885
+            // https://github.com/SubPointSolutions/spmeta2/issues/885
+
+            //if (ex.HResult == -2146233088)
+            //    return true;
+
+            if (ex.Message.Contains("Failed to read from or write to database"))
+            {
+                // Nested terms provisioning in Office 365 fails #995
+                // TermSet not found #994
+
+                return false;
+            }
+
             // O365 related handling
             if (IsAllowedHttpWebResponseStatusCode(ex))
                 return true;

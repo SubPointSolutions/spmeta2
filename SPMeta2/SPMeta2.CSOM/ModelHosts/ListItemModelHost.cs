@@ -18,5 +18,7 @@ namespace SPMeta2.CSOM.ModelHosts
         #endregion
 
         public List HostList { get; set; }
+
+        public bool IsSpecialFolderContext { get; set; }
     }
 }

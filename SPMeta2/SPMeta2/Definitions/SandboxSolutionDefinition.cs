@@ -54,10 +54,10 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SandboxSolutionDefinition>(this)
-                          .AddPropertyValue(p => p.FileName)
-                          .AddPropertyValue(p => p.SolutionId)
-                          .AddPropertyValue(p => p.Activate)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("FileName", FileName)
+                          .AddRawPropertyValue("SolutionId", SolutionId)
+                          .AddRawPropertyValue("Activate", Activate)
                           .ToString();
         }
 

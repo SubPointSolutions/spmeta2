@@ -9,6 +9,7 @@ using SPMeta2.Definitions.Base;
 using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -121,12 +122,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var modelHostWrapper = modelHost.WithAssertAndCast<ModelHostContext>("modelHost", value => value.RequireNotNull());
+            var modelHostWrapper = modelHost.WithAssertAndCast<ContentTypeModelHost>("modelHost", value => value.RequireNotNull());
             var contentTypeFieldLinkModel = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model", value => value.RequireNotNull());
 
             //var site = modelHostWrapper.Site;
-            var web = modelHostWrapper.Web;
-            var contentType = modelHostWrapper.ContentType;
+            var web = modelHostWrapper.HostWeb;
+            var contentType = modelHostWrapper.HostContentType;
 
             var context = contentType.Context;
 
@@ -173,6 +174,19 @@ namespace SPMeta2.CSOM.ModelHandlers
                 // https://officespdev.uservoice.com/forums/224641-general/suggestions/7024931-enhance-fieldlink-class-with-additional-properties
 
                 //   fieldLink.DisplayName = contentTypeFieldLinkModel.DisplayName;
+
+                // Enhance FieldLinkDefinition - DisplayName, ReadOnly, ShowInDisplayForm #892
+                // https://github.com/SubPointSolutions/spmeta2/issues/892
+                if (ReflectionUtils.HasProperty(fieldLink, "DisplayName"))
+                {
+                    if (!string.IsNullOrEmpty(contentTypeFieldLinkModel.DisplayName))
+                        ClientRuntimeQueryService.SetProperty(fieldLink, "DisplayName", contentTypeFieldLinkModel.DisplayName);
+                }
+                else
+                {
+                    TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have FieldLink.DisplayName. Update CSOM runtime to a new version. Provision is skipped");
+                }
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs

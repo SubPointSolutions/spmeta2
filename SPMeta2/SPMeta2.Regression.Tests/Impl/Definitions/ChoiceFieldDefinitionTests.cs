@@ -26,6 +26,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.ChoiceFieldDefinition")]
+        [TestCategory("CI.Core")]
         public void ChoiceFieldDefinition_ShoudHave_NotNollChoicesProperty()
         {
             var def = new ChoiceFieldDefinition();

@@ -53,7 +53,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         public override string ToString()
         {
-            return new ToStringResult<ItemDisplayTemplateDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
                           .ToString();
         }

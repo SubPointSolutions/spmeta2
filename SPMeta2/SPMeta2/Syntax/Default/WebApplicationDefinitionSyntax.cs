@@ -12,7 +12,8 @@ namespace SPMeta2.Syntax.Default
         IPropertyHostModelNode,
         IFeatureHostModelNode,
         IJobHostModelNode,
-        ISiteHostModelNode
+        ISiteHostModelNode,
+        IFarmSolutionModelHostNode
     {
 
     }
@@ -32,7 +33,7 @@ namespace SPMeta2.Syntax.Default
         {
             return model.AddTypedDefinitionNodeWithOptions(definition, action, ModelNodeOptions.New().NoSelfProcessing());
         }
-        
+
         #endregion
 
         #region methods

@@ -23,6 +23,9 @@ namespace SPMeta2.Regression.SSOM.Validation
             // TODO
             var assert = ServiceFactory.AssertService
                                        .NewAssert(definition, spObject);
+
+            assert.ShouldBeEqual(m => m.FileExtension, o => o.FileExtension);
+            assert.ShouldBeEqual(m => m.ProgId, o => o.ProgId);
         }
     }
 }

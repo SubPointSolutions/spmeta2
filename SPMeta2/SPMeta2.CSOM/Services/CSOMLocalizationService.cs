@@ -5,11 +5,14 @@ using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.Services.Impl;
 
 namespace SPMeta2.CSOM.Services
 {
     public class CSOMLocalizationService : LocalizationServiceBase
     {
+        #region methods
+
         public override void ProcessUserResource(object parentObject, object userResource, ValueForUICulture locValue)
         {
             var typedUserResource = userResource as ClientObject;
@@ -23,13 +26,11 @@ namespace SPMeta2.CSOM.Services
             var context = typedUserResource.Context;
             var cultureInfo = GetUserResourceCultureInfo(locValue);
 
-            var query = new ClientActionInvokeMethod(typedUserResource, "SetValueForUICulture", new object[]
-            {
-                        cultureInfo.Name, 
-                        locValue.Value,
-            });
+            var clientRuntimeQueryService = ServiceContainer.Instance.GetService<ClientRuntimeQueryServiceBase>() ?? new DefaultClientRuntimeQueryService();
 
-            context.AddQuery(query);
+            clientRuntimeQueryService.InvokeMethod(typedUserResource, "SetValueForUICulture", cultureInfo.Name, locValue.Value);
         }
+
+        #endregion
     }
 }

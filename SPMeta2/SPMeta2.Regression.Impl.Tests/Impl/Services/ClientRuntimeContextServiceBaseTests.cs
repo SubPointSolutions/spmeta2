@@ -8,6 +8,7 @@ using SPMeta2.Containers.Services.Rnd;
 using SPMeta2.CSOM.Services;
 using SPMeta2.CSOM.Services.Impl;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 
 namespace SPMeta2.Regression.Impl.Tests.Impl.Services
@@ -21,7 +22,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
     //}
 
     [TestClass]
-    public class ClientRuntimeContextServiceBaseTests : SPMeta2RegresionScenarioTestBase
+    public class ClientRuntimeContextServiceBaseTests : SPMeta2DefinitionRegresionTestBase
     {
         #region constructors
 
@@ -58,7 +59,27 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
+        public void ClientRuntimeContextService_Default_Throtting_Setting_As_Recommended()
+        {
+            // Align CSOM throttling setting with MS recommendations, open up API #849
+            // https://github.com/SubPointSolutions/spmeta2/issues/849
+
+            // https://msdn.microsoft.com/en-us/library/office/dn889829.aspx?f=255&MSPPError=-2147217396#BKMK_Bestpracticestohandlethrottling
+            // https://www.yammer.com/spmeta2feedback/#/threads/show?threadId=725945901&messageId=725945901
+
+            // expecting generic exception re-thrown
+            var service = new DefaultClientRuntimeContextService();
+
+            Assert.AreEqual(5, service.ExecuteQueryRetryAttempts);
+            Assert.AreEqual(30000, service.ExecuteQueryDelayInMilliseconds);
+            Assert.AreEqual(2, service.ExecuteQueryRetryDelayMultiplier);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
         [ExpectedException(typeof(SPMeta2NotImplementedException))]
+        [TestCategory("CI.Core")]
         public void ClientRuntimeContextService_Should_Survive_IISReset()
         {
             // TODO
@@ -68,6 +89,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
         public void Can_Create_ClientRuntimeContextService()
         {
             Assert.IsNotNull(new DefaultClientRuntimeContextService());
@@ -76,6 +98,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
         [ExpectedException(typeof(Exception))]
+        [TestCategory("CI.Core")]
         public void ClientRuntimeContextService_Should_Rethrow_GenericException()
         {
             // expecting generic exception re-thrown
@@ -91,6 +114,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
         public void ClientRuntimeContextService_Should_MakeNAttempts_And_ThrowException()
         {
             // expecting SPMeta2Exception AND currentReconnectCount == ExecuteQueryRetryAttempts
@@ -133,6 +157,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
         public void ClientRuntimeContextService_Should_SupportHttpStatuses()
         {
             // expecting SPMeta2Exception on known http statuses
@@ -177,6 +202,7 @@ namespace SPMeta2.Regression.Impl.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Impl.ClientRuntimeContextServiceBase")]
+        [TestCategory("CI.Core")]
         [ExpectedException(typeof(WebException))]
         public void ClientRuntimeContextService_Should_ThrowGenericException_On_UnsupportHttpStatuses()
         {

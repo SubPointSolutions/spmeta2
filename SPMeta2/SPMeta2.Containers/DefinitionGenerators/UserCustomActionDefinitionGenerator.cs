@@ -15,8 +15,13 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.Location = "ScriptLink";
                 def.ScriptSrc = "~site/style library/spmeta2.js";
                 def.Sequence = Rnd.Int(100);
-                def.Description = Rnd.String();
+
                 def.Group = Rnd.String();
+
+                // Breaking change: UserCustomAction without Title/Description breaks Translation Export #937
+                // https://github.com/SubPointSolutions/spmeta2/issues/937
+                def.Title = Rnd.String();
+                def.Description = Rnd.String();
             });
         }
     }

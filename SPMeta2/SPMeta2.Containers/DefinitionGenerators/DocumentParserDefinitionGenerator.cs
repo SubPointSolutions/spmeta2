@@ -19,7 +19,7 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 // TODO
 
                 def.FileExtension = Rnd.String(12);
-                def.ProgId = Rnd.String(12);
+                def.ProgId = "SharePoint.SPDocumentParser.OfficeParser";
             });
         }
     }

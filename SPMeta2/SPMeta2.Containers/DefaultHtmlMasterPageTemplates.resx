@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DesignManagerStarter" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;!--SPG:
+This HTML file has been associated with a SharePoint Master Page (.master file) carrying the same name.  While the files remain associated, you will not be allowed to edit the .master file, and any rename, move, or deletion operations will be reciprocated.
+To build the master page directly from this HTML file, simply edit the page as you normally would.  Use the Snippet Generator at http://sp2013/_layouts/15/ComponentHome.aspx?Url=http%3A%2F%2Fsp15%2F%5Fcatalogs%2Fmasterpage%2FStarterBranding%2FStarter%20DesignManager%2Emaster to create and customize useful SharePoint entities, then copy and paste them as HTML snippets into your HTML code.   All updates to this file will automatically sync to the associated Master Page.
+--&gt;
+&lt;!-- ==================================================================================================== --&gt;
+&lt;!-- STARTER INSTRUCTIONS: Be sure to replace "http://sp2013" with whatever your SharePoint server is named --&gt;
+&lt;!-- ==================================================================================================== --&gt;
+&lt;!DOCTYPE HTML[]&gt;
+&lt;html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"&gt;
+	&lt;head&gt;
+		&lt;!--SID:00 --&gt;
+		&lt;meta http-equiv="X-UA-Compatible" content="IE=10" /&gt;
+		&lt;meta charset="utf-8" /&gt;
+		&lt;meta name="GENERATOR" content="Microsoft SharePoint" /&gt;
+		&lt;meta http-equiv="Content-type" content="text/html; charset=utf-8" /&gt;
+		&lt;meta http-equiv="Expires" content="0" /&gt;
+
+		&lt;!-- ===== STARTER: Robots  =========================================================================================== --&gt;
+		&lt;!--SPM:&lt;SharePoint:RobotsMetaTag runat="server"/&gt;--&gt;
+
+		&lt;!-- ===== STARTER: Favicon / Windows Tile ======================================================================================== --&gt;	
+		&lt;!--MS:&lt;SharePoint:SPShortcutIcon runat="server" IconUrl="/_catalogs/masterpage/StarterBranding/favicon.ico"/&gt;--&gt;
+		&lt;!--MS:&lt;SharePoint:SPPinnedSiteTile runat="server" TileUrl="/_catalogs/masterpage/StarterBranding/metrotile.png" TileColor="#0072C6" /&gt;--&gt;
+
+		&lt;!-- ===== STARTER: Page Title loaded from page or page layout =========================================================================================== --&gt;
+		&lt;!--MS:&lt;SharePoint:PageTitle runat="server"&gt;--&gt;
+			&lt;!--SPM:&lt;asp:ContentPlaceHolder id="PlaceHolderPageTitle" runat="server"&gt;--&gt;
+				&lt;!--SPM:&lt;SharePoint:ProjectProperty Property="Title" runat="server"/&gt;--&gt;
+			&lt;!--SPM:&lt;/asp:ContentPlaceHolder&gt;--&gt;
+		&lt;!--ME:&lt;/SharePoint:PageTitle&gt;--&gt;
+
+		&lt;!-- ===== STARTER: SP Scripts and CSS  =========================================================================================== --&gt;
+		&lt;!--SPM:&lt;SharePoint:StartScript runat="server"/&gt;--&gt;
+		&lt;!--MS:&lt;SharePoint:CssLink runat="server" Version="15"&gt;--&gt;
+			&lt;!--PS: Start Preview--&gt;&lt;link href="http://sp2013/_layouts/15/1033/styles/Themable/corev15.css" rel="stylesheet" type="text/css" /&gt;&lt;link href="http://sp2013/_layouts/15/1033/styles/OLD/Themable/layouts.css" rel="stylesheet" type="text/css" /&gt;&lt;link href="http://sp2013/_layouts/15/1033/styles/Themable/searchv15.css" rel="stylesheet" type="text/css" /&gt;&lt;!--PE: End Preview--&gt;
+		&lt;!--ME:&lt;/SharePoint:CssLink&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:CacheManifestLink runat="server"/&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:PageRenderMode runat="server" RenderModeType="Standard"/&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:ScriptLink language="javascript" name="core.js" OnDemand="true" runat="server" Localizable="false"/&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:ScriptLink language="javascript" name="menu.js" OnDemand="true" runat="server" Localizable="false"/&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:ScriptLink language="javascript" name="callout.js" OnDemand="true" runat="server" Localizable="false"/&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:ScriptLink language="javascript" name="sharing.js" OnDemand="true" runat="server" Localizable="false"/&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:ScriptLink language="javascript" name="suitelinks.js" OnDemand="true" runat="server" Localizable="false"/&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:CustomJSUrl runat="server"/&gt;--&gt;
+		&lt;!--MS:&lt;SharePoint:SoapDiscoveryLink runat="server"&gt;--&gt;
+			&lt;!--PS: Start Preview--&gt;&lt;link href="http://sp2013/_vti_bin/spsdisco.aspx" rel="alternate" type="text/xml" /&gt;&lt;!--PE: End Preview--&gt;
+		&lt;!--ME:&lt;/SharePoint:SoapDiscoveryLink&gt;--&gt;
+
+		&lt;!-- ===== STARTER: Additional header placeholder - overridden by asp:content on pages or page layouts  =========================== --&gt;
+		&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderAdditionalPageHead" runat="server"/&gt;--&gt;
+		&lt;!--SPM:&lt;SharePoint:DelegateControl runat="server" ControlId="AdditionalPageHead" AllowMultipleControls="true"/&gt;--&gt;
+
+		&lt;!-- ===== STARTER: Core SharePoint CSS =========================================================================================== --&gt;
+		&lt;!--SPM:&lt;SharePoint:CssRegistration Name="Themable/corev15.css" runat="server"/&gt;--&gt;
+
+		&lt;!-- ===== STARTER: Custom CSS  =========================================================================================== --&gt;
+		&lt;link type="text/css" media="all" href="style.css" rel="Stylesheet" /&gt;
+
+		&lt;!--CS: ===== STARTER: Tells SharePoint this HTML is converted to Master  =========================================================================================== --&gt;&lt;!--CE: --&gt;
+		&lt;!--[if gte mso 9]&gt;&lt;xml&gt;
+			&lt;mso:CustomDocumentProperties&gt;
+			&lt;mso:ContentTypeId msdt:dt="string"&gt;0x0101000F1C8B9E0EB4BE489F09807B2C53288F0054AD6EF48B9F7B45A142F8173F171BD10003D357F861E29844953D5CAA1D4D8A3A&lt;/mso:ContentTypeId&gt;
+			&lt;mso:HtmlDesignAssociated msdt:dt="string"&gt;1&lt;/mso:HtmlDesignAssociated&gt;
+			&lt;mso:HtmlDesignFromMaster msdt:dt="string"&gt;http://sp2013/_catalogs/masterpage/StarterBranding/Starter DesignManager.html, http://sp2013/_catalogs/masterpage/StarterBranding/Starter DesignManager.html&lt;/mso:HtmlDesignFromMaster&gt;
+			&lt;mso:HtmlDesignConversionSucceeded msdt:dt="string"&gt;True&lt;/mso:HtmlDesignConversionSucceeded&gt;
+			&lt;mso:HtmlDesignStatusAndPreview msdt:dt="string"&gt;http://sp2013/_catalogs/masterpage/StarterBranding/Starter DesignManager.html, Conversion successful.&lt;/mso:HtmlDesignStatusAndPreview&gt;
+			&lt;mso:ContentType msdt:dt="string"&gt;Design File&lt;/mso:ContentType&gt;
+			&lt;/mso:CustomDocumentProperties&gt;
+		&lt;/xml&gt;&lt;![endif]--&gt;
+    &lt;/head&gt;
+
+    &lt;!-- ===== STARTER: SP IDs / Prefetch SP images / SP Form injected after BODY tag  =========================================================================================== --&gt;
+    &lt;body&gt;
+		&lt;!-- ===== STARTER: Ribbon Code Starts Here  =========================================================================================== --&gt;
+		&lt;!--SID:02 {Ribbon Snippet}--&gt;
+		&lt;!--PS: Start Preview--&gt;&lt;div class="DefaultContentBlock" style="background:rgb(0, 114, 198); color:white; width:100%; padding:8px; height:64px; overflow:hidden;"&gt;In true previews of your site, the SharePoint ribbon will be here.&lt;/div&gt;&lt;!--PE: End Preview--&gt;
+		&lt;!-- ===== STARTER: Ribbon Code Ends Here  =========================================================================================== --&gt;
+		
+		&lt;!-- ===== STARTER: Authentication / Login link hidden for everyone by anonymous users  =========================================================================================== --&gt;
+		&lt;!--SPM:&lt;%@Register Tagprefix="wssucw" TagName="Welcome" Src="~/_controltemplates/15/Welcome.ascx"%&gt;--&gt;
+		&lt;!--MS:&lt;SharePoint:SPSecurityTrimmedControl runat="server" AuthenticationRestrictions="AnonymousUsersOnly"&gt;--&gt;
+			&lt;!--MS:&lt;wssucw:Welcome runat="server" EnableViewState="false"&gt;--&gt;
+				&lt;!--PS: Start of READ-ONLY PREVIEW (do not modify)--&gt;&lt;span style="display:none"&gt;&lt;menu type="ServerMenu" id="zz1_ID_PersonalActionMenu" hideicons="true"&gt;&lt;menuitem id="zz2_ID_PersonalInformation" type="option" iconSrc="/_layouts/15/images/menuprofile.gif?rev=23" onMenuClick="javascript:GoToPage('\u002f_layouts\u002f15\u002fuserdisp.aspx?Force=True');return false;" description="Update your user information, language and regional settings, and alerts." menuGroupId="100"&gt;&lt;/menuitem&gt;&lt;menuitem id="zz3_ID_Logout" type="option" onMenuClick="STSNavigate2(event,'/_layouts/15/SignOut.aspx');" menuGroupId="100"&gt;&lt;/menuitem&gt;&lt;/menu&gt;&lt;/span&gt;&lt;span id="zz4_Menu_t" class="ms-menu-althov ms-welcome-root" title="Open Menu" onmouseover="MMU_PopMenuIfShowing(this);MMU_EcbTableMouseOverOut(this, true)" hoveractive="ms-menu-althov-active ms-welcome-root ms-welcome-hover" hoverinactive="ms-menu-althov ms-welcome-root" onclick=" CoreInvoke('MMU_Open',byid(''), MMU_GetMenuFromClientId('zz4_Menu'),event,true, null, 0); return false;" foa="MMU_GetMenuFromClientId('zz4_Menu')" oncontextmenu="ClkElmt(this); return false;" style="white-space:nowrap"&gt;&lt;a class="ms-core-menu-root" id="zz4_Menu" accesskey="/" href="javascript:;" title="Open Menu" onfocus="MMU_EcbLinkOnFocusBlur(byid(''), this, true);" onkeydown="MMU_EcbLinkOnKeyDown(byid(''), MMU_GetMenuFromClientId('zz4_Menu'), event);" onclick=" CoreInvoke('MMU_Open',byid(''), MMU_GetMenuFromClientId('zz4_Menu'),event,true, null, 0); return false;" oncontextmenu="ClkElmt(this); return false;" menutokenvalues="MENUCLIENTID=zz4_Menu,TEMPLATECLIENTID=zz1_ID_PersonalActionMenu" serverclientid="zz4_Menu"&gt;System Account&lt;span class="ms-accessible"&gt;Use SHIFT+ENTER to open the menu (new window).&lt;/span&gt;&lt;/a&gt;&lt;span style="height:4px;width:7px;position:relative;display:inline-block;overflow:hidden;" class="s4-clust ms-viewselector-arrow ms-menu-stdarw ms-core-menu-arrow"&gt;&lt;img src="http://sp2013/_layouts/15/images/spcommon.png?rev=23" alt="Open Menu" style="position:absolute;left:-95px !important;top:-259px !important;" /&gt;&lt;/span&gt;&lt;span style="height:4px;width:7px;position:relative;display:inline-block;overflow:hidden;" class="s4-clust ms-core-menu-arrow ms-viewselector-arrow ms-menu-hovarw"&gt;&lt;img src="http://sp2013/_layouts/15/images/spcommon.png?rev=23" alt="Open Menu" style="position:absolute;left:-86px !important;top:-259px !important;" /&gt;&lt;/span&gt;&lt;/span&gt;&lt;a id="ctl00_ExplicitLogin" Href="_controltemplates/15/http://sp2013/_layouts/15/Authenticate.aspx" style="display:none"&gt;Sign In&lt;/a&gt;&lt;!--PE: End of READ-ONLY PREVIEW--&gt;
+			&lt;!--ME:&lt;/wssucw:Welcome&gt;--&gt;
+		&lt;!--ME:&lt;/SharePoint:SPSecurityTrimmedControl&gt;--&gt;
+		
+		&lt;!-- ===== STARTER: SharePoint Reqs this for adding columns ===================================================== --&gt;
+		&lt;script type="text/javascript"&gt; var submitHook = function () { return false; }; theForm._spOldSubmit = theForm.submit; theForm.submit = function () { if (!submitHook()) { this._spOldSubmit(); } }; &lt;/script&gt;
+		
+		&lt;!-- ===== STARTER: Web Part Manager  ============================================================================================= --&gt;
+		&lt;!--SPM:&lt;WebPartPages:SPWebPartManager runat="server"/&gt;--&gt;
+		
+		&lt;!-- ===== STARTER: Main Scrolling Body Starts Here =========================================================================================== --&gt;
+		&lt;div id="s4-workspace"&gt;
+			&lt;div id="s4-bodyContainer"&gt;
+				&lt;!-- ===== STARTER: style.css adds width and margin =========================================================================================== --&gt;
+				&lt;div class="customWidth"&gt;
+
+					&lt;!-- ===== STARTER: SharePoint looks for this div ID s4-titlerow for the "Focus on Content" Button ======================== --&gt;
+					&lt;div id="s4-titlerow"&gt;
+
+						&lt;!-- ===== STARTER: Site Logo with link to root ======================================================================= --&gt;
+						&lt;div class="ms-dialogHidden"&gt;
+							&lt;!--MS:&lt;SharePoint:SPLinkButton runat="server" NavigateUrl="~sitecollection/"&gt;--&gt;
+								&lt;!--MS:&lt;SharePoint:SiteLogoImage ID="x63829de2201a4365a3904788f682d0a3" LogoImageUrl="/_catalogs/masterpage/StarterBranding/logo.png" AlternateText="Back to Home" runat="server"&gt;--&gt;
+									&lt;!--PS: Start of READ-ONLY PREVIEW (do not modify)--&gt;&lt;img id="ctl00_xbd7f64f0c043400890fd4017e8befe51" class="ms-siteicon-img" name="onetidHeadbnnr0" Src="http://sp2013/_layouts/15/images/siteIcon.png?rev=23" alt="Home" /&gt;&lt;!--PE: End of READ-ONLY PREVIEW--&gt;
+								&lt;!--ME:&lt;/SharePoint:SiteLogoImage&gt;--&gt;
+							&lt;!--ME:&lt;/SharePoint:SPLinkButton&gt;--&gt;
+						&lt;/div&gt;
+
+						&lt;!-- ===== STARTER: Global navigation =========================================================================================== --&gt;
+						&lt;div class="ms-dialogHidden"&gt;
+							&lt;!--SPM:&lt;%@Register TagPrefix="PublishingNavigation" Namespace="Microsoft.SharePoint.Publishing.Navigation" Assembly="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%&gt;--&gt;
+							&lt;div class="ms-displayInline ms-core-navigation ms-dialogHidden"&gt;
+								&lt;!--SPM:&lt;PublishingNavigation:PortalSiteMapDataSource ID="topSiteMap" runat="server" EnableViewState="false" SiteMapProvider="GlobalNavigationSwitchableProvider" StartFromCurrentNode="true" StartingNodeOffset="0" ShowStartingNode="false" TrimNonCurrentTypes="Heading"/&gt;--&gt;
+								&lt;!--MS:&lt;SharePoint:AspMenu ID="TopNavigationMenu" runat="server" EnableViewState="false" DataSourceID="topSiteMap" AccessKey="&amp;#60;%$Resources:wss,navigation_accesskey%&amp;#62;" UseSimpleRendering="true" UseSeparateCss="false" Orientation="Horizontal" StaticDisplayLevels="1" AdjustForShowStartingNode="false" MaximumDynamicDisplayLevels="1" SkipLinkText=""&gt;--&gt;
+									&lt;!--PS: Start of READ-ONLY PREVIEW (do not modify)--&gt;&lt;link rel="stylesheet" type="text/css" href="http://sp2013/_layouts/15/1033/styles/menu-21.css" /&gt;&lt;div id="zz7_TopNavigationMenu" class=" noindex ms-core-listMenu-horizontalBox"&gt;&lt;ul id="zz9_RootAspMenu" class="root ms-core-listMenu-root static"&gt;&lt;li class="static"&gt;&lt;a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" tabindex="0" href="#" accesskey="1"&gt;&lt;span class="additional-background ms-navedit-flyoutArrow"&gt;&lt;span class="menu-item-text"&gt;Fake Item&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;&lt;li class="static ms-verticalAlignTop ms-listMenu-editLink ms-navedit-editArea"&gt;&lt;span class="ms-navedit-editSpan" id="zz7_TopNavigationMenu_NavMenu_Edit"&gt;&lt;a id="zz7_TopNavigationMenu_NavMenu_EditLinks" class="ms-navedit-editLinksText" href="#" onclick="g_QuickLaunchMenu = null; EnsureScriptParams('quicklaunch.js', 'QuickLaunchInitEditMode', 'zz7_TopNavigationMenu', 2, 0, 0, ''); cancelDefault(event); return false;"&gt;&lt;span class="ms-displayInlineBlock"&gt;&lt;span class="ms-navedit-editLinksIconWrapper ms-verticalAlignMiddle"&gt;&lt;img class="ms-navedit-editLinksIcon" src="http://sp2013/_layouts/15/images/spcommon.png?rev=23" /&gt;&lt;/span&gt;&lt;span class="ms-metadata ms-verticalAlignMiddle"&gt;Edit Links&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;span id="zz7_TopNavigationMenu_NavMenu_Loading" class="ms-navedit-menuLoading ms-hide"&gt;&lt;a id="zz7_TopNavigationMenu_NavMenu_GearsLink" href="#" onclick="HideGears(); return false;" title="This animation indicates the operation is in progress. Click to remove this animated image."&gt;&lt;img id="zz7_TopNavigationMenu_NavMenu_GearsImage" src="http://sp2013/_layouts/15/images/loadingcirclests16.gif?rev=23" /&gt;&lt;/a&gt;&lt;/span&gt;&lt;div id="zz7_TopNavigationMenu_NavMenu_ErrorMsg" class="ms-navedit-errorMsg"&gt;&lt;/div&gt;&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;!--PE: End of READ-ONLY PREVIEW--&gt;
+								&lt;!--ME:&lt;/SharePoint:AspMenu&gt;--&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+
+						&lt;!-- ===== STARTER: Search Control ==================================================================================== --&gt;
+						&lt;div class="ms-dialogHidden"&gt;
+							&lt;!--SPM:&lt;%@Register Tagprefix="SearchWC" Namespace="Microsoft.Office.Server.Search.WebControls" Assembly="Microsoft.Office.Server.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"%&gt;--&gt;
+							&lt;!--MS:&lt;SearchWC:SearchBoxScriptWebPart UseSiteCollectionSettings="true" EmitStyleReference="false" ShowQuerySuggestions="false" ChromeType="None" UseSharedSettings="true" TryInplaceQuery="false" ServerInitialRender="true" runat="server"&gt;--&gt;
+								&lt;!--PS: Start of READ-ONLY PREVIEW (do not modify)--&gt;&lt;div class="ms-webpart-chrome ms-webpart-chrome-fullWidth "&gt;&lt;div WebPartID="00000000-0000-0000-0000-000000000000" HasPers="true" id="WebPart" width="100%" class="ms-WPBody noindex " OnlyForMePart="true" allowDelete="false" style=""&gt;&lt;div componentid="ctl00_ctl03_csr" id="ctl00_ctl03_csr"&gt;&lt;div id="SearchBox" name="Control"&gt;&lt;div class="ms-srch-sb ms-srch-sb-border" id="ctl00_ctl03_csr_sboxdiv"&gt;&lt;input type="text" value="Search..." maxlength="2048" accessKey="S" title="Search..." id="ctl00_ctl03_csr_sbox" autocomplete="off" autocorrect="off" onkeypress="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {if (Srch.U.isEnterKey(String.fromCharCode(event.keyCode))) {$find('ctl00_ctl03_csr').search($get('ctl00_ctl03_csr_sbox').value);return Srch.U.cancelEvent(event);}})" onkeydown="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {var ctl = $find('ctl00_ctl03_csr');ctl.activateDefaultQuerySuggestionBehavior();})" onfocus="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {var ctl = $find('ctl00_ctl03_csr');ctl.hidePrompt();ctl.setBorder(true);})" onblur="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {var ctl = $find('ctl00_ctl03_csr'); if (ctl){ ctl.showPrompt(); ctl.setBorder(false);}})" class="ms-textSmall ms-srch-sb-prompt ms-helperText" /&gt;&lt;a title="Search" class="ms-srch-sb-searchLink" id="ctl00_ctl03_csr_SearchLink" onclick="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {$find('ctl00_ctl03_csr').search($get('ctl00_ctl03_csr_sbox').value);})" href="javascript: {}"&gt;&lt;img src="http://sp2013/_layouts/15/images/searchresultui.png?rev=23" class="ms-srch-sb-searchImg" id="searchImg" alt="Search" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;noscript&gt;&lt;div id="ctl00_ctl03_noscript"&gt;It looks like your browser does not have JavaScript enabled. Please turn on JavaScript and try again.&lt;/div&gt;&lt;/noscript&gt;&lt;div id="ctl00_ctl03"&gt;&lt;/div&gt;&lt;div class="ms-clear"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;!--PE: End of READ-ONLY PREVIEW--&gt;
+							&lt;!--ME:&lt;/SearchWC:SearchBoxScriptWebPart&gt;--&gt;
+						&lt;/div&gt;
+
+						&lt;!-- ===== STARTER: Breadcrumbs ======================================================================================= --&gt;
+						&lt;div class="ms-dialogHidden"&gt;
+							&lt;h1 id="pageTitle" class="ms-core-pageTitle"&gt;
+								&lt;!-- ===== STARTER: Needed for Adding Apps from Site Contents ======================================================================================= --&gt;
+								&lt;!--SPM:&lt;SharePoint:AjaxDelta id="DeltaPlaceHolderPageTitleInTitleArea" runat="server"&gt;--&gt;
+								&lt;!--SPM:&lt;asp:ContentPlaceHolder id="PlaceHolderPageTitleInTitleArea" runat="server"&gt;--&gt;
+									&lt;!--SPM:&lt;SharePoint:SPTitleBreadcrumb runat="server" RenderCurrentNodeAsLink="true" SiteMapProvider="SPContentMapProvider" CentralAdminSiteMapProvider="SPXmlAdminContentMapProvider"&gt;--&gt;
+										&lt;!--SPM:&lt;PATHSEPARATORTEMPLATE&gt;--&gt;
+											&lt;!--SPM:&lt;SharePoint:ClusteredDirectionalSeparatorArrow runat="server"/&gt;--&gt;
+										&lt;!--SPM:&lt;/PATHSEPARATORTEMPLATE&gt;--&gt;
+									&lt;!--SPM:&lt;/SharePoint:SPTitleBreadcrumb&gt;--&gt;
+								&lt;!--SPM:&lt;/asp:ContentPlaceHolder&gt;--&gt;
+								&lt;!--SPM:&lt;/SharePoint:AjaxDelta&gt;--&gt;	
+								&lt;div class="ms-displayInlineBlock ms-normalWrap"&gt;
+									&lt;a href="javascript:;" id="ms-pageDescriptionDiv" style="display:none;"&gt;
+										&lt;span id="ms-pageDescriptionImage"&gt;&amp;#160;&lt;/span&gt;
+									&lt;/a&gt;
+									&lt;span class="ms-accessible" id="ms-pageDescription"&gt;
+										&lt;!--SPM:&lt;asp:ContentPlaceHolder id="PlaceHolderPageDescription" runat="server"/&gt;--&gt;
+									&lt;/span&gt;
+									&lt;!--SPM:&lt;SharePoint:ScriptBlock runat="server"&gt;--&gt;
+										&lt;!--SPM:_spBodyOnLoadFunctionNames.push("setupPageDescriptionCallout");--&gt;
+									&lt;!--SPM:&lt;/SharePoint:ScriptBlock&gt;--&gt;
+								&lt;/div&gt;
+							&lt;/h1&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+
+				&lt;!-- ===== STARTER: Body Area (includes left nav and body) ==================================================================== --&gt;
+					&lt;!-- ===== STARTER: Current navigation =========================================================================================== --&gt;
+					&lt;div id="sideNavBox" class="ms-dialogHidden ms-forceWrap ms-noList"&gt;
+						&lt;div class="ms-core-navigation"&gt;
+							&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderLeftNavBar" runat="server"&gt;--&gt;
+								&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderLeftNavBarTop" runat="server"&gt;--&gt;
+									&lt;!-- ===== STARTER: hide the quick launch for any page the doesn't override the PlaceHolderLeftNavBar ============ --&gt;
+									&lt;!-- ===== STARTER: if you want the navigation back you can add it from the collab master ============ --&gt;
+									&lt;!--SPM:&lt;style type="text/css"&gt;//&lt;![CDATA[--&gt;
+										&lt;!--SPM:#contentBox { margin-left: 0; }--&gt;
+										&lt;!--SPM:#sideNavBox { display: none; }--&gt;
+									&lt;!--SPM://]]&gt;&lt;/style&gt;--&gt;
+								&lt;!--SPM:&lt;/asp:ContentPlaceHolder&gt;--&gt;
+								&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderQuickLaunchTop" runat="server"/&gt;--&gt;
+								&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderLeftNavBarDataSource" runat="server"/&gt;--&gt;
+								&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderCalendarNavigator" runat="server"/&gt;--&gt;
+								&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderLeftActions" runat="server"/&gt;--&gt;
+								&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderQuickLaunchBottom" runat="server"/&gt;--&gt;
+							&lt;!--SPM:&lt;/asp:ContentPlaceHolder&gt;--&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+
+					&lt;!-- ===== STARTER: Main Content ========================================================================================== --&gt;
+					&lt;div id="contentBox"&gt;
+						&lt;!-- ===== STARTER: Main Placeholder gets replaced with content of the page ======================================= --&gt;
+						&lt;!--SPM:&lt;SharePoint:AjaxDelta ID="DeltaPlaceHolderMain" IsMainContent="true" runat="server"&gt;--&gt;
+							&lt;!--SPM:&lt;asp:ContentPlaceHolder ID="PlaceHolderMain" runat="server"/&gt;--&gt;
+						&lt;!--SPM:&lt;/SharePoint:AjaxDelta&gt;--&gt;
+					&lt;/div&gt;
+
+					&lt;div style="clear:both;" /&gt;
+					&lt;div class="ms-dialogHidden"&gt;
+						&amp;copy;Copyright 2012 StarterBranding
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;!-- ===== STARTER: Main Scrolling Body Ends Here ================================================================================= --&gt;
+		&lt;!-- ===== STARTER: Form Digest, Form Close Tag, and Hidden Placeholders are all added below this =========================================================================================== --&gt;
+	&lt;/body&gt;
+	&lt;!-- Created from Starter SP2013 Master Page originally by Randy Drisgill (http://blog.drisgill.com) - April 21, 2013 --&gt;
+&lt;/html&gt;</value>
+  </data>
+</root>

@@ -7,7 +7,7 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers.Fields
 {
-    public class OutcomeChoiceFieldModelHandler : FieldModelHandler
+    public class OutcomeChoiceFieldModelHandler : ChoiceFieldModelHandler
     {
         #region properties
 

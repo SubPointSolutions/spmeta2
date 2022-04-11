@@ -12,6 +12,7 @@ using SPMeta2.Utils;
 
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Services;
+using Microsoft.SharePoint.Client.Utilities;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -21,6 +22,8 @@ namespace SPMeta2.Regression.CSOM.Validation
         {
             if (modelHost is WebModelHost)
                 CurrentClientContext = (modelHost as WebModelHost).HostClientContext;
+            
+            CurrentModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
 
             var definition = model.WithAssertAndCast<QuickLaunchNavigationNodeDefinition>("model", value => value.RequireNotNull());
 
@@ -36,17 +39,20 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var context = spObject.Context;
 
+            assert.SkipProperty(m => m.Properties, "Skipping. Not supported by CSOM API");
+
             assert.ShouldBeEqual((p, s, d) =>
             {
                 var srcProp = s.GetExpressionValue(def => def.Url);
                 var dstProp = d.GetExpressionValue(ct => ct.Url);
 
-                var srcUrl = s.Url;
+                var srcUrl = ResolveTokenizedUrl(CurrentModelHost, definition); ;
                 var dstUrl = d.Url;
 
-                srcUrl = ResolveTokenizedUrl(CurrentClientContext, definition);
+                srcUrl = HttpUtility.UrlKeyValueDecode(srcUrl);
+                dstUrl = HttpUtility.UrlKeyValueDecode(dstUrl);
 
-                var isValid = d.Url.ToUpper().EndsWith(srcUrl.ToUpper());
+                var isValid = dstUrl.ToUpper().EndsWith(srcUrl.ToUpper());
 
                 return new PropertyValidationResult
                 {

@@ -53,10 +53,10 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<BreakRoleInheritanceDefinition>(this)
-                          .AddPropertyValue(p => p.CopyRoleAssignments)
-                          .AddPropertyValue(p => p.ClearSubscopes)
-                          .AddPropertyValue(p => p.ForceClearSubscopes)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("CopyRoleAssignments", CopyRoleAssignments)
+                          .AddRawPropertyValue("ClearSubscopes", ClearSubscopes)
+                          .AddRawPropertyValue("ForceClearSubscopes", ForceClearSubscopes)
                           .ToString();
         }
 

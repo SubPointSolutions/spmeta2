@@ -21,6 +21,8 @@ namespace SPMeta2.CSOM.ModelHosts
         //public List List { get; set; }
         //public Web Web { get; set; }
 
+        public bool IsSpecialFolderContext { get; set; }
+
         #endregion
     }
 }

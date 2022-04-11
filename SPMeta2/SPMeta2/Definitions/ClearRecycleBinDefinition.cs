@@ -64,11 +64,11 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ClearRecycleBinDefinition>(this)
-                          .AddPropertyValue(p => p.RestoreAll)
-                          .AddPropertyValue(p => p.DeleteAll)
-                          .AddPropertyValue(p => p.MoveAllToSecondStage)
-                          .AddPropertyValue(p => p.DeleteAllInSecondStage)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("RestoreAll", RestoreAll)
+                          .AddRawPropertyValue("DeleteAll", DeleteAll)
+                          .AddRawPropertyValue("MoveAllToSecondStage", MoveAllToSecondStage)
+                          .AddRawPropertyValue("DeleteAllInSecondStage", DeleteAllInSecondStage)
                           .ToString();
         }
 

@@ -117,9 +117,9 @@ namespace SPMeta2.Regression.CSOM.Standard.Extensions
             var value = ConvertUtils.ToString(PageLayoutAndSiteTemplateSettingsModelHandler.GetPropertyBagValue(web, "__PageLayouts"));
 
             if (string.IsNullOrEmpty(value))
-                return false;
+                return true;
 
-            return value.ToUpper() == string.Empty;
+            return false;
         }
 
         public static bool GetInheritingAvailablePageLayouts(this Web web)

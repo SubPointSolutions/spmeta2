@@ -46,10 +46,10 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SecureStoreApplicationDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Id)
-                          .AddPropertyValue(p => p.UseDefault)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Id", Id)
+                          .AddRawPropertyValue("UseDefault", UseDefault)
 
                           .ToString();
         }

@@ -49,7 +49,7 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ListItemFieldValuesDefinition>(this)
+            return new ToStringResultRaw()
                           .ToString();
         }
 

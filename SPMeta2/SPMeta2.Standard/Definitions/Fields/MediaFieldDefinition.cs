@@ -24,7 +24,7 @@ namespace SPMeta2.Standard.Definitions.Fields
 
     [Serializable]
     [DataContract]
-   // [ExpectWithExtensionMethod]
+    // [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
 
     [ExpectManyInstances]
@@ -70,7 +70,7 @@ namespace SPMeta2.Standard.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<MediaFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
                           .ToString();
         }

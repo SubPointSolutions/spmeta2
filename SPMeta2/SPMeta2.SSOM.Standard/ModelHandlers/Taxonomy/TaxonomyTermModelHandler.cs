@@ -182,20 +182,80 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             if (termModel.IsAvailableForTagging.HasValue)
                 currentTerm.IsAvailableForTagging = termModel.IsAvailableForTagging.Value;
 
+            UpdateTermProperties(currentTerm, termModel, false);
+            UpdateTermProperties(currentTerm, termModel, true);
+        }
+
+        private void UpdateTermProperties(Term currentTerm, TaxonomyTermDefinition termModel, bool isLocalProperties)
+        {
 #if !NET35
-            foreach (var customProp in termModel.CustomProperties.Where(p => p.Override))
+            // TaxonomyTermCustomProperty.Overwrite set to false - No properties are created. #932
+            // https://github.com/SubPointSolutions/spmeta2/issues/932
+
+            // 1 - set everything what is not there
+            var srcProperties = termModel.CustomProperties;
+            var dstProperties = currentTerm.CustomProperties;
+
+            if (isLocalProperties)
             {
-                currentTerm.SetCustomProperty(customProp.Name, customProp.Value);
+                TraceService.Information((int)LogEventId.ModelProvision, "Processing local custom properties");
+
+                srcProperties = termModel.LocalCustomProperties;
+                dstProperties = currentTerm.LocalCustomProperties;
+            }
+            else
+            {
+                TraceService.Information((int)LogEventId.ModelProvision, "Processing custom properties");
+
+                srcProperties = termModel.CustomProperties;
+                dstProperties = currentTerm.CustomProperties;
+            }
+
+            foreach (var prop in srcProperties)
+            {
+                var propName = prop.Name;
+                var propValue = prop.Value;
+
+
+                var propExist = dstProperties.Keys
+                                             .FirstOrDefault(k => k.ToUpper() == propName.ToUpper())
+                                             != null;
+
+                if (!propExist)
+                {
+                    TraceService.Information((int)LogEventId.ModelProvision,
+                                string.Format("Property [{0}] does not exist. Adding with value:[{1}]",
+                                new object[] { prop.Name, prop.Value }));
+
+                    if (isLocalProperties)
+                        currentTerm.SetLocalCustomProperty(propName, propValue);
+                    else
+                        currentTerm.SetCustomProperty(propName, propValue);
+                }
+                else
+                {
+                    TraceService.Information((int)LogEventId.ModelProvision,
+                                string.Format("Property [{0}] exists. No need to add it. Optionally, it will be owerwritten if .Override is set 'true'",
+                                new object[] { propName, propValue }));
+                }
+            }
+
+            // 2 - override as needed
+            foreach (var prop in srcProperties.Where(p => p.Override))
+            {
+                var propName = prop.Name;
+                var propValue = prop.Value;
+
+                TraceService.Information((int)LogEventId.ModelProvision,
+                                string.Format("Overwriting property [{0}] with value:[{1}] as .Override is set 'true'",
+                                new object[] { propName, propValue }));
+
+                if (isLocalProperties)
+                    currentTerm.SetLocalCustomProperty(propName, propValue);
+                else
+                    currentTerm.SetCustomProperty(propName, propValue);
             }
 #endif
-
-#if !NET35
-            foreach (var customProp in termModel.LocalCustomProperties.Where(p => p.Override))
-            {
-                currentTerm.SetLocalCustomProperty(customProp.Name, customProp.Value);
-            }
-#endif
-
         }
 
         private void DeployTermUnderTermSet(object modelHost, TermSetModelHost groupModelHost, TaxonomyTermDefinition termModel)

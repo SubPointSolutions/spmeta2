@@ -24,40 +24,115 @@ namespace SPMeta2.Services.Impl
 
         public TraceSource TraceSource;
 
+        public override bool IsCriticalEnabled
+        {
+            get
+            {
+                return ((TraceSource.Switch.Level & SourceLevels.Critical) == SourceLevels.Critical);
+            }
+            set
+            {
+
+            }
+        }
+
+        public override bool IsErrorEnabled
+        {
+            get
+            {
+                return ((TraceSource.Switch.Level & SourceLevels.Error) == SourceLevels.Error);
+            }
+            set
+            {
+
+            }
+        }
+
+        public override bool IsInformationEnabled
+        {
+            get
+            {
+                return ((TraceSource.Switch.Level & SourceLevels.Information) == SourceLevels.Information);
+            }
+            set
+            {
+
+            }
+        }
+
+        public override bool IsVerboseEnabled
+        {
+            get
+            {
+                return ((TraceSource.Switch.Level & SourceLevels.Verbose) == SourceLevels.Verbose);
+            }
+            set
+            {
+
+            }
+        }
+
+        public override bool IsWarningEnabled
+        {
+            get
+            {
+                return ((TraceSource.Switch.Level & SourceLevels.Warning) == SourceLevels.Warning);
+            }
+            set
+            {
+
+            }
+        }
+
         #endregion
 
         #region methods
 
         public override void Critical(int id, object message, Exception exception)
         {
-            TraceEvent(id, TraceEventType.Critical, message, exception);
+            if (IsCriticalEnabled)
+            {
+                TraceEvent(id, TraceEventType.Critical, message, exception);
+            }
         }
 
         public override void Error(int id, object message, Exception exception)
         {
-            TraceEvent(id, TraceEventType.Error, message, exception);
+            if (IsErrorEnabled)
+            {
+                TraceEvent(id, TraceEventType.Error, message, exception);
+            }
         }
 
         public override void Warning(int id, object message, Exception exception)
         {
-            TraceEvent(id, TraceEventType.Warning, message, exception);
+            if (IsWarningEnabled)
+            {
+                TraceEvent(id, TraceEventType.Warning, message, exception);
+            }
         }
 
         public override void Information(int id, object message, Exception exception)
         {
-            TraceEvent(id, TraceEventType.Information, message, exception);
+            if (IsInformationEnabled)
+            {
+                TraceEvent(id, TraceEventType.Information, message, exception);
+            }
         }
 
         public override void Verbose(int id, object message, Exception exception)
         {
-            TraceEvent(id, TraceEventType.Verbose, message, exception);
+            if (IsVerboseEnabled)
+            {
+                TraceEvent(id, TraceEventType.Verbose, message, exception);
+            }
         }
 
         #endregion
 
         #region utils
 
-        protected virtual void TraceEvent(int id, TraceEventType messageType, object message, Exception exception)
+        protected virtual string GetTraceEventString(int id, TraceEventType messageType, object message, Exception exception)
         {
             var traceString = string.Empty;
             var messageString = message == null ? string.Empty : message.ToString();
@@ -81,11 +156,27 @@ namespace SPMeta2.Services.Impl
                 traceString = string.Format("{0}", subMessage);
             }
 
+            return traceString;
+        }
+
+        protected virtual void TraceEvent(int id, TraceEventType messageType, object message, Exception exception)
+        {
+            var traceString = GetTraceEventString(id, messageType, message, exception);
+
             TraceSource.TraceEvent(messageType, id, traceString);
-            TraceSource.Flush();
+
+            if (AutoFlush)
+            {
+                TraceSource.Flush();
+            }
         }
 
         #endregion
+
+        public override void Flush()
+        {
+            TraceSource.Flush();
+        }
 
         public override void TraceActivityStart(int id, object message)
         {

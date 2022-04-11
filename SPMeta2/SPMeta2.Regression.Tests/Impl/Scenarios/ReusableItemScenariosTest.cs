@@ -41,11 +41,24 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.ReusableItems")]
         public void CanDeploy_ReusableItemsToList()
         {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+            });
+
             var reusableHtml = ModelGeneratorService.GetRandomDefinition<ReusableHTMLItemDefinition>();
             var reusableText = ModelGeneratorService.GetRandomDefinition<ReusableTextItemDefinition>();
 
             var model = SPMeta2Model.NewWebModel(web =>
             {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
                 web.AddHostList(BuiltInListDefinitions.ReusableContent, list =>
                 {
                     list.AddReusableHTMLItem(reusableHtml);
@@ -53,18 +66,31 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ReusableItems")]
         public void CanDeploy_ReusableItemsToFolder()
         {
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddSiteFeature(BuiltInSiteFeatures.SharePointServerPublishingInfrastructure.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+            });
+
             var reusableHtml = ModelGeneratorService.GetRandomDefinition<ReusableHTMLItemDefinition>();
             var reusableText = ModelGeneratorService.GetRandomDefinition<ReusableTextItemDefinition>();
 
             var model = SPMeta2Model.NewWebModel(web =>
             {
+                web.AddWebFeature(BuiltInWebFeatures.SharePointServerPublishing.Inherit(def =>
+                {
+                    def.Enable = true;
+                }));
+
                 web.AddHostList(BuiltInListDefinitions.ReusableContent, list =>
                 {
                     list.AddRandomFolder(folder =>
@@ -75,7 +101,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 });
             });
 
-            TestModel(model);
+            TestModel(siteModel, model);
         }
 
         #endregion

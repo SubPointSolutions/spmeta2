@@ -28,6 +28,16 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
     public class ContentByQueryWebPartDefinition : WebPartDefinition
     {
+        #region constructor
+
+        public ContentByQueryWebPartDefinition()
+        {
+            ItemStyle = "Default";
+            GroupStyle = "DefaultHeader";
+        }
+
+        #endregion
+
         #region properties
 
         [DataMember]
@@ -57,7 +67,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         [DataMember]
         [ExpectValidation]
-        //[ExpectUpdate]
+        [ExpectUpdate]
         public bool? UseCopyUtil { get; set; }
 
         [DataMember]
@@ -72,6 +82,10 @@ namespace SPMeta2.Standard.Definitions.Webparts
         [DataMember]
         [ExpectValidation]
         public string WebUrl { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public Guid? WebId { get; set; }
 
         [DataMember]
         [ExpectValidation]
@@ -221,6 +235,15 @@ namespace SPMeta2.Standard.Definitions.Webparts
         public string GroupByDirection { get; set; }
 
         [DataMember]
+        [ExpectValidation]
+        public string GroupBy { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        [ExpectUpdateAsIntRange(MinValue = 1, MaxValue = 10)]
+        public int? DisplayColumns { get; set; }
+
+        [DataMember]
         public bool? Filter1IsCustomValue { get; set; }
 
         [DataMember]
@@ -235,22 +258,22 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<ContentByQueryWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.DataMappings)
-                          .AddPropertyValue(p => p.DataMappingViewFields)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("DataMappings", DataMappings)
+                          .AddRawPropertyValue("DataMappingViewFields", DataMappingViewFields)
 
-                          .AddPropertyValue(p => p.ItemLimit)
+                          .AddRawPropertyValue("ItemLimit", ItemLimit)
 
-                          .AddPropertyValue(p => p.WebUrl)
-                          .AddPropertyValue(p => p.ListGuid)
-                          .AddPropertyValue(p => p.ListName)
-                          .AddPropertyValue(p => p.ListUrl)
+                          .AddRawPropertyValue("WebUrl", WebUrl)
+                          .AddRawPropertyValue("ListGuid", ListGuid)
+                          .AddRawPropertyValue("ListName", ListName)
+                          .AddRawPropertyValue("ListUrl", ListUrl)
 
-                          .AddPropertyValue(p => p.ItemStyle)
-                          .AddPropertyValue(p => p.GroupStyle)
+                          .AddRawPropertyValue("ItemStyle", ItemStyle)
+                          .AddRawPropertyValue("GroupStyle", GroupStyle)
 
-                          .AddPropertyValue(p => p.MainXslLink)
-                          .AddPropertyValue(p => p.ItemXslLink)
+                          .AddRawPropertyValue("MainXslLink", MainXslLink)
+                          .AddRawPropertyValue("ItemXslLink", ItemXslLink)
 
                           .ToString();
         }

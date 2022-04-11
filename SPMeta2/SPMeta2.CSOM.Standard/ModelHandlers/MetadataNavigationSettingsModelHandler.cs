@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Common;
+using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.CSOM.Standard.Config;
@@ -40,6 +41,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
         private void DeploySettings(object modelHost, ListModelHost listHost, MetadataNavigationSettingsDefinition definition)
         {
             var list = listHost.HostList;
+            var context = list.Context;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -57,6 +59,12 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             // deploy
             var settings = GetCurrentSettings(list);
 
+            // MetadataNavigationSettings Hierarchy missing Folders field #1064
+            // https://github.com/SubPointSolutions/spmeta2/issues/1064
+            // always ensure a top level NavigationHierarchies->FolderHierarchy->HideFoldersNode=false
+
+            settings.EnsureDefaultFolderHierarchyNode();
+
             if (definition.Hierarchies.Count() > 0)
             {
                 foreach (var h in definition.Hierarchies)
@@ -65,7 +73,16 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     {
                         var targetField = list.Fields.GetById(h.FieldId.Value);
 
-                        settings.AddConfiguredHierarchy(new MetadataNavigationHierarchyConfig(targetField.Id));
+                        context.Load(targetField);
+                        context.ExecuteQueryWithTrace();
+
+                        settings.AddConfiguredHierarchy(new MetadataNavigationHierarchyConfig
+                        {
+                            FieldId = targetField.Id,
+                            FieldType = targetField.TypeAsString,
+                            CachedDisplayName = targetField.Title,
+                            CachedName = targetField.InternalName
+                        });
                     }
                 }
 
@@ -80,7 +97,16 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     {
                         var targetField = list.Fields.GetById(h.FieldId.Value);
 
-                        settings.AddConfiguredKeyFilter(new MetadataNavigationKeyFilterConfig(targetField.Id));
+                        context.Load(targetField);
+                        context.ExecuteQueryWithTrace();
+
+                        settings.AddConfiguredKeyFilter(new MetadataNavigationKeyFilterConfig
+                        {
+                            FieldId = targetField.Id,
+                            FieldType = targetField.TypeAsString,
+                            CachedDisplayName = targetField.Title,
+                            CachedName = targetField.InternalName
+                        });
                     }
                 }
 
@@ -97,7 +123,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 ObjectDefinition = definition,
                 ModelHost = modelHost
             });
-
 
             if (needUpdate)
             {

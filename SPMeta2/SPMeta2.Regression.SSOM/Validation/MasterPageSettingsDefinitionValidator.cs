@@ -1,8 +1,10 @@
-﻿using SPMeta2.Definitions;
+﻿using SPMeta2.Containers.Assertion;
+using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using System;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -21,7 +23,31 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             if (!string.IsNullOrEmpty(definition.SiteMasterPageUrl))
             {
-                assert.ShouldBeEndOf(m => m.SiteMasterPageUrl, o => o.CustomMasterUrl);
+                if (definition.SiteMasterPageUrl.StartsWith("/"))
+                {
+                    assert.ShouldBeEndOf(m => m.SiteMasterPageUrl, o => o.CustomMasterUrl);
+                }
+                else
+                {
+                    // check for ~site/~sitecollection tokens
+                    var url = ResolveUrlWithTokens(webModelHost.HostWeb, definition.SiteMasterPageUrl);
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.SiteMasterPageUrl);
+                        var dstProp = d.GetExpressionValue(def => def.CustomMasterUrl);
+
+                        var isValid = ((string)dstProp.Value).EndsWith((string)url);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = dstProp,
+                            IsValid = isValid
+                        };
+                    });
+                }
             }
             else
             {
@@ -30,11 +56,35 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             if (!string.IsNullOrEmpty(definition.SystemMasterPageUrl))
             {
-                assert.ShouldBeEndOf(m => m.SystemMasterPageUrl, o => o.MasterUrl);
+                if (definition.SystemMasterPageUrl.StartsWith("/"))
+                {
+                    assert.ShouldBeEndOf(m => m.SystemMasterPageUrl, o => o.MasterUrl);
+                }
+                else
+                {
+                    // check for ~site/~sitecollection tokens
+                    var url = ResolveUrlWithTokens(webModelHost.HostWeb, definition.SystemMasterPageUrl);
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.SystemMasterPageUrl);
+                        var dstProp = d.GetExpressionValue(def => def.MasterUrl);
+
+                        var isValid = ((string)dstProp.Value).EndsWith((string)url);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = dstProp,
+                            IsValid = isValid
+                        };
+                    });
+                }
             }
             else
             {
-                assert.SkipProperty(m => m.SystemMasterPageUrl, "SystemMasterPageUrl is NULL or empty");
+                assert.SkipProperty(m => m.SystemMasterPageUrl, "SiteMasterPageUrl is NULL or empty");
             }
         }
     }

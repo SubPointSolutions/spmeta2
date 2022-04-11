@@ -39,7 +39,36 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (!string.IsNullOrEmpty(definition.DisplayName))
                 assert.ShouldBeEqual(m => m.DisplayName, o => o.Title);
             else
-                assert.SkipProperty(m => m.DisplayName, "DisplayName is null or empty. Skipping");
+            {
+
+                var regDisplayTitleProp = definition.PropertyBag.FirstOrDefault(p => p.Name == "_Reg_DisplayName");
+
+                if (regDisplayTitleProp != null)
+                {
+                    // Enhance FieldDefinition with 'pushChangesToLists' option #922
+                    // https://github.com/SubPointSolutions/spmeta2/issues/922
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.DisplayName);
+                        var dstProp = d.GetExpressionValue(m => m.Title);
+
+                        var isValid = regDisplayTitleProp.Value == d.Title;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.DisplayName, "DisplayName is null or empty. Skipping");
+                }
+            }
 
             if (definition.Required.HasValue)
                 assert.ShouldBeEqual(m => m.Required, o => o.Required);

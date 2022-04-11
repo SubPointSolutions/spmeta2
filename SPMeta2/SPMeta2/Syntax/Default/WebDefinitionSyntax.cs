@@ -8,7 +8,12 @@ namespace SPMeta2.Syntax.Default
 {
     [Serializable]
     [DataContract]
-    public class WebModelNode : TypedModelNode, IWebModelNode,
+    public class WebModelNode : TypedModelNode,
+        // should always be same as RootWebModelNode
+        // Missing TopNavigationNodeDefinition Syntax for RootWebModelNode #953
+        // https://github.com/SubPointSolutions/spmeta2/issues/953
+        
+        IWebModelNode,
         IFieldHostModelNode,
         IContentTypeHostModelNode,
         ISecurableObjectHostModelNode,

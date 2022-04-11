@@ -49,7 +49,7 @@ namespace SPMeta2.Regression.SSOM.Standard.Validation
                     var srcProp = s.GetExpressionValue(m => m.DefinedWebTemplates);
                     var isValid = true;
 
-                    var currentTemplates = spObject.GetAvailableWebTemplates((uint)spObject.Web.CurrencyLocaleID);
+                    var currentTemplates = spObject.GetAvailableWebTemplates((uint)spObject.Web.Locale.LCID);
                     var definedTemplates = definition.DefinedWebTemplates;
 
                     foreach (var defTemplate in definedTemplates)

@@ -43,9 +43,35 @@ namespace SPMeta2.CSOM.ModelHandlers
             var folderModelHost = modelHost.WithAssertAndCast<FolderModelHost>("modelHost", value => value.RequireNotNull());
             var folderModel = model.WithAssertAndCast<FolderDefinition>("model", value => value.RequireNotNull());
 
+            var isSpecialFolderContext = false;
+
             if (folderModelHost.CurrentList != null && folderModelHost.CurrentList.BaseType == BaseType.DocumentLibrary)
             {
                 var currentFolder = EnsureLibraryFolder(folderModelHost, folderModel);
+
+                // preload props to identify 'special folder'
+                // once done, pass down via model host
+                if (folderModel.Name.ToLower() == "forms")
+                {
+                    var doesFileHaveListItem = false;
+
+#if !NET35
+                    currentFolder.Context.Load(currentFolder, f => f.Properties);
+                    currentFolder.Context.ExecuteQueryWithTrace();
+
+                    doesFileHaveListItem = !(currentFolder != null
+                     &&
+                     (currentFolder.Properties.FieldValues.ContainsKey("vti_winfileattribs")
+                      &&
+                      currentFolder.Properties.FieldValues["vti_winfileattribs"].ToString() ==
+                      "00000012"));
+
+
+#endif
+                    isSpecialFolderContext = !doesFileHaveListItem;
+
+                    folderModelHost.IsSpecialFolderContext = isSpecialFolderContext;
+                }
 
                 var newContext = ModelHostBase.Inherit<FolderModelHost>(folderModelHost, c =>
                 {
@@ -213,8 +239,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                 });
 
                 currentFolderItem[BuiltInInternalFieldNames.Title] = folderModel.Name;
-                currentFolderItem.Update();
+                MapProperties(currentFolderItem, folderModel);
 
+                currentFolderItem.Update();
                 context.ExecuteQueryWithTrace();
 
 #if !NET35
@@ -249,6 +276,10 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentFolderItem = currentFolder.ListItemAllFields;
 
+                MapProperties(currentFolderItem, folderModel);
+
+                currentFolderItem.Update();
+                context.ExecuteQueryWithTrace();
 #endif
             }
 
@@ -264,6 +295,20 @@ namespace SPMeta2.CSOM.ModelHandlers
             });
 
             return currentFolderItem;
+        }
+
+        private void MapProperties(ListItem currentItem, FolderDefinition definition)
+        {
+            if (!string.IsNullOrEmpty(definition.ContentTypeId))
+            {
+                currentItem[BuiltInInternalFieldNames.ContentTypeId] = definition.ContentTypeId;
+            }
+            else if (!string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                currentItem[BuiltInInternalFieldNames.ContentTypeId] = ContentTypeLookupService
+                                            .LookupContentTypeByName(currentItem.ParentList, definition.ContentTypeName)
+                                            .Id.ToString();
+            }
         }
 
         protected Folder GetLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
@@ -326,10 +371,54 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 currentFolder = parentFolder.Folders.Add(folderModel.Name);
                 context.ExecuteQueryWithTrace();
+
+#if !NET35
+                // TODO for SP2010, mostlikely won't work :(
+                // https://github.com/SubPointSolutions/spmeta2/issues/766
+
+                context.Load(currentFolder, f => f.ListItemAllFields);
+                context.Load(currentFolder, f => f.Name);
+                context.ExecuteQueryWithTrace();
+
+                var currentFolderItem = currentFolder.ListItemAllFields;
+
+                // could be NULL, in the /Forms or other hidden folders
+                if (currentFolderItem != null
+                    && currentFolderItem.ServerObjectIsNull != null
+                    && !currentFolderItem.ServerObjectIsNull.Value)
+                {
+                    MapProperties(currentFolderItem, folderModel);
+
+                    currentFolderItem.Update();
+                    context.ExecuteQueryWithTrace();
+                }
+#endif
             }
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing library folder");
+
+#if !NET35
+                // TODO for SP2010, mostlikely won't work :(
+                // https://github.com/SubPointSolutions/spmeta2/issues/766
+
+                context.Load(currentFolder, f => f.ListItemAllFields);
+                context.Load(currentFolder, f => f.Name);
+                context.ExecuteQueryWithTrace();
+
+                var currentFolderItem = currentFolder.ListItemAllFields;
+
+                // could be NULL, in the /Forms or other hidden folders
+                if (currentFolderItem != null
+                    && currentFolderItem.ServerObjectIsNull != null
+                    && !currentFolderItem.ServerObjectIsNull.Value)
+                {
+                    MapProperties(currentFolderItem, folderModel);
+
+                    currentFolderItem.Update();
+                    context.ExecuteQueryWithTrace();
+                }
+#endif
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs

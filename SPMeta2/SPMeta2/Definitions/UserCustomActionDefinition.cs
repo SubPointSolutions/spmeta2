@@ -66,7 +66,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
-        [ExpectNullable]
+        //[ExpectRequired]
         public string Title { get; set; }
 
 
@@ -84,7 +84,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [DataMember]
-        [ExpectNullable]
+        //[ExpectRequired]
         public string Description { get; set; }
 
 
@@ -192,18 +192,17 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<UserCustomActionDefinition>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Url)
-                          .AddPropertyValue(p => p.Location)
-                          .AddPropertyValue(p => p.RegistrationId)
-                          .AddPropertyValue(p => p.RegistrationId)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Url", Url)
+                          .AddRawPropertyValue("Location", Location)
+                          .AddRawPropertyValue("RegistrationId", RegistrationId)
+                         
+                          .AddRawPropertyValue("Sequence", Sequence)
 
-                          .AddPropertyValue(p => p.Sequence)
-
-                          .AddPropertyValue(p => p.ScriptSrc)
-                          .AddPropertyValue(p => p.ScriptBlock)
+                          .AddRawPropertyValue("ScriptSrc", ScriptSrc)
+                          .AddRawPropertyValue("ScriptBlock", ScriptBlock)
                           .ToString();
         }
 

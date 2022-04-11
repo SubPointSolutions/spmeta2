@@ -86,8 +86,6 @@ namespace SPMeta2.CSOM.ModelHandlers
         //    WithExistingWebPart(listItem.File, webPartModel, action);
         //}
 
-
-
         protected void WithExistingWebPart(File pageFile, WebPartDefinition webPartModel,
              Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
         {
@@ -110,6 +108,14 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             if (listItemModelHost.HostFile != null)
                 return listItemModelHost.HostFile;
+
+            // additional check for edge cases
+            // these need to be raised and handled appropriately 
+
+            // WebpartModelHandler null reference exception #1118
+            // https://github.com/SubPointSolutions/spmeta2/issues/1118
+            if (listItemModelHost.HostListItem == null || (listItemModelHost.HostListItem.ServerObjectIsNull == true))
+                throw new SPMeta2Exception("Cannot find a HostFile/HostListItem for the giving page (ListItemModelHost). Both HostFile/HostListItem are null. Please report this issue at https://github.com/SubPointSolutions/spmeta2/issues");
 
             return listItemModelHost.HostListItem.File;
         }
@@ -248,6 +254,9 @@ namespace SPMeta2.CSOM.ModelHandlers
                                             .SetTitle(definition.Title)
                                             .SetID(definition.Id);
 
+            if (!string.IsNullOrEmpty(definition.AuthorizationFilter))
+                xml.SetAuthorizationFilter(definition.AuthorizationFilter);
+
             if (definition.Width.HasValue)
                 xml.SetWidth(definition.Width.Value);
 
@@ -269,7 +278,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = urlValue,
-                    Context = CurrentClientContext
+                    Context = CurrentModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
@@ -299,12 +308,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 xml.SetExportMode(definition.ExportMode);
 
+            if (definition.Hidden.HasValue)
+                xml.SetHidden(definition.Hidden.Value);
+
             // bindings
             ProcessParameterBindings(definition, xml);
 
             // properties
             ProcessWebpartProperties(definition, xml);
-
 
             return xml.ToString();
         }
@@ -337,6 +348,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
 
         protected ClientContext CurrentClientContext { get; set; }
+        protected CSOMModelHostBase CurrentModelHost { get; set; }
 
         protected virtual void OnBeforeDeploy(ListItemModelHost host, WebPartDefinitionBase webpart)
         {
@@ -359,6 +371,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 OnBeforeDeploy(listItemModelHost, webPartModel);
 
+                CurrentModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
                 CurrentClientContext = listItemModelHost.HostClientContext;
 
                 var context = listItemModelHost.HostClientContext;
@@ -394,6 +407,12 @@ namespace SPMeta2.CSOM.ModelHandlers
                        &&
                        listItemModelHost.HostFolder.Properties.FieldValues["vti_winfileattribs"].ToString() ==
                        "00000012"));
+
+                // is parent /forms folder or nay other special page?
+                if (doesFileHasListItem)
+                {
+                    doesFileHasListItem = !listItemModelHost.IsSpecialFolderContext;
+                }
 
 #endif
 

@@ -46,14 +46,14 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<AppPrincipalDefinition>(this)
-                          .AddPropertyValue(p => p.Title)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
 
-                          .AddPropertyValue(p => p.AppId)
-                          .AddPropertyValue(p => p.AppSecret)
+                          .AddRawPropertyValue("AppId", AppId)
+                          .AddRawPropertyValue("AppSecret", AppSecret)
 
-                          .AddPropertyValue(p => p.AppDomain)
-                          .AddPropertyValue(p => p.RedirectURI)
+                          .AddRawPropertyValue("AppDomain", AppDomain)
+                          .AddRawPropertyValue("RedirectURI", RedirectURI)
                           .ToString();
         }
 

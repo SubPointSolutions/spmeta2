@@ -9,9 +9,27 @@ namespace SPMeta2.BuiltInDefinitions
     {
         public static class Libraries
         {
+            public static ListViewDefinition MySubmissions = new ListViewDefinition
+            {
+                Title = "My submissions",
+                Url = "my-sub.aspx"
+            };
+
+            public static ListViewDefinition ApproveRejectItems = new ListViewDefinition
+            {
+                Title = "Approve/reject Items",
+                Url = "mod-view.aspx"
+            };
+
             public static ListViewDefinition AllItems = new ListViewDefinition
             {
                 Title = "All Items",
+                Url = "AllItems.aspx"
+            };
+
+            public static ListViewDefinition AllDocuments = new ListViewDefinition
+            {
+                Title = "All Documents",
                 Url = "AllItems.aspx"
             };
 

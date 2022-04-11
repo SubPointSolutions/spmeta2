@@ -15,6 +15,7 @@ namespace SPMeta2.Services
         #region methods
 
         public abstract ModelProvisionCompatibilityResult CheckProvisionCompatibility(ModelNode model);
+        public abstract ModelProvisionCompatibilityResult CheckProvisionCompatibility(DefinitionBase definition);
 
 
         #endregion

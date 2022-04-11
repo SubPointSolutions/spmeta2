@@ -66,20 +66,73 @@ namespace SPMeta2.SSOM.Services
             foreach (var tokenInfo in TokenProcessInfos)
             {
                 if (!string.IsNullOrEmpty(result.Value))
-                    result.Value = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context.Context, tokenInfo.Name));
+                {
+                    var replacedValue = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context, context.Context, tokenInfo.Name));
+
+                    if (!string.IsNullOrEmpty(replacedValue))
+                    {
+                        // everything to '/'
+                        replacedValue = replacedValue.Replace(@"\", @"/");
+
+                        // replace doubles after '://'
+                        var urlParts = replacedValue.Split(new string[] { "://" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // return non 'protocol://' values
+                        if (urlParts.Count() == 1)
+                        {
+                            result.Value = urlParts[0].Replace(@"//", @"/");
+                        }
+                        else
+                        {
+                            var resultValues = new List<string>();
+
+                            resultValues.Add(urlParts[0]);
+
+                            foreach (var value in urlParts.Skip(1))
+                            {
+                                resultValues.Add(value.Replace(@"//", @"/"));
+                            }
+
+                            result.Value = string.Join("://", resultValues.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        result.Value = replacedValue;
+                    }
+                }
+            }
+
+            // remove ending slash, SharePoint removes it everywhere
+            if (result.Value.Length > 1)
+                result.Value = result.Value.TrimEnd('/');
+
+            if (OnTokenReplaced != null)
+            {
+                OnTokenReplaced(this, new TokenReplacementResultEventArgs
+                {
+                    Result = result
+                });
             }
 
             return result;
         }
 
-        private string ResolveToken(object contextObject, string token)
+        private string ResolveToken(TokenReplacementContext tokenContext, object contextObject, string token)
         {
             if (string.Equals(token, "~sitecollection", StringComparison.CurrentCultureIgnoreCase))
             {
+                if (tokenContext.IsSiteRelativeUrl)
+                    return "/";
+
                 var site = ExtractSite(contextObject);
 
-                if (site.ServerRelativeUrl == "/")
-                    return string.Empty;
+                //if (site.ServerRelativeUrl == "/")
+                //    return string.Empty;
+
+                // Incorrect ~site/~sitecollection tokens resolve in NavigationNodes #1025
+                // https://github.com/SubPointSolutions/spmeta2/issues/1025
+                // always return '/' instead of empty string, further replacements would fix up double-'/'
 
                 return site.ServerRelativeUrl;
             }
@@ -88,8 +141,17 @@ namespace SPMeta2.SSOM.Services
             {
                 var web = ExtractWeb(contextObject);
 
-                if (web.ServerRelativeUrl == "/")
-                    return string.Empty;
+                if (tokenContext.IsSiteRelativeUrl)
+                {
+                    return "/" + web.ServerRelativeUrl.Replace(web.Site.ServerRelativeUrl, string.Empty);
+                }
+
+                //if (web.ServerRelativeUrl == "/")
+                //    return string.Empty;
+
+                // Incorrect ~site/~sitecollection tokens resolve in NavigationNodes #1025
+                // https://github.com/SubPointSolutions/spmeta2/issues/1025
+                // always return '/' instead of empty string, further replacements would fix up double-'/'
 
                 return web.ServerRelativeUrl;
             }

@@ -64,9 +64,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<AppDefinition>(this)
-                          .AddPropertyValue(p => p.ProductId)
-                          .AddPropertyValue(p => p.Version)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("ProductId", ProductId)
+                          .AddRawPropertyValue("Version", Version)
                           .ToString();
         }
 

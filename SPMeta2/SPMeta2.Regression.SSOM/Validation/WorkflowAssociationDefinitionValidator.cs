@@ -17,7 +17,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             var definition = model.WithAssertAndCast<WorkflowAssociationDefinition>("model", value => value.RequireNotNull());
             var spObject = FindExistringWorkflowAssotiation(modelHost, definition);
 
-
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert

@@ -20,7 +20,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [DefaultRootHost(typeof(SiteDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
@@ -36,6 +36,10 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
         [DataMember]
         [IdentityKey]
         public string Name { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string Description { get; set; }
 
         [ExpectValidation]
         [DataMember]
@@ -55,9 +59,9 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         public override string ToString()
         {
-            return new ToStringResult<TaxonomyTermGroupDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Id)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Id", Id)
                           .ToString();
         }
 

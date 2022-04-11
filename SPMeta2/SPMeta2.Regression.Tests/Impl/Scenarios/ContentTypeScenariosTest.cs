@@ -670,6 +670,89 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region renaming
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.Renaming")]
+        public void CanDeploy_ContentType_And_Rename()
+        {
+            // Enhance ContentTypeDefinition - support Name renaming #924
+            // https://github.com/SubPointSolutions/spmeta2/issues/924
+
+            // we should be able to deploy and then rename content types
+            // 3 waves of deployment: original, and two renames
+            // all should work, including model validations with the new Names
+
+            // we need to add content type field links to ensure two paths:
+            // 1) model handler provisions content types
+            // 2) model handler resolves content type to pass further to the provision flow
+
+            var originalContentTypes = new List<ContentTypeDefinition>();
+
+            originalContentTypes.Add(ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>());
+            originalContentTypes.Add(ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>());
+
+            var firstRenames = originalContentTypes.Select(d =>
+            {
+                return d.Inherit(def =>
+                {
+                    def.Name = Rnd.String();
+                });
+            });
+
+            var secondRenames = originalContentTypes.Select(d =>
+            {
+                return d.Inherit(def =>
+                {
+                    def.Name = Rnd.String();
+                });
+            });
+
+            // deploy and test original content types
+            var originalModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                foreach (var ct in originalContentTypes)
+                {
+                    site.AddContentType(ct, contentType =>
+                    {
+                        contentType.AddContentTypeFieldLink(BuiltInFieldId.Title);
+                    });
+                }
+            });
+
+            TestModel(originalModel);
+
+            // deploy and test first renames
+            var firstRenamesModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                foreach (var ct in firstRenames)
+                {
+                    site.AddContentType(ct, contentType =>
+                    {
+                        contentType.AddContentTypeFieldLink(BuiltInFieldId.Title);
+                    });
+                }
+            });
+
+            TestModel(firstRenamesModel);
+
+            // deploy and test first renames
+            var secondRenamesModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                foreach (var ct in secondRenames)
+                {
+                    site.AddContentType(ct, contentType =>
+                    {
+                        contentType.AddContentTypeFieldLink(BuiltInFieldId.Title);
+                    });
+                }
+            });
+
+            TestModel(secondRenamesModel);
+        }
+
+        #endregion
+
         #region utils
 
         protected ContentTypeDefinition GetLocalizedDefinition()
@@ -693,6 +776,66 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             }
 
             return definition;
+        }
+
+        #endregion
+
+        #region addint out of the box content types
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.OOTB")]
+        public void CanDeploy_Item_ContentType_To_List()
+        {
+            // "Item" ContentTypeLink #1016
+            // https://github.com/SubPointSolutions/spmeta2/issues/1016
+
+            var announcementList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.Announcements;
+                def.ContentTypesEnabled = true;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(announcementList, list =>
+                {
+                    list.AddContentTypeLink(new ContentTypeLinkDefinition
+                    {
+                        ContentTypeId = BuiltInContentTypeId.Item,
+                        ContentTypeName = "Item"
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.OOTB")]
+        public void CanDeploy_Item_ContentType_To_Library()
+        {
+            // "Item" ContentTypeLink #1016
+            // https://github.com/SubPointSolutions/spmeta2/issues/1016
+
+            var announcementList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                def.ContentTypesEnabled = true;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(announcementList, list =>
+                {
+                    list.AddContentTypeLink(new ContentTypeLinkDefinition
+                    {
+                        ContentTypeId = BuiltInContentTypeId.Item,
+                        ContentTypeName = "Item"
+                    });
+                });
+            });
+
+            TestModel(model);
         }
 
         #endregion

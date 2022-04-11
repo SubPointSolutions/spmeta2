@@ -7,6 +7,7 @@ using SPMeta2.Enumerations;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Utilities;
 using SPMeta2.Services;
+using SPMeta2.SSOM.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers.Fields
 {
@@ -59,6 +60,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
                     targetWeb.Dispose();
             }
 
+            if (typedFieldModel.CountRelated.HasValue)
+            {
+                typedField.CountRelated = typedFieldModel.CountRelated.Value;
+            }
+
             if (!string.IsNullOrEmpty(typedFieldModel.RelationshipDeleteBehavior))
             {
                 var value = (SPRelationshipDeleteBehavior)Enum.Parse(typeof(SPRelationshipDeleteBehavior), typedFieldModel.RelationshipDeleteBehavior);
@@ -99,7 +105,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             }
         }
 
-        public  SPWeb GetTargetWeb(SPSite site, LookupFieldDefinition definition)
+        public SPWeb GetTargetWeb(SPSite site, LookupFieldDefinition definition)
         {
             return GetTargetWeb(site, definition.LookupWebUrl, definition.LookupWebId);
         }
@@ -112,10 +118,21 @@ namespace SPMeta2.SSOM.ModelHandlers.Fields
             }
             else if (!string.IsNullOrEmpty(webUrl))
             {
+                // Tokens in LookupWebUrl #1013
+                // https://github.com/SubPointSolutions/spmeta2/issues/1013
+
+                // this is a dirty hack, we know that
+                // passing site / web depending on the current context we are in - site or web level
+
+                object replacementContext = site;
+
+                if (ModelHost is WebModelHost)
+                    replacementContext = (ModelHost as WebModelHost).HostWeb;
+
                 var targetWebUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = webUrl,
-                    Context = site
+                    Context = replacementContext
                 }).Value;
 
                 // server relative URl, always

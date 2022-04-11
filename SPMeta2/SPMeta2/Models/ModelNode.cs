@@ -95,6 +95,7 @@ namespace SPMeta2.Models
             Options = new ModelNodeOptions();
 
             PropertyBag = new List<PropertyBagValue>();
+            NonPersistentPropertyBag = new List<PropertyBagValue>();
 
             InitDataMemberIgnorableProperties();
         }
@@ -105,6 +106,8 @@ namespace SPMeta2.Models
 
             ModelEvents = new Dictionary<ModelEventType, List<object>>();
             ModelContextEvents = new Dictionary<ModelEventType, List<object>>();
+
+            NonPersistentPropertyBag = new List<PropertyBagValue>();
         }
 
         #endregion
@@ -138,6 +141,9 @@ namespace SPMeta2.Models
         [DataMember]
 
         public List<PropertyBagValue> PropertyBag { get; set; }
+
+        [IgnoreDataMember]
+        public List<PropertyBagValue> NonPersistentPropertyBag { get; set; }
 
         [DataMember]
         public DefinitionBase Value { get; set; }

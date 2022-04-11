@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
 using SPMeta2.Enumerations;
@@ -11,6 +10,7 @@ using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Standard.Syntax;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -51,16 +51,19 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     });
                 });
 
-            var model = SPMeta2Model.NewWebModel(web =>
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
             {
-                web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
+                rootWeb.AddRandomWeb(web =>
                 {
-                    f.Enable = true;
-                }));
+                    web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
+                    {
+                        f.Enable = true;
+                    }));
 
-                web.AddRandomDocumentLibrary(list =>
-                {
-                    list.AddMetadataNavigationSettings(managedNavSettings);
+                    web.AddRandomDocumentLibrary(list =>
+                    {
+                        list.AddMetadataNavigationSettings(managedNavSettings);
+                    });
                 });
 
             });
@@ -89,16 +92,19 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     });
                 });
 
-            var model = SPMeta2Model.NewWebModel(web =>
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
             {
-                web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
+                rootWeb.AddRandomWeb(web =>
                 {
-                    f.Enable = true;
-                }));
+                    web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
+                    {
+                        f.Enable = true;
+                    }));
 
-                web.AddRandomDocumentLibrary(list =>
-                {
-                    list.AddMetadataNavigationSettings(managedNavSettings);
+                    web.AddRandomDocumentLibrary(list =>
+                    {
+                        list.AddMetadataNavigationSettings(managedNavSettings);
+                    });
                 });
 
             });
@@ -110,6 +116,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.MetadataNavigationSettings")]
         public void CanDeploy_MetadataNavigationSettings_With_Hierarchies_And_KeyFilters()
         {
+
             var managedNavSettings = ModelGeneratorService.GetRandomDefinition<MetadataNavigationSettingsDefinition>(
                 def =>
                 {
@@ -132,16 +139,19 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                     });
                 });
 
-            var model = SPMeta2Model.NewWebModel(web =>
+            var model = SPMeta2Model.NewWebModel(rootWeb =>
             {
-                web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
+                rootWeb.AddRandomWeb(web =>
                 {
-                    f.Enable = true;
-                }));
+                    web.AddWebFeature(BuiltInWebFeatures.MetadataNavigationAndFiltering.Inherit(f =>
+                    {
+                        f.Enable = true;
+                    }));
 
-                web.AddRandomDocumentLibrary(list =>
-                {
-                    list.AddMetadataNavigationSettings(managedNavSettings);
+                    web.AddRandomDocumentLibrary(list =>
+                    {
+                        list.AddMetadataNavigationSettings(managedNavSettings);
+                    });
                 });
 
             });

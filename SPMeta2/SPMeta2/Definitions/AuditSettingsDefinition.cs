@@ -46,8 +46,8 @@ namespace SPMeta2.Definitions
         #region methods
         public override string ToString()
         {
-            return new ToStringResult<AuditSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.AuditFlags)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("AuditFlags", AuditFlags)
                           .ToString();
         }
 

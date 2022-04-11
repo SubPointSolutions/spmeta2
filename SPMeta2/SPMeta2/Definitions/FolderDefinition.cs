@@ -46,14 +46,24 @@ namespace SPMeta2.Definitions
 
         public string Name { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeId { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        [ExpectNullable]
+        public string ContentTypeName { get; set; }
+
         #endregion
 
         #region methods
 
         public override string ToString()
         {
-            return new ToStringResult<FolderDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
 
                           .ToString();
         }

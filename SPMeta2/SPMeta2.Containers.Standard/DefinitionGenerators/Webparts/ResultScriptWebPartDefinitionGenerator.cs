@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using SPMeta2.Definitions;
 using SPMeta2.Standard.Definitions.Webparts;
@@ -20,6 +17,8 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators.Webparts
 
                 def.ZoneId = "FullPage";
                 def.ZoneIndex = Rnd.Int(100);
+
+                def.EmptyMessage = Rnd.String();
             });
         }
     }

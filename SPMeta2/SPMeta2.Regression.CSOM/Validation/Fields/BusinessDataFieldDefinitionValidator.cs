@@ -1,18 +1,9 @@
-﻿using SPMeta2.CSOM.ModelHandlers.Fields;
-using SPMeta2.CSOM.ModelHosts;
-using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
+﻿using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using SPMeta2.Regression.CSOM.Utils;
 using SPMeta2.Utils;
-using Microsoft.SharePoint.Client;
-using SPMeta2.Exceptions;
-using System.Xml.Linq;
 
 namespace SPMeta2.Regression.CSOM.Validation.Fields
 {
@@ -28,7 +19,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Fields
             base.DeployModel(modelHost, model);
 
             var definition = model.WithAssertAndCast<BusinessDataFieldDefinition>("model", value => value.RequireNotNull());
-            var spObject = FindField(modelHost, definition);
+            var spObject = GetField(modelHost, definition);
 
             var assert = ServiceFactory.AssertService
                                        .NewAssert(model, definition, spObject);

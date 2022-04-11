@@ -57,10 +57,10 @@ namespace SPMeta2.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<UserCodeWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.SolutionId)
-                          .AddPropertyValue(p => p.AssemblyFullName)
-                          .AddPropertyValue(p => p.TypeFullName)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("SolutionId", SolutionId)
+                          .AddRawPropertyValue("AssemblyFullName", AssemblyFullName)
+                          .AddRawPropertyValue("TypeFullName", TypeFullName)
                           .ToString();
         }
 

@@ -24,7 +24,7 @@ namespace SPMeta2.Regression.SSOM.Extensions
 
         public static string GetDefaultUserLoginName(this SPGroup group)
         {
-            return group.Users[0].LoginName;
+            return group.Users[group.Users.Count - 1].LoginName;
         }
 
         public static SPGroup GetAssociatedVisitorGroup(this SPGroup group)

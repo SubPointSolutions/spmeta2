@@ -65,14 +65,18 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl))
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrlL: [{0}]", masterPageSettings.SiteMasterPageUrl);
-                web.CustomMasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SiteMasterPageUrl);
+                var url = ResolveUrlWithTokens(webModelHost, masterPageSettings.SiteMasterPageUrl);
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrl: [{0}]", url);
+                web.CustomMasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, url);
             }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", masterPageSettings.SystemMasterPageUrl);
-                web.MasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
+                var url = ResolveUrlWithTokens(webModelHost, masterPageSettings.SystemMasterPageUrl);
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", url);
+                web.MasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, url);
             }
 
 #endif
@@ -109,6 +113,21 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
             }
+        }
+
+        protected virtual string ResolveUrlWithTokens(WebModelHost webModelHost, string url)
+        {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original url: [{0}]", url);
+            url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+            {
+                Value = url,
+                Context = webModelHost,
+                IsSiteRelativeUrl = true
+            }).Value;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced url: [{0}]", url);
+
+            return url;
         }
 
         #endregion

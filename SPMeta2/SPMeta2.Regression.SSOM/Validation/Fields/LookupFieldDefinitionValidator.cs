@@ -81,10 +81,39 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
                 typedFieldAssert.SkipProperty(m => m.RelationshipDeleteBehavior, "RelationshipDeleteBehavior is NULL. Skipping.");
             }
 
+            if (!string.IsNullOrEmpty(typedDefinition.RelationshipDeleteBehavior))
+            {
+                typedFieldAssert.ShouldBeEqual(m => m.RelationshipDeleteBehavior, o => o.GetRelationshipDeleteBehavior());
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.RelationshipDeleteBehavior, "RelationshipDeleteBehavior is NULL. Skipping.");
+            }
+
+            if (!string.IsNullOrEmpty(typedDefinition.RelationshipDeleteBehavior))
+            {
+                typedFieldAssert.ShouldBeEqual(m => m.RelationshipDeleteBehavior, o => o.GetRelationshipDeleteBehavior());
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.RelationshipDeleteBehavior, "RelationshipDeleteBehavior is NULL. Skipping.");
+            }
+
+            if (typedDefinition.CountRelated.HasValue)
+            {
+                typedFieldAssert.ShouldBeEqual(m => m.CountRelated, o => o.CountRelated);
+            }
+            else
+            {
+                typedFieldAssert.SkipProperty(m => m.CountRelated, "CountRelated is NULL. Skipping.");
+            }
+
             // web url
             if (!string.IsNullOrEmpty(typedDefinition.LookupWebUrl))
             {
                 var lookupFieldModelHandler = new LookupFieldModelHandler();
+                ReflectionUtils.SetNonPublicPropertyValue(lookupFieldModelHandler, "ModelHost", modelHost);
+
                 var targetWeb = lookupFieldModelHandler.GetTargetWeb(GetCurrentSite(), typedDefinition);
 
                 typedFieldAssert.ShouldBeEqual((p, s, d) =>
@@ -111,6 +140,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             if (!string.IsNullOrEmpty(typedDefinition.LookupListTitle))
             {
                 var lookupFieldModelHandler = new LookupFieldModelHandler();
+                ReflectionUtils.SetNonPublicPropertyValue(lookupFieldModelHandler, "ModelHost", modelHost);
 
                 var targetWeb = lookupFieldModelHandler.GetTargetWeb(GetCurrentSite(), typedDefinition);
                 var list = targetWeb.Lists[typedDefinition.LookupListTitle];
@@ -138,6 +168,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             if (!string.IsNullOrEmpty(typedDefinition.LookupListUrl))
             {
                 var lookupFieldModelHandler = new LookupFieldModelHandler();
+                ReflectionUtils.SetNonPublicPropertyValue(lookupFieldModelHandler, "ModelHost", modelHost);
 
                 var targetWeb = lookupFieldModelHandler.GetTargetWeb(GetCurrentSite(), typedDefinition);
                 var list = targetWeb.GetList(SPUrlUtility.CombineUrl(targetWeb.ServerRelativeUrl, typedDefinition.LookupListUrl));

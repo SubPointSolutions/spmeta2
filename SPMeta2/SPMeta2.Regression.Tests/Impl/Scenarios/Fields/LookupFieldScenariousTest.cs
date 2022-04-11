@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
-using SPMeta2.CSOM.DefaultSyntax;
+
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
@@ -16,6 +16,8 @@ using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 using SPMeta2.Definitions.ContentTypes;
+
+using SPMeta2.Regression.Tests.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 {
@@ -405,6 +407,33 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
         //        });
         //    });
         //}
+
+        #endregion
+
+        #region count related
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.CountRelated")]
+        public void CanDeploy_LookupField_With_CountRelated()
+        {
+            var field1 = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.CountRelated = Rnd.Bool();
+            });
+
+            var field2 = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.CountRelated = !field1.CountRelated;
+            });
+
+            var siteModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddField(field1);
+                site.AddField(field2);
+            });
+
+            TestModel(siteModel);
+        }
 
         #endregion
 
@@ -873,6 +902,116 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios.Fields
 
             // 2 - deploy lookup list pointing a site level (root web) list and content type
             TestModel(masterIASiteModel);
+
+            // 3 - deploy the sunu web, list, attach content type to a list and make it nice
+            TestModel(contractsSubWebModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Fields.LookupField.SingleSelect.WebUrl")]
+        public void CanDeploy_LookupField_As_SubWebMaster_And_SubWebChild()
+        {
+            // https://github.com/SubPointSolutions/spmeta2/issues/694
+
+            // 1 - Installing a generic list (Departments) on subweb and add some data (Just using Title-Field).
+            var masterDepartmentsList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+
+#pragma warning disable 618
+                def.Url = string.Empty;
+#pragma warning restore 618
+                def.CustomUrl = string.Format("Lists/{0}", Rnd.String());
+            });
+
+            // on a Sub-Site of the Top-Level-Site-Collection 
+            // create a Document-Library (Contracts) and add the previous mentioned Site-Content-Type.
+            var subWeb = ModelGeneratorService.GetRandomDefinition<WebDefinition>(def =>
+            {
+
+            });
+
+            var masterDepartmentsSubWebModel = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddWeb(subWeb, web =>
+                {
+                    web.AddList(masterDepartmentsList, list =>
+                    {
+                        list.AddRandomListItem();
+                        list.AddRandomListItem();
+                        list.AddRandomListItem();
+                    });
+                });
+            });
+
+            // 2 - Creating a web-column (Department) of type Lookup, Data Comes from previous mentioned List.
+            // ~site token must refer to the sub web and the field is web-scoped
+            var departmentsFieldLookup = ModelGeneratorService.GetRandomDefinition<LookupFieldDefinition>(def =>
+            {
+                def.LookupListTitle = masterDepartmentsList.Title;
+                def.LookupWebUrl = "~site";
+            });
+
+            // 3 -  Creating a Site-Content-Type on Top-Level-Site-Collection of type Document (Contract) and add the Site-Column-Lookup-field Department.
+            var contractDocumentContentType = ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = BuiltInContentTypeId.Document;
+            });
+
+            // the sub web model for 2-3 containing field and content type (IA -> information architecture :)
+            var masterIASubWebModel = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddWeb(subWeb, web =>
+                {
+                    web.AddField(departmentsFieldLookup);
+
+                    web.AddContentType(contractDocumentContentType, contentType =>
+                    {
+                        contentType.AddContentTypeFieldLink(departmentsFieldLookup);
+                    });
+                });
+            });
+
+            var contractsDocumentLibrary = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+
+#pragma warning disable 618
+                def.Url = string.Empty;
+#pragma warning restore 618
+                def.CustomUrl = string.Format("{0}", Rnd.String());
+
+                // just don't want to go site content -> find a list..
+                def.OnQuickLaunch = true;
+            });
+
+            var contractsSubWebModel = SPMeta2Model.NewWebModel(rootWeb =>
+            {
+                rootWeb.AddWeb(subWeb, web =>
+                {
+                    web.AddList(contractsDocumentLibrary, list =>
+                    {
+                        list.AddContentTypeLink(contractDocumentContentType);
+
+                        // making the content type defullt
+                        list.AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition
+                        {
+                            ContentTypes = new List<ContentTypeLinkValue>
+                            {
+                                new ContentTypeLinkValue { ContentTypeName = contractDocumentContentType.Name}
+                            }
+                        });
+                    });
+                });
+            });
+
+            // deployment
+            // 1 - deploy root list
+            TestModel(masterDepartmentsSubWebModel);
+
+            // 2 - deploy lookup list pointing a site level (root web) list and content type
+            TestModel(masterIASubWebModel);
 
             // 3 - deploy the sunu web, list, attach content type to a list and make it nice
             TestModel(contractsSubWebModel);

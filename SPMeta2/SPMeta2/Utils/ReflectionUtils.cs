@@ -23,6 +23,26 @@ namespace SPMeta2.Utils
     {
         #region methods
 
+        #region set helpers
+
+        public static void SetNonPublicPropertyValue(object obj, string name, object value)
+        {
+            var prop = obj.GetType().GetProperty(name, BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (prop != null)
+                prop.SetValue(obj, value, null);
+        }
+
+        public static void SetNonPublicFieldValue(object obj, string name, object value)
+        {
+            var prop = obj.GetType().GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (prop != null)
+                prop.SetValue(obj, value);
+        }
+
+        #endregion
+
         #region get prop methods
 
         public static IEnumerable<PropertyInfo> GetPropertiesWithCustomAttribute<TType>(object obj)
@@ -104,6 +124,14 @@ namespace SPMeta2.Utils
                        .Where(t => typeof(TType).IsAssignableFrom(t) && !t.IsAbstract);
         }
 
+        private static Dictionary<object, Delegate> _cache4GetExpressionValueAsMethodCallExpression = new Dictionary<object, Delegate>();
+        private static Dictionary<object, Delegate> _cache4GetExpressionValueAsUnaryExpression = new Dictionary<object, Delegate>();
+        private static Dictionary<object, Delegate> _cache4GetExpressionValueAsMemberExpression = new Dictionary<object, Delegate>();
+
+        private static Dictionary<Type, Dictionary<PropertyInfo, Delegate>> _cache4FastGetters = new Dictionary<Type, Dictionary<PropertyInfo, Delegate>>();
+
+
+
         public static PropResult GetExpressionValue<TSource, TProperty>(this TSource source,
            Expression<Func<TSource, TProperty>> exp)
         {
@@ -112,7 +140,15 @@ namespace SPMeta2.Utils
             if (exp.Body is MethodCallExpression)
             {
                 var member = exp.Body as MethodCallExpression;
-                var methodResult = Expression.Lambda(member, exp.Parameters.ToArray()).Compile().DynamicInvoke(source);
+
+                if (!_cache4GetExpressionValueAsMethodCallExpression.ContainsKey(exp))
+                {
+                    var compiledLambda = Expression.Lambda(member, exp.Parameters.ToArray()).Compile();
+                    _cache4GetExpressionValueAsMethodCallExpression.Add(exp, compiledLambda);
+                }
+
+                //var methodResult = compiledLambda.DynamicInvoke(source);
+                var methodResult = _cache4GetExpressionValueAsMethodCallExpression[exp].DynamicInvoke(source);
 
                 var result = new PropResult();
 
@@ -126,7 +162,15 @@ namespace SPMeta2.Utils
             if (exp.Body is UnaryExpression)
             {
                 var member = exp.Body as UnaryExpression;
-                var methodResult = Expression.Lambda(member, exp.Parameters.ToArray()).Compile().DynamicInvoke(source);
+
+                if (!_cache4GetExpressionValueAsUnaryExpression.ContainsKey(exp))
+                {
+                    var compiledLambda = Expression.Lambda(member, exp.Parameters.ToArray()).Compile();
+                    _cache4GetExpressionValueAsUnaryExpression.Add(exp, compiledLambda);
+                }
+
+                //var methodResult = compiledLambda.DynamicInvoke(source);
+                var methodResult = _cache4GetExpressionValueAsUnaryExpression[exp].DynamicInvoke(source);
 
                 var result = new PropResult();
 
@@ -145,7 +189,26 @@ namespace SPMeta2.Utils
                 var result = new PropResult();
 
                 result.Name = propInfo.Name;
-                result.Value = propInfo.GetValue(source, null);
+
+                if (!_cache4FastGetters.ContainsKey(type))
+                    _cache4FastGetters.Add(type, new Dictionary<PropertyInfo, Delegate>());
+
+                var _cache4FastGettersFunctions = _cache4FastGetters[type];
+
+                if (!_cache4FastGettersFunctions.ContainsKey(propInfo))
+                {
+                    var fastGetter = BuildUntypedGetter<TSource>(propInfo);
+                    _cache4FastGettersFunctions.Add(propInfo, fastGetter);
+                }
+                else
+                {
+
+                }
+
+                var value = _cache4FastGettersFunctions[propInfo].DynamicInvoke(source);
+                //result.Value = propInfo.GetValue(source, null);
+                result.Value = value;
+
                 result.ObjectType = source.GetType();
 
                 return result;
@@ -154,7 +217,21 @@ namespace SPMeta2.Utils
             throw new NotImplementedException("GetExpressionValue");
         }
 
+        public static Func<T, object> BuildUntypedGetter<T>(PropertyInfo propertyInfo)
+        {
+            var targetType = propertyInfo.DeclaringType;
+            var methodInfo = propertyInfo.GetGetMethod();
+            var returnType = methodInfo.ReturnType;
 
+            var exTarget = Expression.Parameter(targetType, "t");
+            var exBody = Expression.Call(exTarget, methodInfo);
+            var exBody2 = Expression.Convert(exBody, typeof(object));
+
+            var lambda = Expression.Lambda<Func<T, object>>(exBody2, exTarget);
+
+            var action = lambda.Compile();
+            return action;
+        }
         public static object GetPropertyValue(object obj, string propName)
         {
             var prop = obj.GetType().GetProperties(BindingFlags.Instance |
@@ -233,6 +310,30 @@ namespace SPMeta2.Utils
 
             return false;
         }
+
+        public static int? GetHResultValue(Exception exception)
+        {
+            // .net 4 hack to get HResult
+            var hResultProp = exception.GetType()
+                                .GetProperty("HResult",
+                                            BindingFlags.NonPublic
+                                            | BindingFlags.Public
+                                            | BindingFlags.Instance
+                                            | BindingFlags.Static);
+
+
+            if (hResultProp != null)
+            {
+                var hResultValue = hResultProp.GetValue(exception, null);
+                if (hResultValue is int)
+                {
+                    return (int)hResultValue;
+                }
+            }
+
+            return null;
+        }
+
         #endregion
     }
 }

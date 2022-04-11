@@ -34,7 +34,9 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var siteCollectionUrl = SPUrlUtility.CombineUrl(definition.PrefixName, definition.Url);
 
-            if (siteCollectionUrl.StartsWith("/"))
+            siteCollectionUrl = siteCollectionUrl.TrimEnd('/');
+
+            if (siteCollectionUrl.StartsWith("/") && siteCollectionUrl.Length > 0)
                 siteCollectionUrl = siteCollectionUrl.Substring(1, siteCollectionUrl.Length - 1);
 
             if (webApp.Sites.Names.Contains(siteCollectionUrl))
@@ -72,17 +74,24 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ModelHost = webAppModelHost
             });
 
+            // while crating new site collection, a fall back for the secondlogin to mainowner
+            // SecondaryContact setup is also checked on null and ignored is empty
+            // https://github.com/SubPointSolutions/spmeta2/issues/835
+
             if (existingSite == null)
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new site");
 
                 var siteCollectionUrl = SPUrlUtility.CombineUrl(siteModel.PrefixName, siteModel.Url);
+                siteCollectionUrl = siteCollectionUrl.TrimEnd('/');
+
+                SPSite newSite = null;
 
                 if (string.IsNullOrEmpty(siteModel.DatabaseName))
                 {
-                    var newSite = webApp.Sites.Add(siteCollectionUrl,
+                    newSite = webApp.Sites.Add(siteCollectionUrl,
                         siteModel.Name,
-                        siteModel.Description,
+                        siteModel.Description ?? string.Empty,
                         siteModel.LCID,
                         siteModel.SiteTemplate,
 
@@ -93,16 +102,13 @@ namespace SPMeta2.SSOM.ModelHandlers
                         siteModel.SecondaryContactLogin,
                         siteModel.SecondaryContactName,
                         siteModel.SecondaryContactEmail);
-
-                    // weird issue with second admin, needs to be setup manually
-                    newSite.SecondaryContact = newSite.RootWeb.EnsureUser(siteModel.SecondaryContactLogin);
                 }
                 else
                 {
-                    // TODO, should be reimplemented later.
+                    // TODO, should be reimplemented later to handle more complicatd content DB provision
                     var dbServerName = webApp.ContentDatabases[0].Server;
 
-                    var newSite = webApp.Sites.Add(siteCollectionUrl,
+                    newSite = webApp.Sites.Add(siteCollectionUrl,
                         siteModel.Name,
                         siteModel.Description,
                         siteModel.LCID,
@@ -118,10 +124,14 @@ namespace SPMeta2.SSOM.ModelHandlers
 
                         dbServerName,
                         siteModel.DatabaseName,
+
                         null,
                         null);
+                }
 
-                    // weird issue with second admin, needs to be setup manually
+                // weird issue with second admin, needs to be setup manually
+                if (!string.IsNullOrEmpty(siteModel.SecondaryContactLogin))
+                {
                     newSite.SecondaryContact = newSite.RootWeb.EnsureUser(siteModel.SecondaryContactLogin);
                 }
 
@@ -142,8 +152,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                 ObjectDefinition = siteModel,
                 ModelHost = webAppModelHost
             });
-
-
         }
 
         #endregion

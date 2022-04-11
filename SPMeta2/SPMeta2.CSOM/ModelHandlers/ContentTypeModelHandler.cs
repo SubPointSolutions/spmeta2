@@ -74,13 +74,38 @@ namespace SPMeta2.CSOM.ModelHandlers
                     if (parentContentType == null)
                         throw new SPMeta2Exception("Couldn't find parent contenttype with the given name.");
 
-                    //contentTypeModel.ParentContentTypeId = parentContentType.StringId;
+                    // rare case where it's ok to change definition
+                    contentTypeModel.ParentContentTypeId = parentContentType.Id.ToString();
                 }
 
+#if !NET35
                 var id = contentTypeModel.GetContentTypeId();
                 var currentContentType = web.ContentTypes.GetById(id);
 
+                context.Load(currentContentType);
+                context.Load(currentContentType, c => c.ReadOnly);
+
                 context.ExecuteQueryWithTrace();
+#endif
+
+#if NET35
+                var contentTypeName = contentTypeModel.Name;
+                var contentTypeId = contentTypeModel.GetContentTypeId();
+
+                // SP2010 CSOM does not have an option to get the content type by ID
+                // fallback to Name, and that's a huge thing all over the M2 library and provision
+            
+                var currentContentTypes = context.LoadQuery(web.ContentTypes.Where(ct => ct.Name == contentTypeName));
+                context.ExecuteQueryWithTrace();
+
+                var currentContentType = currentContentTypes.FirstOrDefault();
+
+                context.Load(currentContentType);
+                context.Load(currentContentType, c => c.ReadOnly);
+
+                context.ExecuteQueryWithTrace();
+
+#endif
 
                 if (childModelType == typeof(ModuleFileDefinition))
                 {
@@ -101,16 +126,18 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    action(new ModelHostContext
+                    action(ModelHostBase.Inherit<ContentTypeModelHost>(mdHHost, host =>
                     {
-                        Site = site,
-                        Web = web,
-                        ContentType = currentContentType
-                    });
+                        host.HostContentType = currentContentType;
+                    }));
                 }
 
                 TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
-                currentContentType.Update(true);
+
+                if (!currentContentType.ReadOnly)
+                {
+                    currentContentType.Update(true);
+                }
 
                 context.ExecuteQueryWithTrace();
             }
@@ -141,6 +168,8 @@ namespace SPMeta2.CSOM.ModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            var csomModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
             var web = ExtractWeb(modelHost);
 
             var contentTypeModel = model.WithAssertAndCast<ContentTypeDefinition>("model", value => value.RequireNotNull());
@@ -198,16 +227,31 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new content type");
 
+#if !NET35
                 currentContentType = web.ContentTypes.Add(new ContentTypeCreationInformation
                 {
                     Name = contentTypeModel.Name,
                     Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description,
                     Group = contentTypeModel.Group,
-#if !NET35
                     Id = contentTypeId,
-#endif
                     ParentContentType = null
                 });
+#endif
+
+#if NET35
+                var parentContentTypeId = contentTypeModel.ParentContentTypeId;
+                var parentContentType = web.ContentTypes.GetById(parentContentTypeId);
+                
+                context.ExecuteQueryWithTrace();
+
+                currentContentType = web.ContentTypes.Add(new ContentTypeCreationInformation
+                {
+                    Name = contentTypeModel.Name,
+                    Description = string.IsNullOrEmpty(contentTypeModel.Description) ? string.Empty : contentTypeModel.Description,
+                    Group = contentTypeModel.Group,
+                    ParentContentType = parentContentType
+                });
+#endif
             }
             else
             {
@@ -242,7 +286,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                     var processedDocumentTemplateUrl = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
                         Value = contentTypeModel.DocumentTemplate,
-                        Context = context
+                        Context = csomModelHost
                     }).Value;
 
                     // resource related path
@@ -259,8 +303,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                     currentContentType.DocumentTemplate = processedDocumentTemplateUrl;
                 }
 
+                ProcessFormProperties(currentContentType, contentTypeModel);
+
                 // only after DocumentTemplate processing
                 ProcessLocalization(currentContentType, contentTypeModel);
+
 
                 currentContentType.Hidden = contentTypeModel.Hidden;
 
@@ -301,11 +348,36 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!currentContentType.Sealed)
             {
                 TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
-                currentContentType.Update(true);
 
-                context.ExecuteQueryWithTrace();
+                if (!currentContentType.ReadOnly)
+                {
+                    currentContentType.Update(true);
+                    context.ExecuteQueryWithTrace();
+                }
             }
 #endif
+        }
+
+        private void ProcessFormProperties(ContentType targetContentType, ContentTypeDefinition contentTypeModel)
+        {
+            if (!string.IsNullOrEmpty(contentTypeModel.NewFormUrl))
+                targetContentType.NewFormUrl = contentTypeModel.NewFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.NewFormTemplateName))
+                targetContentType.NewFormTemplateName = contentTypeModel.NewFormTemplateName;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.EditFormUrl))
+                targetContentType.EditFormUrl = contentTypeModel.EditFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.EditFormTemplateName))
+                targetContentType.EditFormTemplateName = contentTypeModel.EditFormTemplateName;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DisplayFormUrl))
+                targetContentType.DisplayFormUrl = contentTypeModel.DisplayFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DisplayFormTemplateName))
+                targetContentType.DisplayFormTemplateName = contentTypeModel.DisplayFormTemplateName;
+
         }
 
         public override void RetractModel(object modelHost, DefinitionBase model)

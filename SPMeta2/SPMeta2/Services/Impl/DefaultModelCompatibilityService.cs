@@ -12,40 +12,71 @@ namespace SPMeta2.Services.Impl
     public class DefaultModelCompatibilityService : ModelCompatibilityServiceBase
     {
         #region methods
+
+        public override ModelProvisionCompatibilityResult CheckProvisionCompatibility(DefinitionBase definition)
+        {
+            return CheckProvisionCompatibility(null, definition);
+        }
+
         public override ModelProvisionCompatibilityResult CheckProvisionCompatibility(ModelNode model)
+        {
+            return CheckProvisionCompatibility(model, null);
+        }
+
+        protected ModelProvisionCompatibilityResult CheckProvisionCompatibility(ModelNode model, DefinitionBase definition)
         {
             var result = new ModelProvisionCompatibilityResult
             {
                 Model = model
             };
 
-            var modelNodes = model.Flatten();
-            var rootNode = model;
-
-            foreach (var modelNode in modelNodes)
+            if (model != null)
             {
-                var def = modelNode.Value;
-                var defType = def.GetType();
+                var modelNodes = model.Flatten();
+                var rootNode = model;
 
-                var defResult = new ModelProvisionCompatibilityResultValue();
-                var attrs = (SPObjectTypeAttribute[])defType
-                                .GetCustomAttributes(typeof(SPObjectTypeAttribute), true);
-
-                defResult.ModelNode = modelNode;
-                defResult.Definition = def;
-
-                if (attrs.Length > 0)
+                foreach (var modelNode in modelNodes)
                 {
-                    defResult.IsCSOMCompatible = attrs.Any(a => a.ObjectModelType == SPObjectModelType.CSOM);
-                    defResult.IsSSOMCompatible = attrs.Any(a => a.ObjectModelType == SPObjectModelType.SSOM);
+                    var def = modelNode.Value;
+                    CheckDefinition(result, rootNode, modelNode, def);
                 }
+            }
+            else
+            {
+                CheckDefinition(result, null, null, definition);
+            }
 
-                // temporary fix for SiteDefinition, it cannot be yet provisioned with M2 CSOM
-                if (def.GetType() == typeof(SiteDefinition))
+            return result;
+        }
+
+        private static void CheckDefinition(ModelProvisionCompatibilityResult result,
+            ModelNode rootNode,
+            ModelNode modelNode,
+            DefinitionBase def)
+        {
+            var defType = def.GetType();
+
+            var defResult = new ModelProvisionCompatibilityResultValue();
+            var attrs = (SPObjectTypeAttribute[])defType
+                            .GetCustomAttributes(typeof(SPObjectTypeAttribute), true);
+
+            defResult.ModelNode = modelNode;
+            defResult.Definition = def;
+
+            if (attrs.Length > 0)
+            {
+                defResult.IsCSOMCompatible = attrs.Any(a => a.ObjectModelType == SPObjectModelType.CSOM);
+                defResult.IsSSOMCompatible = attrs.Any(a => a.ObjectModelType == SPObjectModelType.SSOM);
+            }
+
+            // temporary fix for SiteDefinition, it cannot be yet provisioned with SPMeta2 CSOM
+            if (def.GetType() == typeof(SiteDefinition))
+            {
+                if (modelNode != null)
                 {
                     if (modelNode.Options.RequireSelfProcessing)
                     {
-                        // that's farm / web model or an attempt to provision a new site w/ M2
+                        // that's farm / web model or an attempt to provision a new site w/ SPMeta2 
                         defResult.IsCSOMCompatible = false;
                     }
                     else
@@ -54,22 +85,27 @@ namespace SPMeta2.Services.Impl
                         defResult.IsCSOMCompatible = true;
                     }
                 }
-
-                // fixing up root definitions
-                // farm and web app model cannot be provisioned with M2
-                if (modelNode == rootNode)
+                else
                 {
-                    if (defType == typeof(FarmDefinition)
-                        || defType == typeof(WebApplicationDefinition))
-                    {
-                        defResult.IsCSOMCompatible = false;
-                    }
+                    // that's definition validation call
+                    // but still, we don't support it yet
+                    defResult.IsCSOMCompatible = false;
                 }
-
-                result.Result.Add(defResult);
             }
 
-            return result;
+            // fixing up root definitions
+            // farm and web app model cannot be provisioned with SPMeta2 CSOM
+            // handling call from model nodes & defs
+            if ((modelNode == rootNode) || (modelNode == null && rootNode == null))
+            {
+                if (defType == typeof(FarmDefinition)
+                    || defType == typeof(WebApplicationDefinition))
+                {
+                    defResult.IsCSOMCompatible = false;
+                }
+            }
+
+            result.Result.Add(defResult);
         }
 
         #endregion

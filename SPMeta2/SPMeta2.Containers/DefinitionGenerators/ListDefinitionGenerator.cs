@@ -1,8 +1,8 @@
 ﻿using System;
+
 using SPMeta2.Containers.Services;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
 
 namespace SPMeta2.Containers.DefinitionGenerators
@@ -64,6 +64,8 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 //def.EnableModeration = Rnd.NullableBool();
                 //def.EnableVersioning = Rnd.NullableBool();
                 //def.ForceCheckout = Rnd.NullableBool();
+                //def.EnableAssignToEmail = Rnd.NullableBool();
+                //def.DisableGridEditing = Rnd.NullableBool();
 
                 //if (def.ForceCheckout.HasValue && def.ForceCheckout.Value)
                 //{
@@ -77,7 +79,6 @@ namespace SPMeta2.Containers.DefinitionGenerators
 
                 if (action != null)
                     action(def);
-
             });
         }
     }

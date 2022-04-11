@@ -10,6 +10,8 @@ using SPMeta2.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
+using System.Text.RegularExpressions;
+using System;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -30,6 +32,11 @@ namespace SPMeta2.Regression.SSOM.Validation
                                .ShouldBeEqual(m => m.Hidden, o => o.Hidden)
                                .ShouldBeEqual(m => m.RowLimit, o => (int)o.RowLimit)
                                .ShouldBeEqual(m => m.IsPaged, o => o.Paged);
+
+            if (definition.MobileDefaultView.HasValue)
+                assert.ShouldBeEqual(m => m.MobileDefaultView, o => o.MobileDefaultView);
+            else
+                assert.SkipProperty(m => m.MobileDefaultView, "MobileDefaultView is null or empty. Skipping.");
 
 
             if (definition.InlineEdit.HasValue)
@@ -73,6 +80,12 @@ namespace SPMeta2.Regression.SSOM.Validation
                     var srcViewDate = assert.Src.Query.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
                     var dstViewDate = assert.Dst.Query.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
 
+                    srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
+
+                    srcViewDate = Regex.Replace(srcViewDate, @"\s+", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\s+", string.Empty);
+
                     var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 
                     return new PropertyValidationResult
@@ -98,6 +111,9 @@ namespace SPMeta2.Regression.SSOM.Validation
                     var srcViewDate = assert.Src.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
                     var dstViewDate = assert.Dst.ViewData.Replace(System.Environment.NewLine, string.Empty).Replace(" /", "/");
 
+                    srcViewDate = Regex.Replace(srcViewDate, @"\r\n?|\n", string.Empty);
+                    dstViewDate = Regex.Replace(dstViewDate, @"\r\n?|\n", string.Empty);
+
                     var isValid = srcViewDate.ToUpper() == dstViewDate.ToUpper();
 
                     return new PropertyValidationResult
@@ -112,15 +128,65 @@ namespace SPMeta2.Regression.SSOM.Validation
             else
                 assert.SkipProperty(m => m.ViewData);
 
-            if (!string.IsNullOrEmpty(definition.Type))
+            if (definition.Types.Count() == 0)
             {
+                assert.SkipProperty(m => m.Types, "Types.Count == 0");
+
+                if (!string.IsNullOrEmpty(definition.Type))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.Type);
+                        var dstProp = d.GetExpressionValue(o => o.Type);
+
+                        var isValid = srcProp.Value.ToString().ToUpper() ==
+                            dstProp.Value.ToString().ToUpper();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = dstProp,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.Type);
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Type, "Types.Count != 0");
+
                 assert.ShouldBeEqual((p, s, d) =>
                 {
-                    var srcProp = s.GetExpressionValue(def => def.Type);
+                    var srcProp = s.GetExpressionValue(def => def.Types);
                     var dstProp = d.GetExpressionValue(o => o.Type);
 
-                    var isValid = srcProp.Value.ToString().ToUpper() ==
-                        dstProp.Value.ToString().ToUpper();
+                    var isValid = false;
+
+                    SPViewCollection.SPViewType? srcType = null;
+
+                    foreach (var type in s.Types)
+                    {
+                        var tmpViewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType), type);
+
+                        if (srcType == null)
+                            srcType = tmpViewType;
+                        else
+                            srcType = srcType | tmpViewType;
+                    }
+
+                    var srcTypeValue = (int)srcType;
+                    var dstTypeValue = (int)0;
+
+                    // checking if only reccurence set
+                    // test designed that way only
+                    if (((int)srcTypeValue & (int)(SPViewCollection.SPViewType.Recurrence)) ==
+                        (int)SPViewCollection.SPViewType.Recurrence)
+                    {
+                        isValid = d.RecurrenceRowset;
+                    }
 
                     return new PropertyValidationResult
                     {
@@ -131,8 +197,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                     };
                 });
             }
-            else
-                assert.SkipProperty(m => m.Type);
 
             if (definition.ViewStyleId.HasValue)
             {
@@ -179,6 +243,11 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEqual(m => m.TabularView, o => o.TabularView);
             else
                 assert.SkipProperty(m => m.TabularView, "TabularView is null or empty. Skipping.");
+
+            if (definition.IncludeRootFolder.HasValue)
+                assert.ShouldBeEqual(m => m.IncludeRootFolder, o => o.IncludeRootFolder);
+            else
+                assert.SkipProperty(m => m.IncludeRootFolder, "IncludeRootFolder is null or empty. Skipping.");
 
             if (string.IsNullOrEmpty(definition.ContentTypeName))
                 assert.SkipProperty(m => m.ContentTypeName, "ContentTypeName is null or empty. Skipping.");
@@ -234,7 +303,30 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (string.IsNullOrEmpty(definition.Aggregations))
                 assert.SkipProperty(m => m.Aggregations, "Aggregations is null or empty. Skipping.");
             else
-                assert.ShouldBeEqual(m => m.Aggregations, o => o.Aggregations);
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Aggregations);
+                    var dstProp = d.GetExpressionValue(ct => ct.Aggregations);
+
+                    var isValid = s.Aggregations
+                                      .Replace("'", string.Empty)
+                                      .Replace(" ", string.Empty)
+                                      .Replace("\"", string.Empty) ==
+                                  d.Aggregations
+                                      .Replace("'", string.Empty)
+                                      .Replace(" ", string.Empty)
+                                      .Replace("\"", string.Empty);
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
 
             if (string.IsNullOrEmpty(definition.Url))
                 assert.SkipProperty(m => m.Url, "Url is null or empty. Skipping.");

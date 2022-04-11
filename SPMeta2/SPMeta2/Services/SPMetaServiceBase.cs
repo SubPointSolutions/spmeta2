@@ -10,7 +10,7 @@
 
         private TraceServiceBase _traceService;
 
-        public TraceServiceBase TraceService
+        public virtual TraceServiceBase TraceService
         {
             get
             {

@@ -198,6 +198,7 @@
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.SharePoint.WorkManagement.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -212,14 +213,22 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Impl\Build\BuildBaselineTests.cs" />
+    <Compile Include="Impl\Consts\BuiltInFeatureEnumerationTests.cs" />
     <Compile Include="Impl\ModelHandlers\Base\ModelHandlerTestBase.cs" />
     <Compile Include="Impl\ModelHandlers\CSOMListItemFieldValueModelHandlerTests.cs" />
     <Compile Include="Impl\ModelHandlers\CSOMSandboxSolutionModelHandlerTests.cs" />
     <Compile Include="Impl\Services\Base\TokenReplacementServiceTestBase.cs" />
     <Compile Include="Impl\Services\ClientRuntimeContextServiceBaseTests.cs" />
+    <Compile Include="Impl\Services\CSOM\RequireCSOMRuntimeVersionDeploymentServiceTests.cs" />
+    <Compile Include="Impl\Services\DefaultModelStatInfoServiceTests.cs" />
+    <Compile Include="Impl\Services\SharePointPersistenceStorageServiceTests.cs" />
+    <Compile Include="Impl\Services\TraceSourceServiceTests.cs" />
+    <Compile Include="Impl\Services\DefaultDiagnosticInfoServiceTests.cs" />
+    <Compile Include="Impl\LookupServices\SSOM\SSOMListViewLookupServiceTests.cs" />
     <Compile Include="Impl\Services\ValidationServiceTests.cs" />
-    <Compile Include="Impl\Services\SSOMTokenReplacementServiceTests.cs" />
-    <Compile Include="Impl\Services\CSOMTokenReplacementServiceTests.cs" />
+    <Compile Include="Impl\Services\SSOM\SSOMTokenReplacementServiceTests.cs" />
+    <Compile Include="Impl\Services\CSOM\CSOMTokenReplacementServiceTests.cs" />
     <Compile Include="Impl\Services\ProvisionServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Impl\Scenarios\TaxonomyFieldScenariousTest.cs" />
@@ -261,6 +270,10 @@
       <Project>{2DA71A5B-C039-4A2E-9985-91D6501F293C}</Project>
       <Name>SPMeta2.Regression.Tests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPMeta2.Regression\SPMeta2.Regression.csproj">
+      <Project>{0de538c9-1723-46b1-90f8-5dc67c56d7dd}</Project>
+      <Name>SPMeta2.Regression</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPMeta2.SSOM.Standard\SPMeta2.SSOM.Standard.csproj">
       <Project>{7D095A0D-0BDE-446D-8093-13E5685F1D3C}</Project>
       <Name>SPMeta2.SSOM.Standard</Name>
@@ -279,61 +292,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\SPMeta2.Containers.CSOM\bin\Debug\SPMeta2.Containers.CSOM.dll">
-      <Link>SPMeta2.Containers.CSOM.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Containers.O365\bin\Debug\SPMeta2.Containers.dll">
-      <Link>SPMeta2.Containers.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Containers.O365\bin\Debug\SPMeta2.Containers.O365.dll">
-      <Link>SPMeta2.Containers.O365.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.dll">
-      <Link>Microsoft.SharePoint.Client.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.DocumentManagement.dll">
-      <Link>Microsoft.SharePoint.Client.DocumentManagement.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Publishing.dll">
-      <Link>Microsoft.SharePoint.Client.Publishing.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll">
-      <Link>Microsoft.SharePoint.Client.Runtime.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.Applications.dll">
-      <Link>Microsoft.SharePoint.Client.Search.Applications.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Search.dll">
-      <Link>Microsoft.SharePoint.Client.Search.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.ServerRuntime.dll">
-      <Link>Microsoft.SharePoint.Client.ServerRuntime.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.Taxonomy.dll">
-      <Link>Microsoft.SharePoint.Client.Taxonomy.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.UserProfiles.dll">
-      <Link>Microsoft.SharePoint.Client.UserProfiles.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\CSOM\Microsoft.SharePoint.Client.WorkflowServices.dll">
-      <Link>Microsoft.SharePoint.Client.WorkflowServices.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
+    <None Include="Containers\Apps\1.0.0.0\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.1\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.2\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Apps\1.0.0.3\SPMeta2.Containers.AppContainer.app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\WebTemplates\M2CustomTeamSite.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
@@ -355,6 +335,11 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

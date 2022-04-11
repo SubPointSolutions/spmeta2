@@ -76,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BouncyCastle\1.8.1\BouncyCastle.Crypto.dll" />
     <Content Include="ClosedXML\ClosedXML.dll" />
     <Content Include="ClosedXML\DocumentFormat.OpenXml.dll" />
     <Content Include="HtmlAgilityPack\HtmlAgilityPack.1.4.6\Net20\HtmlAgilityPack.dll" />
@@ -84,6 +85,10 @@
     <Content Include="Images\SPMeta2_64_64.png" />
     <Content Include="Images\SubPointSolutions_2014_240.png" />
     <Content Include="Images\SubPointSolutions_2014_64.png" />
+    <Content Include="Mono.Cecil\Mono.Cecil.0.9.6.1\Mono.Cecil.dll" />
+    <Content Include="Mono.Cecil\Mono.Cecil.0.9.6.1\Mono.Cecil.Mdb.dll" />
+    <Content Include="Mono.Cecil\Mono.Cecil.0.9.6.1\Mono.Cecil.Pdb.dll" />
+    <Content Include="Mono.Cecil\Mono.Cecil.0.9.6.1\Mono.Cecil.Rocks.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.Policy.Portable.dll" />
     <Content Include="SharePoint\O365 - 16.0.2617.1200\Microsoft.Office.Client.TranslationServices.dll" />
@@ -123,6 +128,35 @@
     <Content Include="SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.Taxonomy.dll" />
     <Content Include="SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.UserProfiles.dll" />
     <Content Include="SharePoint\O365 - 16.1.3912.1204\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.Office.Client.Policy.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.Office.Client.TranslationServices.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.Office.SharePoint.Tools.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.Online.SharePoint.Client.Tenant.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.ProjectServer.Client.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.DocumentManagement.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.Publishing.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.Runtime.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.Search.Applications.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.Search.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.Taxonomy.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.UserProfiles.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET40\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.Office.Client.Policy.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.Office.Client.TranslationServices.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.Office.SharePoint.Tools.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.Online.SharePoint.Client.Tenant.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.ProjectServer.Client.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.DocumentManagement.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.Publishing.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.Runtime.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.Runtime.Windows.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.Search.Applications.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.Search.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.Taxonomy.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.UserProfiles.dll" />
+    <Content Include="SharePoint\O365 - 16.1.5715.1200\NET45\Microsoft.SharePoint.Client.WorkflowServices.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.4762.1000\CSOM\Microsoft.SharePoint.Client.Runtime.dll" />
     <Content Include="SharePoint\SP2010 - 14.0.6029.1000\SSOM\Microsoft.BusinessData.dll" />
@@ -327,6 +361,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -12,6 +12,7 @@ using SPMeta2.SSOM.DefaultSyntax;
 using SPMeta2.SSOM.ModelHandlers.Base;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -164,6 +165,15 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
 
+            if (definition.NavigateForFormsPages.HasValue)
+                list.NavigateForFormsPages = definition.NavigateForFormsPages.Value;
+
+            if (definition.EnableAssignToEmail.HasValue)
+                list.EnableAssignToEmail = definition.EnableAssignToEmail.Value;
+
+            if (definition.DisableGridEditing.HasValue)
+                list.DisableGridEditing = definition.DisableGridEditing.Value;
+
 #if !NET35
             if (definition.IndexedRootFolderPropertyKeys.Any())
             {
@@ -191,6 +201,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (definition.WriteSecurity.HasValue)
                 list.WriteSecurity = definition.WriteSecurity.Value;
+
+            if (definition.ReadSecurity.HasValue)
+                list.ReadSecurity = definition.ReadSecurity.Value;
 
             var docLibrary = list as SPDocumentLibrary;
 
@@ -259,39 +272,59 @@ namespace SPMeta2.SSOM.ModelHandlers
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-            var web = webModelHost.HostWeb;
+            // could either be web or list model host
+            // https://github.com/SubPointSolutions/spmeta2/issues/829
+
+            SPWeb web = null;
+            SPList hostList = null;
+
+            if (modelHost is WebModelHost)
+                web = (modelHost as WebModelHost).HostWeb;
+            else if (modelHost is ListModelHost)
+            {
+                web = (modelHost as ListModelHost).HostList.ParentWeb;
+                hostList = (modelHost as ListModelHost).HostList;
+            }
+            else
+            {
+                throw new SPMeta2UnsupportedModelHostException(
+                    string.Format("Unsupported model host type:[{0}]", modelHost.GetType()));
+            }
 
             var listDefinition = model as ListDefinition;
 
-            if (web != null && listDefinition != null)
+            if ((web != null || hostList != null) && listDefinition != null)
             {
-                // This is very important line ->  adding new 'fake list'
-                //
-                // Nintex workflow deployment web service updates the list, so that version of the list becomes +4
-                // Current SPWeb has not been updated, current list will be 4 versions behind so you will have 'Save conflict' exception
-                //
-                // We try to add new list, so SPListCollection is invalidated.
-                // Surely, we won't save this list.
-                try
+                if (hostList == null)
                 {
-                    var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, SPListTemplateType.GenericList);
-                    var tmpList = web.Lists[tmpListId];
+                    // This is very important line ->  adding new 'fake list'
+                    //
+                    // Nintex workflow deployment web service updates the list, so that version of the list becomes +4
+                    // Current SPWeb has not been updated, current list will be 4 versions behind so you will have 'Save conflict' exception
+                    //
+                    // We try to add new list, so SPListCollection is invalidated.
+                    // Surely, we won't save this list.
+                    try
+                    {
+                        var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, SPListTemplateType.GenericList);
+                        var tmpList = web.Lists[tmpListId];
 
-                    tmpList.Delete();
+                        tmpList.Delete();
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
-                catch (Exception)
-                {
-                }
+
 
 #pragma warning disable 618
-                var list = web.GetList(SPUtility.ConcatUrls(web.ServerRelativeUrl, listDefinition.GetListUrl()));
+                var list = hostList ?? web.GetList(SPUtility.ConcatUrls(web.ServerRelativeUrl, listDefinition.GetListUrl()));
 #pragma warning restore 618
 
-                var listModelHost = new ListModelHost
+                var listModelHost = ModelHostBase.Inherit<ListModelHost>(modelHost as ModelHostBase, host =>
                 {
-                    HostList = list
-                };
+                    host.HostList = list;
+                });
 
                 if (childModelType == typeof(ModuleFileDefinition))
                 {

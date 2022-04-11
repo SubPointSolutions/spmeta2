@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using SPMeta2.Containers.Services;
 using SPMeta2.Syntax.Default.Modern;
+using SPMeta2.Definitions.Base;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -252,6 +253,148 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             }
 
             return definition;
+        }
+
+        #endregion
+
+        #region navigation headers
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.TopNavigationNode")]
+        public void CanDeploy_Simple_TopNavigation_As_Heading()
+        {
+            var nav1Header = GenerateNode(n =>
+            {
+                n.Properties.Add(new NavigationNodePropertyValue
+                {
+                    Key = "NodeType",
+                    Value = "Heading"
+                });
+            });
+
+            var nav2Header = GenerateNode(n =>
+            {
+                n.Properties.Add(new NavigationNodePropertyValue
+                {
+                    Key = "NodeType",
+                    Value = "Heading"
+                });
+            });
+
+            var nav3Header = GenerateNode(n =>
+            {
+                n.Properties.Add(new NavigationNodePropertyValue
+                {
+                    Key = "NodeType",
+                    Value = "Heading"
+                });
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddTopNavigationNode(nav1Header);
+                    rndWeb.AddTopNavigationNode(nav2Header, n =>
+                    {
+                        n.AddTopNavigationNode(nav3Header);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.TopNavigationNode")]
+        public void CanDeploy_Simple_TopNavigation_As_AuthoredLinkPlain()
+        {
+            var nav1Header = GenerateNode(n =>
+            {
+                n.Properties.Add(new NavigationNodePropertyValue
+                {
+                    Key = "NodeType",
+                    Value = "AuthoredLinkPlain"
+                });
+            });
+
+            var nav2Header = GenerateNode(n =>
+            {
+                n.Properties.Add(new NavigationNodePropertyValue
+                {
+                    Key = "NodeType",
+                    Value = "AuthoredLinkPlain"
+                });
+            });
+
+            var nav3Header = GenerateNode(n =>
+            {
+                n.Properties.Add(new NavigationNodePropertyValue
+                {
+                    Key = "NodeType",
+                    Value = "AuthoredLinkPlain"
+                });
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddTopNavigationNode(nav1Header);
+                    rndWeb.AddTopNavigationNode(nav2Header, n =>
+                    {
+                        n.AddTopNavigationNode(nav3Header);
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        #endregion
+
+        #region special characters
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.TopNavigationNode.SpecialCharacters")]
+        public void CanDeploy_TopNavigationNode_With_Space()
+        {
+            var node1 = RndDef<TopNavigationNodeDefinition>(def =>
+            {
+                def.Title = string.Format("1_{0}", Rnd.String());
+                def.Url = string.Format("{0} {1}", Rnd.String(), Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddTopNavigationNode(node1);
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.TopNavigationNode.SpecialCharacters")]
+        public void CanDeploy_TopNavigationNode_With_PercentTwenty()
+        {
+            var node1 = RndDef<TopNavigationNodeDefinition>(def =>
+            {
+                def.Title = string.Format("1_{0}", Rnd.String());
+                def.Url = string.Format("{0}%20{1}", Rnd.String(), Rnd.String());
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddRandomWeb(rndWeb =>
+                {
+                    rndWeb.AddTopNavigationNode(node1);
+                });
+            });
+
+            TestModel(model);
         }
 
         #endregion

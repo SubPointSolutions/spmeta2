@@ -19,22 +19,6 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            if (modelHost is WebModelHost)
-            {
-                var workflowWebSubscriptionModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-                var definition = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
-
-                var web = workflowWebSubscriptionModelHost.HostWeb;
-
-                var spObject = GetCurrentWebWorkflowSubscriptioBySourceId(workflowWebSubscriptionModelHost,
-                       workflowWebSubscriptionModelHost.HostClientContext,
-                       web,
-                       web.Id,
-                       definition);
-
-                ValidateWorkflowSubscription(modelHost, workflowWebSubscriptionModelHost.HostClientContext, workflowWebSubscriptionModelHost.HostWeb, spObject, definition);
-            }
-
             if (modelHost is ListModelHost)
             {
                 var workflowSubscriptionModelHost = modelHost.WithAssertAndCast<ListModelHost>("modelHost", value => value.RequireNotNull());
@@ -50,6 +34,21 @@ namespace SPMeta2.Regression.CSOM.Validation
                       definition);
 
                 ValidateWorkflowSubscription(modelHost, workflowSubscriptionModelHost.HostClientContext, web, spObject, definition);
+            }
+            else if (modelHost is WebModelHost)
+            {
+                var workflowWebSubscriptionModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
+                var definition = model.WithAssertAndCast<SP2013WorkflowSubscriptionDefinition>("model", value => value.RequireNotNull());
+
+                var web = workflowWebSubscriptionModelHost.HostWeb;
+
+                var spObject = GetCurrentWebWorkflowSubscriptioBySourceId(workflowWebSubscriptionModelHost,
+                       workflowWebSubscriptionModelHost.HostClientContext,
+                       web,
+                       web.Id,
+                       definition);
+
+                ValidateWorkflowSubscription(modelHost, workflowWebSubscriptionModelHost.HostClientContext, workflowWebSubscriptionModelHost.HostWeb, spObject, definition);
             }
         }
 
@@ -168,6 +167,45 @@ namespace SPMeta2.Regression.CSOM.Validation
             #endregion
 
             #endregion
+
+            if (definition.Properties.Count() > 0)
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.Properties);
+                    var dstProp = d.GetExpressionValue(ct => ct.PropertyDefinitions);
+
+                    var isValid = true;
+
+                    foreach (var prop in s.Properties)
+                    {
+                        var propName = prop.Name;
+                        var propValue = prop.Value;
+
+                        if (!d.PropertyDefinitions.ContainsKey(propName))
+                        {
+                            isValid = false;
+                        }
+
+                        if (d.PropertyDefinitions[propName] != propValue)
+                        {
+                            isValid = false;
+                        }
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = dstProp,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(p => p.Properties, ".Properties.Count() = 0. Skipping");
+            }
         }
     }
 }

@@ -4,6 +4,10 @@ using System.Linq;
 using System.Reflection;
 using SPMeta2.Definitions;
 using SPMeta2.Models;
+using SPMeta2.Services;
+using SPMeta2.Syntax.Default;
+using SPMeta2.Common;
+using SPMeta2.Utils;
 
 namespace SPMeta2.Extensions
 {
@@ -74,15 +78,15 @@ namespace SPMeta2.Extensions
         {
             var result = new List<ModelNode>();
 
-            if (match != null)
-            {
-                if (match(model))
-                    result.Add(model);
-            }
-            else
-            {
-                result.Add(model);
-            }
+            //if (match != null)
+            //{
+            //    if (match(model))
+            //        result.Add(model);
+            //}
+            //else
+            //{
+            //    result.Add(model);
+            //}
 
             result.AddRange(FindNodes(model, match));
 
@@ -181,6 +185,201 @@ namespace SPMeta2.Extensions
             return node;
         }
 
+
+        #endregion
+
+        #region print extensions
+
+        /// <summary>
+        /// Renders readable, tree view looking-like model view as a string
+        /// More details - https://github.com/SubPointSolutions/spmeta2/issues/826
+        /// </summary>
+        /// <param name="modelNode"></param>
+        /// <returns></returns>
+        public static string ToPrettyPrint(this ModelNode modelNode)
+        {
+            var service = ServiceContainer.Instance.GetService<ModelPrettyPrintServiceBase>();
+
+            return service.PrintModel(modelNode);
+        }
+
+        /// <summary>
+        /// Generates graph in DOT notation
+        /// Use http://www.webgraphviz.com to visualize it fast
+        /// Mere details - https://github.com/SubPointSolutions/spmeta2/issues/845
+        /// </summary>
+        /// <param name="modelNode"></param>
+        /// <returns></returns>
+        public static string ToDotGraph(this ModelNode modelNode)
+        {
+            var service = ServiceContainer.Instance.GetService<ModelDotGraphPrintServiceBase>();
+
+            return service.PrintModel(modelNode);
+        }
+
+        #endregion
+
+        #region validation
+
+        public static ModelValidationResultSet<DefinitionBase> Validate(this ModelNode node, Action<TypedModelValidationResult<DefinitionBase>> action)
+        {
+            var service = ServiceContainer.Instance.GetService<FluentModelValidationServiceBase>();
+
+            return service.Validate<DefinitionBase>(node, action);
+        }
+
+        public static ModelValidationResultSet<TDefinition> Validate<TDefinition>(this ModelNode node, Action<TypedModelValidationResult<TDefinition>> action)
+            where TDefinition : DefinitionBase
+        {
+            var service = ServiceContainer.Instance.GetService<FluentModelValidationServiceBase>();
+
+            return service.Validate(node, action);
+        }
+
+        #endregion
+
+        #region model node properties
+
+        internal static void InternalSetPropertyBagValue(List<PropertyBagValue> values,
+            string name,
+            string value)
+        {
+            var currentValue = values.FirstOrDefault(p => !string.IsNullOrEmpty(p.Name)
+                                                            && p.Name.ToUpper() == name.ToUpper());
+
+            if (currentValue == null)
+            {
+                currentValue = new PropertyBagValue
+                {
+                    Name = name,
+                    Value = value
+                };
+
+                values.Add(currentValue);
+            }
+
+            currentValue.Value = value;
+        }
+
+        internal static string InternalGetPropertyBagValue(List<PropertyBagValue> values,
+            string name)
+        {
+            var currentValue = values.FirstOrDefault(p => !string.IsNullOrEmpty(p.Name)
+                                                            && p.Name.ToUpper() == name.ToUpper());
+
+            if (currentValue != null)
+            {
+                return currentValue.Value;
+            }
+
+            return null;
+        }
+
+        public static TModelNode SetNonPersistentPropertyBagValue<TModelNode>(this TModelNode modelNode,
+            string name,
+            string value)
+            where TModelNode : ModelNode
+        {
+            InternalSetPropertyBagValue(modelNode.NonPersistentPropertyBag, name, value);
+
+            return modelNode;
+        }
+
+
+        public static string GetNonPersistentPropertyBagValue<TModelNode>(this TModelNode modelNode,
+              string name)
+              where TModelNode : ModelNode
+        {
+            return InternalGetPropertyBagValue(modelNode.NonPersistentPropertyBag, name);
+        }
+        public static TModelNode SetPropertyBagValue<TModelNode>(this TModelNode modelNode,
+            string name,
+            string value)
+            where TModelNode : ModelNode
+        {
+            InternalSetPropertyBagValue(modelNode.PropertyBag, name, value);
+
+            return modelNode;
+        }
+
+        public static string GetPropertyBagValue<TModelNode>(this TModelNode modelNode,
+            string name)
+            where TModelNode : ModelNode
+        {
+            return InternalGetPropertyBagValue(modelNode.PropertyBag, name);
+        }
+
+        #endregion
+
+        #region incremental provision
+
+        public static bool GetIncrementalRequireSelfProcessingValue<TModelNode>(this TModelNode modelNode)
+            where TModelNode : ModelNode
+        {
+            var incrementalRequireSelfProcessingValue = modelNode.GetNonPersistentPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalRequireSelfProcessingValue);
+
+            if (incrementalRequireSelfProcessingValue != null)
+                return ConvertUtils.ToBoolWithDefault(incrementalRequireSelfProcessingValue, false);
+
+            return false;
+        }
+
+        internal static TModelNode InternalSetIncrementalProvisionModelId<TModelNode>(this TModelNode modelNode, string modelId)
+            where TModelNode : ModelNode
+        {
+            modelNode.SetPropertyBagValue(DefaultModelNodePropertyBagValue.Sys.IncrementalProvision.PersistenceStorageModelId, modelId);
+
+            return modelNode;
+        }
+
+        public static FarmModelNode SetIncrementalProvisionModelId(this FarmModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static WebApplicationModelNode SetIncrementalProvisionModelId(this WebApplicationModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static SiteModelNode SetIncrementalProvisionModelId(this SiteModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        public static WebModelNode SetIncrementalProvisionModelId(this WebModelNode modelNode, string modelId)
+        {
+            return InternalSetIncrementalProvisionModelId(modelNode, modelId);
+        }
+
+        #endregion
+
+        #region provision compatibility
+
+        public static ModelProvisionCompatibilityResult CheckProvisionCompatibility(this ModelNode modelNode)
+        {
+            var service = ServiceContainer.Instance.GetService<ModelCompatibilityServiceBase>();
+
+            return service.CheckProvisionCompatibility(modelNode);
+        }
+
+        public static bool IsCSOMCompatible(this ModelNode modelNode)
+        {
+            var compatibilityResult = CheckProvisionCompatibility(modelNode);
+            var result = compatibilityResult.Result.All(r => r.IsCSOMCompatible.HasValue
+                                                       && r.IsCSOMCompatible.Value);
+
+            return result;
+        }
+
+        public static bool IsSSOMCompatible(this ModelNode model)
+        {
+            var compatibilityResult = CheckProvisionCompatibility(model);
+            var result = compatibilityResult.Result.All(r => r.IsSSOMCompatible.HasValue
+                                                             && r.IsSSOMCompatible.Value);
+
+            return result;
+        }
 
         #endregion
     }

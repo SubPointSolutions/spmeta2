@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers;
@@ -22,6 +23,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
         [TestMethod]
         [TestCategory("Regression.Syntax")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_FarmLevel()
         {
             var model = SPMeta2Model.NewFarmModel(farm =>
@@ -30,6 +32,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                     .AddProperty(new PropertyDefinition())
                     .AddProperty(new PropertyDefinition());
 
+                farm.AddTrustedAccessProvider(new TrustedAccessProviderDefinition());
+
                 farm.AddFeature(new FeatureDefinition());
                 farm.AddFarmFeature(new FeatureDefinition());
 
@@ -37,11 +41,16 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 farm.AddManagedProperty(new ManagedPropertyDefinition());
 
                 farm.AddDiagnosticsServiceBase(new DiagnosticsServiceBaseDefinition());
+
+                farm.AddDeveloperDashboardSettings(new DeveloperDashboardSettingsDefinition());
+
+                farm.AddWebApplication(new WebApplicationDefinition());
             });
         }
 
         [TestMethod]
         [TestCategory("Regression.Syntax")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_WebApplicationLevel()
         {
             var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
@@ -60,15 +69,38 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                 webApplication.AddPrefix(new PrefixDefinition());
 
                 webApplication.AddContentDatabase(new ContentDatabaseDefinition());
+
+                webApplication.AddOfficialFileHost(new OfficialFileHostDefinition());
+
+                webApplication.AddSuiteBar(new SuiteBarDefinition());
+
+                webApplication.AddFarmSolution(new FarmSolutionDefinition());
+
+                webApplication.AddPeoplePickerSettings(new PeoplePickerSettingsDefinition());
             });
         }
 
         [TestMethod]
         [TestCategory("Regression.Syntax")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_SiteLevel()
         {
             var model = SPMeta2Model.NewSiteModel(site =>
             {
+                site.AddSharePointDesignerSettings(new SharePointDesignerSettingsDefinition());
+
+                site.AddRootWeb(new RootWebDefinition { }, rootWeb =>
+                {
+                    rootWeb.AddTopNavigationNode(new TopNavigationNodeDefinition());
+                });
+
+                site.AddCoreProperty(new CorePropertyDefinition())
+                    .AddCoreProperty(new CorePropertyDefinition(), property =>
+                    {
+                        property.AddProfileTypeProperty(new ProfileTypePropertyDefinition());
+                    });
+
+
                 site.AddAuditSettings(new AuditSettingsDefinition());
                 site.AddImageRendition(new ImageRenditionDefinition());
 
@@ -85,6 +117,10 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 site.AddSecurityGroup(new SecurityGroupDefinition(), group =>
                 {
+                    group
+                        .AddUser(new UserDefinition())
+                        .AddUser(new UserDefinition());
+
                     // TODO
 
                     // .AddSecurityRoleLink() is missed on SecurityGroup #601
@@ -138,6 +174,7 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
         [TestMethod]
         [TestCategory("Regression.Syntax")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_WebLevel()
         {
             var model = SPMeta2Model.NewWebModel(web =>
@@ -188,13 +225,28 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
                 web.AddList(new ListDefinition(), list =>
                 {
+                    list.AddDiscussionItem(new DiscussionItemDefinition(), item =>
+                    {
+                        item.AddDiscussionReplyItem(new DiscussionReplyItemDefinition());
+                    });
+
+                    list.AddDocumentSet(new DocumentSetDefinition());
+
                     list.AddAuditSettings(new AuditSettingsDefinition());
+
+                    list.AddMasterPage(new MasterPageDefinition());
+                    list.AddHtmlMasterPage(new HtmlMasterPageDefinition());
 
                     list
                       .AddProperty(new PropertyDefinition())
                       .AddProperty(new PropertyDefinition());
 
 
+                    list.AddContentTypeLink(new ContentTypeLinkDefinition(), contentTypeLink =>
+                    {
+                        contentTypeLink.AddWorkflowAssociation(new WorkflowAssociationDefinition());
+
+                    });
                     list.AddUniqueContentTypeOrder(new UniqueContentTypeOrderDefinition());
                     list.AddHideContentTypeLinks(new HideContentTypeLinksDefinition());
                     list.AddRemoveContentTypeLinks(new RemoveContentTypeLinksDefinition());
@@ -249,6 +301,8 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
                             .AddProperty(new PropertyDefinition())
                             .AddProperty(new PropertyDefinition())
 
+                            .AddDocumentSet(new DocumentSetDefinition())
+
                             .AddWelcomePage(new WelcomePageDefinition())
                             .AddFolder(new FolderDefinition())
                             .AddListItem(new ListItemDefinition());
@@ -278,17 +332,24 @@ namespace SPMeta2.Regression.Tests.Impl.Syntax
 
         [TestMethod]
         [TestCategory("Regression.Syntax.Extensions")]
+        [TestCategory("CI.Core")]
         public void CanPassTypedSyntax_Extensions()
         {
+            var tmpDir = Path.Combine(
+                                Path.GetTempPath(),
+                                string.Format("m2_regression_test_CanPassTypedSyntax_Extensions_{0}", Guid.NewGuid().ToString("N")));
+
+            Directory.CreateDirectory(tmpDir);
+
             var model = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddRandomList(list =>
                 {
-                    ModuleFileUtils.LoadModuleFilesFromLocalFolder(list, Directory.GetCurrentDirectory());
+                    ModuleFileUtils.LoadModuleFilesFromLocalFolder(list, tmpDir);
 
                     list.AddRandomFolder(folder =>
                     {
-                        ModuleFileUtils.LoadModuleFilesFromLocalFolder(folder, Directory.GetCurrentDirectory());
+                        ModuleFileUtils.LoadModuleFilesFromLocalFolder(folder, tmpDir);
                     });
                 });
             });

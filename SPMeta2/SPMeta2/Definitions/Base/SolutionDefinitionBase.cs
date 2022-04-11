@@ -37,6 +37,7 @@ namespace SPMeta2.Definitions.Base
         [ExpectValidation]
         [DataMember]
         [IdentityKey]
+        [ExpectRequired]
         public Guid SolutionId { get; set; }
 
         #endregion
