@@ -63,7 +63,14 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
         protected Group FindSiteCollectionGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)
         {
             var termStore = termStoreHost.HostTermStore;
+
+#if NET35
             return termStore.GetSiteCollectionGroup(termStoreHost.HostSite);
+#endif
+
+#if !NET35
+            return termStore.GetSiteCollectionGroup(termStoreHost.HostSite, true);
+#endif
         }
 
         protected Group FindSystemGroup(TermStoreModelHost termStoreHost, TaxonomyTermGroupDefinition groupModel)
@@ -131,6 +138,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
 
 #endif
 
+                if (!string.IsNullOrEmpty(groupModel.Description))
+                    currentGroup.Description = groupModel.Description;
+
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
                     CurrentModelNode = null,
@@ -146,6 +156,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Taxonomy
             else
             {
                 TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing Term Group");
+
+                if (!string.IsNullOrEmpty(groupModel.Description))
+                    currentGroup.Description = groupModel.Description;
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {

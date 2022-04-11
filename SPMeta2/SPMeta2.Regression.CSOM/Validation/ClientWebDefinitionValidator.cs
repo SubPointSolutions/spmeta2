@@ -1,12 +1,16 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+
 using Microsoft.SharePoint.Client;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
-using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Regression.CSOM.Extensions;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using System.Text;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -32,10 +36,12 @@ namespace SPMeta2.Regression.CSOM.Validation
                             w => w.Configuration,
                             w => w.Title,
                             w => w.Id,
-                            w => w.Url
+                            w => w.AllProperties,
+                            w => w.HasUniqueRoleAssignments,
+                            w => w.AssociatedOwnerGroup,
+                            w => w.AssociatedVisitorGroup,
+                            w => w.AssociatedMemberGroup
                         );
-
-
 
             context.ExecuteQueryWithTrace();
 
@@ -56,16 +62,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.CustomWebTemplate);
             }
 
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
-            else
-                assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
-
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
-            else
-                assert.SkipProperty(m => m.Description, "Description is null or empty. Skipping.");
-
+            assert.ShouldBeEqualIfNotNullOrEmpty(m => m.Description, o => o.Description);
 
             assert.ShouldBeEqual((p, s, d) =>
             {
@@ -96,12 +93,64 @@ namespace SPMeta2.Regression.CSOM.Validation
 
             var supportsAlternateCssAndSiteImageUrl = ReflectionUtils.HasProperties(spObject, new[]
             {
-                "AlternateCssUrl", 
+                "AlternateCssUrl",
                 "SiteLogoUrl"
             });
 
             if (supportsAlternateCssAndSiteImageUrl)
             {
+                // also check for MembersCanShare / RequestAccessEmail
+                if (definition.MembersCanShare.HasValue)
+                {
+                    var membersCanShare = ConvertUtils.ToBool(ReflectionUtils.GetPropertyValue(spObject, "MembersCanShare")).Value;
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.MembersCanShare);
+                        var isValid = true;
+
+                        isValid = s.MembersCanShare.Value == membersCanShare;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.MembersCanShare);
+                }
+
+                if (!string.IsNullOrEmpty(definition.RequestAccessEmail))
+                {
+                    var requestAccessEmail = ReflectionUtils.GetPropertyValue(spObject, "RequestAccessEmail");
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.RequestAccessEmail);
+                        var isValid = true;
+
+                        isValid = s.RequestAccessEmail.ToUpper() == requestAccessEmail.ToString().ToUpper();
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.RequestAccessEmail);
+                }
+
+
                 if (!string.IsNullOrEmpty(definition.AlternateCssUrl))
                 {
                     var alternateCssUrl = ReflectionUtils.GetPropertyValue(spObject, "AlternateCssUrl");
@@ -134,9 +183,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                     assert.ShouldBeEqual((p, s, d) =>
                     {
                         var srcProp = s.GetExpressionValue(def => def.SiteLogoUrl);
-                        var isValid = true;
 
-                        isValid = s.SiteLogoUrl.ToUpper().EndsWith(siteLogoUrl.ToString().ToUpper());
+                        var isValid = s.SiteLogoUrl.ToUpper().EndsWith(siteLogoUrl.ToString().ToUpper());
 
                         return new PropertyValidationResult
                         {
@@ -152,7 +200,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                     assert.SkipProperty(m => m.SiteLogoUrl);
                 }
             }
-
             else
             {
                 TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
@@ -160,8 +207,10 @@ namespace SPMeta2.Regression.CSOM.Validation
 
                 assert.SkipProperty(m => m.AlternateCssUrl, "AlternateCssUrl is null or empty. Skipping.");
                 assert.SkipProperty(m => m.SiteLogoUrl, "SiteLogoUrl is null or empty. Skipping.");
-            }
 
+                assert.SkipProperty(m => m.MembersCanShare, "SiteLogoUrl is null or empty. Skipping.");
+                assert.SkipProperty(m => m.RequestAccessEmail, "SiteLogoUrl is null or empty. Skipping.");
+            }
 
             var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
             {
@@ -243,7 +292,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 {
                     assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
                 }
-
             }
             else
             {
@@ -253,21 +301,114 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.TitleResource, "TitleResource is null or empty. Skipping.");
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is null or empty. Skipping.");
             }
-        }
-    }
+
+            if (definition.IndexedPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedPropertyKeys);
+
+                    var isValid = false;
+
+                    if (d.AllProperties.FieldValues.ContainsKey("vti_indexedpropertykeys"))
+                    {
+                        // check props, TODO
+
+                        // check vti_indexedpropertykeys
+                        var indexedPropertyKeys = d.AllProperties["vti_indexedpropertykeys"]
+                                                   .ToString()
+                                                   .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                                                   .Select(es => Encoding.Unicode.GetString(System.Convert.FromBase64String(es)));
+
+                        // Search if any indexPropertyKey from definition is not in WebModel
+                        var differentKeys = s.IndexedPropertyKeys.Select(o => o.Name)
+                                                                 .Except(indexedPropertyKeys);
+
+                        isValid = !differentKeys.Any();
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.IndexedPropertyKeys, "IndexedPropertyKeys is NULL or empty. Skipping.");
+
+            // safe check - if not then we'll get the following exception
+            // ---> System.InvalidOperationException: 
+            // You cannot set this property since the web does not have unique permissions.
+            if (definition.UseUniquePermission && spObject.HasUniqueRoleAssignments)
+            {
+                // AssociatedXXXGroupName
+                if (!string.IsNullOrEmpty(definition.AssociatedMemberGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedMemberGroupName);
+                        var isValid = s.AssociatedVisitorGroupName == d.AssociatedVisitorGroup.Title;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedMemberGroupName, "AssociatedMemberGroupName is null");
+
+                if (!string.IsNullOrEmpty(definition.AssociatedOwnerGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedOwnerGroupName);
+                        var isValid = s.AssociatedOwnerGroupName == d.AssociatedOwnerGroup.Title;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedOwnerGroupName, "AssociatedOwnerGroupName is null");
 
 
+                if (!string.IsNullOrEmpty(definition.AssociatedVisitorGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedVisitorGroupName);
+                        var isValid = s.AssociatedVisitorGroupName == d.AssociatedVisitorGroup.Title;
 
-    internal static class WebExtensions
-    {
-        public static uint GetLCID(this Web web)
-        {
-            return (uint)web.Language;
-        }
-
-        public static string GetWebTemplate(this Web web)
-        {
-            return string.Format("{0}#{1}", web.WebTemplate, web.Configuration);
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedVisitorGroupName, "AssociatedVisitorGroup is null");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.AssociatedVisitorGroupName, "AssociatedVisitorGroup is null");
+                assert.SkipProperty(m => m.AssociatedOwnerGroupName, "AssociatedOwnerGroupName is null");
+                assert.SkipProperty(m => m.AssociatedMemberGroupName, "AssociatedMemberGroupName is null");
+            }
         }
     }
 }

@@ -56,13 +56,13 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WebConfigModificationDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Owner)
-                          .AddPropertyValue(p => p.Path)
-                          .AddPropertyValue(p => p.Sequence)
-                          .AddPropertyValue(p => p.Type)
-                          .AddPropertyValue(p => p.Value)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Owner", Owner)
+                          .AddRawPropertyValue("Path", Path)
+                          .AddRawPropertyValue("Sequence", Sequence)
+                          .AddRawPropertyValue("Type", Type)
+                          .AddRawPropertyValue("Value", Value)
                           .ToString();
         }
 

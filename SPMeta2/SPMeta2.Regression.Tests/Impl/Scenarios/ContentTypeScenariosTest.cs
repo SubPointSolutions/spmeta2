@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.Containers.Services;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Syntax.Default.Modern;
@@ -90,11 +91,33 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ContentTypes")]
+        public void CanDeploy_CustomListItemContentType_ByParentName()
+        {
+            TestRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = string.Empty;
+                def.ParentContentTypeName = BuiltInContentTypeNames.Item;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes")]
         public void CanDeploy_CustomDocumentContentType()
         {
             TestRandomDefinition<ContentTypeDefinition>(def =>
             {
                 def.ParentContentTypeId = BuiltInContentTypeId.Document;
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes")]
+        public void CanDeploy_CustomDocumentContentType_ByParentName()
+        {
+            TestRandomDefinition<ContentTypeDefinition>(def =>
+            {
+                def.ParentContentTypeId = string.Empty;
+                def.ParentContentTypeName = BuiltInContentTypeNames.Document;
             });
         }
 
@@ -341,13 +364,131 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             TestModel(env.SiteModel);
         }
 
-        // 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.FieldLinks")]
+        public void CanDeploy_CanSetupUniqueContentTypeFieldsOrder_At_OOTB_List_Scope()
+        {
+            var fieldDef = ModelGeneratorService.GetRandomDefinition<FieldDefinition>(def =>
+            {
+                def.Hidden = false;
+
+                def.ShowInDisplayForm = true;
+                def.ShowInEditForm = true;
+                def.ShowInListSettings = true;
+                def.ShowInNewForm = true;
+                def.ShowInViewForms = true;
+
+                def.AddFieldOptions = BuiltInAddFieldOptions.AddToAllContentTypes
+                    | BuiltInAddFieldOptions.AddFieldInternalNameHint;
+            });
+
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = false;
+                def.TemplateType = BuiltInListTemplateTypeId.GenericList;
+            });
+
+            var contentTypeLinkDef = new ContentTypeLinkDefinition
+            {
+                ContentTypeName = BuiltInContentTypeNames.Item,
+                ContentTypeId = BuiltInContentTypeId.Item
+            };
+
+            var webModel = SPMeta2Model.NewWebModel(web =>
+            {
+                // adding field first
+                web.AddList(listDef, list =>
+                {
+                    list.AddField(fieldDef, field =>
+                    {
+
+                    });
+                });
+
+                // then working with the content type
+                web.AddList(listDef.Inherit(), list =>
+                {
+                    list.AddContentTypeLink(contentTypeLinkDef, contenTypeLink =>
+                    {
+                        contenTypeLink.RegExcludeFromEventsValidation();
+
+                        contenTypeLink.AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition
+                        {
+
+                            Fields = new List<FieldLinkValue>
+                            {
+                                    new FieldLinkValue {InternalName = fieldDef.InternalName},
+                                    new FieldLinkValue {InternalName = "Title"},
+                            }
+                        });
+                    });
+                });
+            });
+
+            TestModel(webModel);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.FieldLinks")]
+        public void CanDeploy_CanSetupUniqueContentTypeFieldsOrder_At_List_Scope()
+        {
+            // Support 'UniqueContentTypeFieldsOrderDefinition' at list level content types #742
+            // https://github.com/SubPointSolutions/spmeta2/issues/742
+
+            WithDisabledPropertyUpdateValidation(() =>
+            {
+                var first = string.Empty;
+                var second = string.Empty;
+
+                var env = GetContentTypeSandbox(
+                    (siteModel, e) =>
+                    {
+
+                    },
+                    (contentTypeModel, e) =>
+                    {
+                        first = e.First.InternalName;
+                        second = e.Second.InternalName;
+
+                        contentTypeModel
+                            .AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition
+                            {
+                                Fields = new List<FieldLinkValue>
+                                {
+                                    new FieldLinkValue {InternalName = e.Second.InternalName},
+                                    new FieldLinkValue {InternalName = e.First.InternalName},
+                                }
+                            });
+                    });
+
+                var webModel = SPMeta2Model.NewWebModel(web =>
+                {
+                    web.AddRandomList(list =>
+                    {
+                        (list.Value as ListDefinition).ContentTypesEnabled = true;
+
+                        list.AddContentTypeLink(env.ContentType, contenTypeLink =>
+                        {
+                            contenTypeLink.AddUniqueContentTypeFieldsOrder(new UniqueContentTypeFieldsOrderDefinition
+                            {
+
+                                Fields = new List<FieldLinkValue>
+                                {
+                                    new FieldLinkValue {InternalName = first},
+                                    new FieldLinkValue {InternalName = second},
+                                }
+                            });
+                        });
+                    });
+                });
+
+                TestModel(env.SiteModel, webModel);
+            });
+        }
 
         #endregion
 
         #region doc templates
-
-
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.ContentTypes.DocumentTemplate")]
@@ -529,6 +670,89 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #endregion
 
+        #region renaming
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.Renaming")]
+        public void CanDeploy_ContentType_And_Rename()
+        {
+            // Enhance ContentTypeDefinition - support Name renaming #924
+            // https://github.com/SubPointSolutions/spmeta2/issues/924
+
+            // we should be able to deploy and then rename content types
+            // 3 waves of deployment: original, and two renames
+            // all should work, including model validations with the new Names
+
+            // we need to add content type field links to ensure two paths:
+            // 1) model handler provisions content types
+            // 2) model handler resolves content type to pass further to the provision flow
+
+            var originalContentTypes = new List<ContentTypeDefinition>();
+
+            originalContentTypes.Add(ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>());
+            originalContentTypes.Add(ModelGeneratorService.GetRandomDefinition<ContentTypeDefinition>());
+
+            var firstRenames = originalContentTypes.Select(d =>
+            {
+                return d.Inherit(def =>
+                {
+                    def.Name = Rnd.String();
+                });
+            });
+
+            var secondRenames = originalContentTypes.Select(d =>
+            {
+                return d.Inherit(def =>
+                {
+                    def.Name = Rnd.String();
+                });
+            });
+
+            // deploy and test original content types
+            var originalModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                foreach (var ct in originalContentTypes)
+                {
+                    site.AddContentType(ct, contentType =>
+                    {
+                        contentType.AddContentTypeFieldLink(BuiltInFieldId.Title);
+                    });
+                }
+            });
+
+            TestModel(originalModel);
+
+            // deploy and test first renames
+            var firstRenamesModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                foreach (var ct in firstRenames)
+                {
+                    site.AddContentType(ct, contentType =>
+                    {
+                        contentType.AddContentTypeFieldLink(BuiltInFieldId.Title);
+                    });
+                }
+            });
+
+            TestModel(firstRenamesModel);
+
+            // deploy and test first renames
+            var secondRenamesModel = SPMeta2Model.NewSiteModel(site =>
+            {
+                foreach (var ct in secondRenames)
+                {
+                    site.AddContentType(ct, contentType =>
+                    {
+                        contentType.AddContentTypeFieldLink(BuiltInFieldId.Title);
+                    });
+                }
+            });
+
+            TestModel(secondRenamesModel);
+        }
+
+        #endregion
+
         #region utils
 
         protected ContentTypeDefinition GetLocalizedDefinition()
@@ -552,6 +776,66 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             }
 
             return definition;
+        }
+
+        #endregion
+
+        #region addint out of the box content types
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.OOTB")]
+        public void CanDeploy_Item_ContentType_To_List()
+        {
+            // "Item" ContentTypeLink #1016
+            // https://github.com/SubPointSolutions/spmeta2/issues/1016
+
+            var announcementList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.Announcements;
+                def.ContentTypesEnabled = true;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(announcementList, list =>
+                {
+                    list.AddContentTypeLink(new ContentTypeLinkDefinition
+                    {
+                        ContentTypeId = BuiltInContentTypeId.Item,
+                        ContentTypeName = "Item"
+                    });
+                });
+            });
+
+            TestModel(model);
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.ContentTypes.OOTB")]
+        public void CanDeploy_Item_ContentType_To_Library()
+        {
+            // "Item" ContentTypeLink #1016
+            // https://github.com/SubPointSolutions/spmeta2/issues/1016
+
+            var announcementList = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+                def.ContentTypesEnabled = true;
+            });
+
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                web.AddList(announcementList, list =>
+                {
+                    list.AddContentTypeLink(new ContentTypeLinkDefinition
+                    {
+                        ContentTypeId = BuiltInContentTypeId.Item,
+                        ContentTypeName = "Item"
+                    });
+                });
+            });
+
+            TestModel(model);
         }
 
         #endregion

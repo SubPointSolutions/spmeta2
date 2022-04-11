@@ -27,14 +27,15 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var contentType = modelHost.WithAssertAndCast<SPContentType>("model", value => value.RequireNotNull());
+            var typedModelHost = modelHost.WithAssertAndCast<ContentTypeModelHost>("model", value => value.RequireNotNull());
             var hideContentTypeFieldLinksDefinition = model.WithAssertAndCast<RemoveContentTypeFieldLinksDefinition>("model", value => value.RequireNotNull());
 
-            DeployHideContentTypeLinks(modelHost, contentType, hideContentTypeFieldLinksDefinition);
+            DeployHideContentTypeLinks(modelHost, typedModelHost, hideContentTypeFieldLinksDefinition);
         }
 
-        private void DeployHideContentTypeLinks(object modelHost, SPContentType contentType, RemoveContentTypeFieldLinksDefinition hideFieldLinksModel)
+        private void DeployHideContentTypeLinks(object modelHost, ContentTypeModelHost contentTypeModelHost, RemoveContentTypeFieldLinksDefinition hideFieldLinksModel)
         {
+            var contentType = contentTypeModelHost.HostContentType;
             var fieldLinks = contentType.FieldLinks.OfType<SPFieldLink>().ToList();
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -75,6 +76,8 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
                 ObjectDefinition = hideFieldLinksModel,
                 ModelHost = modelHost
             });
+
+            contentTypeModelHost.ShouldUpdateHost = true;
         }
 
         #endregion

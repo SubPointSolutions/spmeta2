@@ -44,8 +44,8 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WelcomePageDefinition>(this)
-                          .AddPropertyValue(p => p.Url)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Url", Url)
 
                           .ToString();
         }

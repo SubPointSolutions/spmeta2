@@ -38,14 +38,17 @@ namespace SPMeta2.Definitions.Webparts
 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired(GroupName = "Target List")]
         public string ListTitle { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired(GroupName = "Target List")]
         public string ListUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
+        [ExpectRequired(GroupName = "Target List")]
         public Guid? ListId { get; set; }
 
         [ExpectValidation]
@@ -66,6 +69,10 @@ namespace SPMeta2.Definitions.Webparts
         [ExpectValidation]
         [DataMember]
         public Guid? ViewId { get; set; }
+
+        [ExpectValidation]
+        [DataMember]
+        public string ViewUrl { get; set; }
 
         [ExpectValidation]
         [DataMember]
@@ -167,15 +174,15 @@ namespace SPMeta2.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<XsltListViewWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.ListTitle)
-                          .AddPropertyValue(p => p.ListUrl)
-                          .AddPropertyValue(p => p.ListId)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("ListTitle", ListTitle)
+                          .AddRawPropertyValue("ListUrl", ListUrl)
+                          .AddRawPropertyValue("ListId", ListId)
 
-                          .AddPropertyValue(p => p.ViewName)
-                          .AddPropertyValue(p => p.ViewId)
+                          .AddRawPropertyValue("ViewName", ViewName)
+                          .AddRawPropertyValue("ViewId", ViewId)
 
-                          .AddPropertyValue(p => p.JSLink)
+                          .AddRawPropertyValue("JSLink", JSLink)
                           .ToString();
         }
 

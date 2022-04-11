@@ -1,16 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq;
+
 using Microsoft.SharePoint;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
-
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -27,15 +24,19 @@ namespace SPMeta2.Regression.SSOM.Validation
             if (modelHost is WebModelHost)
                 parentWeb = (modelHost as WebModelHost).HostWeb;
 
-
             var spObject = GetWeb(parentWeb, definition);
 
             var assert = ServiceFactory.AssertService
-                           .NewAssert(definition, spObject)
-                                 .ShouldBeEqual(m => m.Title, o => o.Title)
-                                 .ShouldBeEqual(m => m.LCID, o => o.GetLCID())
-                //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
-                                 .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments);
+                       .NewAssert(definition, spObject)
+                       .ShouldBeEqual(m => m.LCID, o => o.GetLCID());
+            //.ShouldBeEqual(m => m.WebTemplate, o => o.GetWebTemplate())
+
+            // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(spObject.UICulture, () =>
+            {
+                assert.ShouldBeEqual(m => m.Title, o => o.Title)
+                    .ShouldBeEqual(m => m.UseUniquePermission, o => o.HasUniqueRoleAssignments);
+            });
 
             if (!string.IsNullOrEmpty(definition.WebTemplate))
             {
@@ -58,7 +59,6 @@ namespace SPMeta2.Regression.SSOM.Validation
                 assert.ShouldBeEndOf(m => m.SiteLogoUrl, o => o.SiteLogoUrl);
             else
                 assert.SkipProperty(m => m.SiteLogoUrl);
-
 
             if (!string.IsNullOrEmpty(definition.Description))
                 assert.ShouldBeEqual(m => m.Description, o => o.Description);
@@ -87,8 +87,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                 };
             });
 
-
-            /// localization
+            // localization
             if (definition.TitleResource.Any())
             {
                 assert.ShouldBeEqual((p, s, d) =>
@@ -152,19 +151,106 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is NULL or empty. Skipping.");
             }
-        }
-    }
 
-    internal static class WebExtensions
-    {
-        public static uint GetLCID(this SPWeb web)
-        {
-            return (uint)web.Locale.LCID;
-        }
+            if (definition.IndexedPropertyKeys.Any())
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(def => def.IndexedPropertyKeys);
 
-        public static string GetWebTemplate(this SPWeb web)
-        {
-            return string.Format("{0}#{1}", web.WebTemplate, web.Configuration);
+                    // Search if any indexPropertyKey from definition is not in WebModel
+                    var differentKeys = s.IndexedPropertyKeys.Select(o => o.Name)
+                                                             .Except(d.IndexedPropertyKeys);
+
+                    var isValid = !differentKeys.Any();
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+                assert.SkipProperty(m => m.IndexedPropertyKeys, "IndexedPropertyKeys is NULL or empty. Skipping.");
+
+
+            // O365 props
+            assert.SkipProperty(m => m.MembersCanShare, "Skipping O365 prop");
+            assert.SkipProperty(m => m.RequestAccessEmail, "Skipping O365 prop");
+
+            // safe check - if not then we'll get the following exception
+            // ---> System.InvalidOperationException: 
+            // You cannot set this property since the web does not have unique permissions.
+            if (definition.UseUniquePermission && spObject.HasUniqueRoleAssignments)
+            {
+                // AssociatedXXXGroupName
+                if (!string.IsNullOrEmpty(definition.AssociatedMemberGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedMemberGroupName);
+                        var isValid = s.AssociatedVisitorGroupName == d.AssociatedVisitorGroup.Name;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedMemberGroupName, "AssociatedMemberGroupName is null");
+
+                if (!string.IsNullOrEmpty(definition.AssociatedOwnerGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedOwnerGroupName);
+                        var isValid = s.AssociatedOwnerGroupName == d.AssociatedOwnerGroup.Name;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedOwnerGroupName, "AssociatedOwnerGroupName is null");
+
+
+                if (!string.IsNullOrEmpty(definition.AssociatedVisitorGroupName))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(def => def.AssociatedVisitorGroupName);
+                        var isValid = s.AssociatedVisitorGroupName == d.AssociatedVisitorGroup.Name;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                    assert.SkipProperty(m => m.AssociatedVisitorGroupName, "AssociatedVisitorGroup is null");
+            }
+            else
+            {
+                assert.SkipProperty(m => m.AssociatedVisitorGroupName, "AssociatedVisitorGroup is null");
+                assert.SkipProperty(m => m.AssociatedOwnerGroupName, "AssociatedOwnerGroupName is null");
+                assert.SkipProperty(m => m.AssociatedMemberGroupName, "AssociatedMemberGroupName is null");
+            }
         }
     }
 }

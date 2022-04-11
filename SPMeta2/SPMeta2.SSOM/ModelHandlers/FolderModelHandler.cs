@@ -41,7 +41,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (folderModelHost.CurrentLibrary != null)
             {
-                var currentFolder = EnsureLibraryFolder(folderModelHost, folderModel);
+                var currentFolder = FindCurrentLibraryFolder(folderModelHost, folderModel);
 
                 var newContext = new FolderModelHost
                 {
@@ -55,7 +55,7 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else if (folderModelHost.CurrentList != null)
             {
-                var currentListItem = EnsureListFolder(folderModelHost, folderModel);
+                var currentListItem = FindCurrentListFolder(folderModelHost, folderModel);
 
                 var newContext = new FolderModelHost
                 {
@@ -136,6 +136,16 @@ namespace SPMeta2.SSOM.ModelHandlers
             return folder;
         }
 
+        private SPListItem FindCurrentListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        {
+            TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "FindCurrentListFolder()");
+
+            var list = folderModelHost.CurrentList;
+            var currentFolder = GetListFolder(folderModelHost, folderModel);
+
+            return currentFolder.Item;
+        }
+
         private SPListItem EnsureListFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
         {
             TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "EnsureListFolder()");
@@ -168,6 +178,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                 currentFolderItem = list.AddItem(serverRelativeUrl, SPFileSystemObjectType.Folder);
 
                 currentFolderItem[SPBuiltInFieldId.Title] = folderModel.Name;
+
+                MapFolderProperties(currentFolderItem, folderModel);
+
                 currentFolderItem.Update();
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -196,12 +209,24 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = folderModelHost
                 });
 
+
                 currentFolder.Update();
 
                 currentFolderItem = currentFolder.Item;
+                MapFolderProperties(currentFolderItem, folderModel);
+                currentFolderItem.Update();
             }
 
             return currentFolderItem;
+        }
+
+        private SPFolder FindCurrentLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
+        {
+            TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "FindCurrentLibraryFolder()");
+
+            var currentFolder = GetLibraryFolder(folderModelHost, folderModel);
+
+            return currentFolder;
         }
 
         private SPFolder EnsureLibraryFolder(FolderModelHost folderModelHost, FolderDefinition folderModel)
@@ -226,9 +251,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (currentFolder == null || !currentFolder.Exists)
             {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new library folder");
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject,
+                    "Processing new library folder");
 
                 currentFolder = parentFolder.SubFolders.Add(folderModel.Name);
+                currentFolder.Update();
+
+                // if NULL - that's /Forms or other 'hidden folder' within the library
+                if (currentFolder.Item != null)
+                {
+                    MapFolderProperties(currentFolder.Item, folderModel);
+                    currentFolder.Item.Update();
+                }
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -243,7 +277,8 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
             else
             {
-                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject, "Processing existing library folder");
+                TraceService.Information((int)LogEventId.ModelProvisionProcessingExistingObject,
+                    "Processing existing library folder");
 
                 InvokeOnModelEvent(this, new ModelEventArgs
                 {
@@ -256,10 +291,32 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = folderModelHost
                 });
 
-                currentFolder.Update();
+                //currentFolder.Update();
+
+                // if NULL - that's /Forms or other 'hidden folder' within the library
+                if (currentFolder.Item != null)
+                {
+                    MapFolderProperties(currentFolder.Item, folderModel);
+                    currentFolder.Item.Update();
+                }
             }
 
             return currentFolder;
+        }
+
+        protected virtual void MapFolderProperties(SPListItem item, FolderDefinition definition)
+        {
+            if (!string.IsNullOrEmpty(definition.ContentTypeId) ||
+                        !string.IsNullOrEmpty(definition.ContentTypeName))
+            {
+                var list = item.ParentList;
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeId))
+                    item["ContentTypeId"] = ContentTypeLookupService.LookupListContentTypeById(list, definition.ContentTypeId);
+
+                if (!string.IsNullOrEmpty(definition.ContentTypeName))
+                    item["ContentTypeId"] = ContentTypeLookupService.LookupContentTypeByName(list, definition.ContentTypeName);
+            }
         }
 
         #endregion

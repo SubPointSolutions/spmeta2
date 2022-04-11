@@ -75,16 +75,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                     if (!isMultilingual)
                     {
-                        web.Context.AddQuery(new ClientActionSetProperty(web, "IsMultilingual", true));
+                        ClientRuntimeQueryService.SetProperty(web, "IsMultilingual", true);
                     }
 
                     // adding languages 
-                    var query = new ClientActionInvokeMethod(web, "AddSupportedUILanguage", new object[]
-                    {
-                        webModel.LCID
-                    });
-
-                    context.AddQuery(query);
+                    ClientRuntimeQueryService.InvokeMethod(web, "AddSupportedUILanguage", webModel.LCID);
 
                     // upating the web
                     web.Update();

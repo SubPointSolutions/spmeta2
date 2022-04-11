@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -26,7 +27,7 @@ namespace SPMeta2.Regression.SSOM.Validation
 
             assert
                  .ShouldNotBeNull(spObject)
-                 //.ShouldBeEndOf(m => m.Url, o => o.Url)
+                //.ShouldBeEndOf(m => m.Url, o => o.Url)
                  .ShouldBeEqual(m => m.IsExternal, o => o.IsExternal)
                  .ShouldBeEqual(m => m.IsVisible, o => o.IsVisible)
                  .ShouldBeEqual(m => m.Title, o => o.Title);
@@ -41,7 +42,44 @@ namespace SPMeta2.Regression.SSOM.Validation
 
                 srcUrl = ResolveTokenizedUrl(CurrentWebModelHost, definition);
 
-                var isValid = d.Url.ToUpper().EndsWith(srcUrl.ToUpper());
+                srcUrl = HttpUtility.UrlDecode(srcUrl);
+                dstUrl = HttpUtility.UrlDecode(dstUrl);
+
+                var isValid = dstUrl.ToUpper().EndsWith(srcUrl.ToUpper());
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
+
+            assert.ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(def => def.Properties);
+                var dstProp = d.GetExpressionValue(ct => ct.Properties);
+
+                var isValid = true;
+
+                var srcValues = s.Properties;
+                var dstValues = d.Properties;
+
+                foreach (var srcValue in srcValues)
+                {
+                    if (!dstValues.ContainsKey(srcValue.Key))
+                    {
+                        isValid = false;
+                        break;
+                    }
+
+                    if (ConvertUtils.ToString(dstValues[srcValue.Key]) != srcValue.Value)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
 
                 return new PropertyValidationResult
                 {

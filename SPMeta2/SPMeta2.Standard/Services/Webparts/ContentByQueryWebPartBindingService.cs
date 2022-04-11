@@ -3,6 +3,7 @@ using System.Linq;
 using SPMeta2.Definitions;
 using SPMeta2.Standard.Services.Webparts.ContentByQueryWebPart;
 using System;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.Standard.Services.Webparts
 {
@@ -15,105 +16,72 @@ namespace SPMeta2.Standard.Services.Webparts
 
         public ContentByQueryWebPartBindingService()
         {
-           // Filters = new FilterValues();
+            // Filters = new FilterValues();
         }
 
         #endregion
 
         #region properties
 
-        private Dictionary<string, List<DataMappingValue>> dataMapping = new Dictionary<string, List<DataMappingValue>>();
-        private List<DataMappingViewFieldValue> dataMappingView = new List<DataMappingViewFieldValue>();
+        protected Dictionary<string, List<DataMappingValue>> dataMapping = new Dictionary<string, List<DataMappingValue>>();
+        protected List<DataMappingViewFieldValue> dataMappingView = new List<DataMappingViewFieldValue>();
+
+        //public List<FilterPair> Pairs { get; set; }
 
         #endregion
 
-        #region methods
 
-        public ContentByQueryWebPartBindingService AddDataMapping(string slotName, FieldDefinition field)
+        #region data mapings
+
+        public virtual ContentByQueryWebPartBindingService AddDataMapping(string slotName, FieldDefinition field)
         {
             AddDataMapping(slotName, new[] { field });
 
             return this;
         }
 
-        public ContentByQueryWebPartBindingService AddDataMapping(string slotName, IEnumerable<FieldDefinition> fields)
+        public virtual ContentByQueryWebPartBindingService AddDataMapping(string slotName, IEnumerable<FieldDefinition> fields)
         {
             foreach (var field in fields)
             {
-                // slot processing
-                if (!dataMapping.ContainsKey(slotName))
-                    dataMapping.Add(slotName, new List<DataMappingValue>());
-
-                var existingSlot = dataMapping[slotName];
-
-                if (existingSlot.FirstOrDefault(m => m.Id.HasValue && m.Id.Value == field.Id) == null)
-                {
-                    existingSlot.Add(new DataMappingValue
-                    {
-                        SlotName = slotName,
-                        Id = field.Id,
-                        InternalName = field.InternalName,
-                        FieldType = field.FieldType
-                    });
-                }
-
-
-                AddDataMappingViewField(field);
+                AddDataMapping(slotName, field.Id, field.InternalName, field.FieldType);
             }
 
             return this;
         }
 
-        public ContentByQueryWebPartBindingService AddDataMappingViewField(FieldDefinition field)
+        public virtual ContentByQueryWebPartBindingService AddDataMapping(string slotName,
+            Guid fieldId, string fieldInternalName, string fieldType)
         {
-            return AddDataMappingViewFields(new[] { field });
-        }
+            // slot processing
+            if (!dataMapping.ContainsKey(slotName))
+                dataMapping.Add(slotName, new List<DataMappingValue>());
 
-        public ContentByQueryWebPartBindingService AddDataMappingViewFields(IEnumerable<FieldDefinition> fields)
-        {
-            foreach (var field in fields)
+            var existingSlot = dataMapping[slotName];
+
+            if (existingSlot.FirstOrDefault(m => m.Id == fieldId) == null)
             {
-                // data mapping view processing
-                if (dataMappingView.FirstOrDefault(m => m.Id.HasValue && m.Id.Value == field.Id) == null)
+                existingSlot.Add(new DataMappingValue
                 {
-                    dataMappingView.Add(new DataMappingViewFieldValue
-                    {
-                        Id = field.Id,
-                        InternalName = field.InternalName,
-                        FieldType = field.FieldType
-                    });
-                }
+                    SlotName = slotName,
+                    Id = fieldId,
+                    InternalName = fieldInternalName,
+                    FieldType = fieldType
+                });
             }
+
+
+            AddDataMappingViewField(fieldId, fieldType);
 
             return this;
         }
 
-        public string DataMapping
+        public virtual string DataMapping
         {
             get { return ComposeDataMapping(); }
         }
 
-        public string DataMappingViewFields
-        {
-            get { return ComposeDataMappingViewFields(); }
-        }
-
-        private string ComposeDataMappingViewFields()
-        {
-            var resultValues = new List<string>();
-
-            foreach (var value in dataMappingView)
-            {
-                resultValues.Add(string.Format("{0},{1}",
-                    value.Id.HasValue ? value.Id.Value.ToString("B") : string.Empty,
-                    //value.InternalName ?? string.Empty,
-                    value.FieldType ?? string.Empty));
-            }
-
-            return string.Join(";", resultValues.ToArray());
-        }
-
-        private string ComposeDataMapping()
+        protected virtual string ComposeDataMapping()
         {
             var resultValues = new List<string>();
 
@@ -154,31 +122,86 @@ namespace SPMeta2.Standard.Services.Webparts
             return string.Join(";|", resultValues.ToArray()) + ";|";
         }
 
-        public List<FilterPair> Pairs { get; set; }
+        #endregion
 
-        public ContentByQueryWebPartBindingService ClearFilter()
+        #region data mapping view fields
+
+        public virtual ContentByQueryWebPartBindingService AddDataMappingViewField(FieldDefinition field)
         {
-            //Filters.FilterValue1 = null;
-            //Filters.FilterValue2 = null;
-            //Filters.FilterValue3 = null;
+            return AddDataMappingViewFields(new[] { field });
+        }
+
+        public virtual ContentByQueryWebPartBindingService AddDataMappingViewFields(IEnumerable<FieldDefinition> fields)
+        {
+            foreach (var field in fields)
+            {
+                AddDataMappingViewField(field.Id, field.FieldType);
+            }
 
             return this;
         }
 
-        public ContentByQueryWebPartBindingService Filter(Guid? fieldIs, string value, string displayName, string type, string filtertOperator)
+        public virtual ContentByQueryWebPartBindingService AddDataMappingViewField(
+            Guid fieldId, string fieldType)
         {
-           // action(Filters);
+            // data mapping view processing
+            if (dataMappingView.FirstOrDefault(m => m.Id == fieldId) == null)
+            {
+                dataMappingView.Add(new DataMappingViewFieldValue
+                {
+                    Id = fieldId,
+                    FieldType = fieldType
+                });
+            }
 
             return this;
+        }
+
+        public virtual string DataMappingViewFields
+        {
+            get { return ComposeDataMappingViewFields(); }
+        }
+
+        protected virtual string ComposeDataMappingViewFields()
+        {
+            var resultValues = new List<string>();
+
+            foreach (var value in dataMappingView)
+            {
+                resultValues.Add(string.Format("{0},{1}",
+                    value.Id.HasValue ? value.Id.Value.ToString("B") : string.Empty,
+                    //value.InternalName ?? string.Empty,
+                    value.FieldType ?? string.Empty));
+            }
+
+            return string.Join(";", resultValues.ToArray());
+        }
+
+        #endregion
+
+        #region filters
+
+        public virtual ContentByQueryWebPartBindingService ClearFilter()
+        {
+            throw new SPMeta2NotImplementedException("method not implemented");
+
+            //Filters.FilterValue1 = null;
+            //Filters.FilterValue2 = null;
+            //Filters.FilterValue3 = null;
+        }
+
+        public virtual ContentByQueryWebPartBindingService Filter(Guid? fieldIs, string value, string displayName, string type, string filtertOperator)
+        {
+            throw new SPMeta2NotImplementedException("method not implemented");
         }
 
         #endregion
 
     }
 
-    public class FilterPair
-    {
-        public FilterValue FilterValue1 { get; set; }
-        public FilterValueChainingOperator FilterValue1ChainOperator { get; set; }
-    }
+    //public class FilterPair
+    //{
+    //    public FilterValue FilterValue1 { get; set; }
+    //    public FilterValueChainingOperator FilterValue1ChainOperator { get; set; }
+    //}
 }

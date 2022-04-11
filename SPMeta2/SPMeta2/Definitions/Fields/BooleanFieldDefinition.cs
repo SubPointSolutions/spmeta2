@@ -17,7 +17,7 @@ namespace SPMeta2.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
     [ExpectManyInstances]
@@ -56,13 +56,18 @@ namespace SPMeta2.Definitions.Fields
             set { }
         }
 
+        [ExpectValidation]
+        [DataMember]
+        [ExpectUpdateAsBooleanFieldDefaultValue]
+        public override string DefaultValue { get; set; }
+
         #endregion
 
         #region methods
 
         public override string ToString()
         {
-            return new ToStringResult<BooleanFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
                           .ToString();
         }
 

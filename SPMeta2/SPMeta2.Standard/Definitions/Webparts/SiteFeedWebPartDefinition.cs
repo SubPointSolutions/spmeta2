@@ -34,7 +34,7 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<SiteFeedWebPartDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
                           .ToString();
         }
 

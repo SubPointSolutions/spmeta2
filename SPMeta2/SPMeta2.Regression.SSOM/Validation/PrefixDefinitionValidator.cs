@@ -19,16 +19,8 @@ namespace SPMeta2.Regression.SSOM.Validation
             var assert = ServiceFactory.AssertService
                            .NewAssert(definition, spObject)
                                  .ShouldNotBeNull(spObject)
-                                 .ShouldBeEqual(m => m.PrefixType, o => o.GetPrefixTypeString())
+                                 .ShouldBeEqual(m => m.PrefixType, o => o.PrefixType.ToString())
                                  .ShouldBeEqual(m => m.Path, o => o.Name);
-        }
-    }
-
-    internal static class SPPrefixExtensions
-    {
-        public static string GetPrefixTypeString(this SPPrefix prefix)
-        {
-            return prefix.PrefixType.ToString();
         }
     }
 }

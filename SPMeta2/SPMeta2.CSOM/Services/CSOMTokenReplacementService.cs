@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.SharePoint.Client;
+using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Exceptions;
 using SPMeta2.Services;
 
@@ -11,6 +12,11 @@ namespace SPMeta2.CSOM.Services
     public class CSOMTokenReplacementService : TokenReplacementServiceBase
     {
         #region constructors
+
+        static CSOMTokenReplacementService()
+        {
+            AllowClientContextAsTokenReplacementContext = true;
+        }
 
         public CSOMTokenReplacementService()
         {
@@ -33,9 +39,24 @@ namespace SPMeta2.CSOM.Services
 
         #endregion
 
+        #region static
+
+        /// <summary>
+        /// Restrics token resolution to only CSOM model host classes
+        /// Used only by regression tests
+        /// 
+        /// Incorrect ~site token resolution for CSOM for the subwebs #863
+        /// https://github.com/SubPointSolutions/spmeta2/issues/863
+        /// </summary>
+        /// 
+        [Obsolete("Obsolete, isn't used anymore - Tokens in LookupWebUrl #1013 - https://github.com/SubPointSolutions/spmeta2/issues/1013")]
+        public static bool AllowClientContextAsTokenReplacementContext { get; set; }
+
+        #endregion
+
         #region classes
 
-        private class TokenProcessInfo
+        protected class TokenProcessInfo
         {
             public string Name { get; set; }
             public Regex RegEx { get; set; }
@@ -64,20 +85,73 @@ namespace SPMeta2.CSOM.Services
             foreach (var tokenInfo in TokenProcessInfos)
             {
                 if (!string.IsNullOrEmpty(result.Value))
-                    result.Value = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context.Context, tokenInfo.Name));
+                {
+                    var replacedValue = tokenInfo.RegEx.Replace(result.Value, ResolveToken(context, context.Context, tokenInfo.Name));
+
+                    if (!string.IsNullOrEmpty(replacedValue))
+                    {
+                        // everything to '/'
+                        replacedValue = replacedValue.Replace(@"\", @"/");
+
+                        // replace doubles after '://'
+                        var urlParts = replacedValue.Split(new string[] { "://" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // return non 'protocol://' values
+                        if (urlParts.Count() == 1)
+                        {
+                            result.Value = urlParts[0].Replace(@"//", @"/");
+                        }
+                        else
+                        {
+                            var resultValues = new List<string>();
+
+                            resultValues.Add(urlParts[0]);
+
+                            foreach (var value in urlParts.Skip(1))
+                            {
+                                resultValues.Add(value.Replace(@"//", @"/"));
+                            }
+
+                            result.Value = string.Join("://", resultValues.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        result.Value = replacedValue;
+                    }
+                }
+            }
+
+            // remove ending slash, SharePoint removes it everywhere
+            if (result.Value.Length > 1)
+                result.Value = result.Value.TrimEnd('/');
+
+            if (OnTokenReplaced != null)
+            {
+                OnTokenReplaced(this, new TokenReplacementResultEventArgs
+                {
+                    Result = result
+                });
             }
 
             return result;
         }
 
-        private string ResolveToken(object contextObject, string token)
+        protected virtual string ResolveToken(TokenReplacementContext tokenContext, object contextObject, string token)
         {
             if (string.Equals(token, "~sitecollection", StringComparison.CurrentCultureIgnoreCase))
             {
+                if (tokenContext.IsSiteRelativeUrl)
+                    return "/";
+
                 var site = ExtractSite(contextObject);
 
-                if (site.ServerRelativeUrl == "/")
-                    return string.Empty;
+                // Incorrect ~site/~sitecollection tokens resolve in NavigationNodes #1025
+                // https://github.com/SubPointSolutions/spmeta2/issues/1025
+                // always return '/' instead of empty string, further replacements would fix up double-'/'
+
+                //if (site.ServerRelativeUrl == "/")
+                //    return string.Empty;
 
                 return site.ServerRelativeUrl;
             }
@@ -86,8 +160,18 @@ namespace SPMeta2.CSOM.Services
             {
                 var web = ExtractWeb(contextObject);
 
-                if (web.ServerRelativeUrl == "/")
-                    return string.Empty;
+                if (tokenContext.IsSiteRelativeUrl)
+                {
+                    var site = ExtractSite(contextObject);
+                    return "/" + web.ServerRelativeUrl.Replace(site.ServerRelativeUrl, string.Empty);
+                }
+
+                // Incorrect ~site/~sitecollection tokens resolve in NavigationNodes #1025
+                // https://github.com/SubPointSolutions/spmeta2/issues/1025
+                // always return '/' instead of empty string, further replacements would fix up double-'/'
+
+                //if (web.ServerRelativeUrl == "/")
+                //    return string.Empty;
 
                 return web.ServerRelativeUrl;
             }
@@ -95,18 +179,54 @@ namespace SPMeta2.CSOM.Services
             return token;
         }
 
-        private Web ExtractWeb(object contextObject)
+        protected virtual Web ExtractWeb(object contextObject)
         {
             if (contextObject is ClientContext)
-                return (contextObject as ClientContext).Web;
+            {
+                if (AllowClientContextAsTokenReplacementContext)
+                {
+                    return (contextObject as ClientContext).Web;
+                }
+                else
+                {
+                    throw new SPMeta2NotSupportedException(string.Format("contextObject of type: [{0}] is not supported", contextObject.GetType()));
+                }
+            }
+
+            if (contextObject is WebModelHost)
+                return (contextObject as WebModelHost).HostWeb;
+
+            if (contextObject is SiteModelHost)
+                return (contextObject as SiteModelHost).HostWeb;
+
+            if (contextObject is CSOMModelHostBase)
+                return (contextObject as CSOMModelHostBase).HostWeb;
 
             throw new SPMeta2NotSupportedException(string.Format("contextObject of type: [{0}] is not supported", contextObject.GetType()));
         }
 
-        private Site ExtractSite(object contextObject)
+        protected virtual Site ExtractSite(object contextObject)
         {
             if (contextObject is ClientContext)
-                return (contextObject as ClientContext).Site;
+            {
+                if (AllowClientContextAsTokenReplacementContext)
+                {
+                    return (contextObject as ClientContext).Site;
+                }
+                else
+                {
+                    throw new SPMeta2NotSupportedException(string.Format("contextObject of type: [{0}] is not supported", contextObject.GetType()));
+                }
+            }
+
+            if (contextObject is WebModelHost)
+                return (contextObject as WebModelHost).HostSite;
+
+            if (contextObject is SiteModelHost)
+                return (contextObject as SiteModelHost).HostSite;
+
+            if (contextObject is CSOMModelHostBase)
+                return (contextObject as CSOMModelHostBase).HostSite;
 
             throw new SPMeta2NotSupportedException(string.Format("contextObject of type: [{0}] is not supported", contextObject.GetType()));
         }

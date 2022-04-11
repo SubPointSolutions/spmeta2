@@ -43,7 +43,6 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-
             var siteModelHost = modelHost.WithAssertAndCast<SiteModelHost>("model", value => value.RequireNotNull());
             var termStoreModel = model.WithAssertAndCast<TaxonomyTermStoreDefinition>("model", value => value.RequireNotNull());
 
@@ -58,8 +57,11 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall, "Calling termStore.CommitAll()");
 
-            termStore.CommitAll();
-            termStore.Context.ExecuteQueryWithTrace();
+            if (termStoreModelHost.ShouldUpdateHost)
+            {
+                termStore.CommitAll();
+                termStore.Context.ExecuteQueryWithTrace();
+            }
         }
 
         private static Dictionary<string, TermStore> _storeCache = new Dictionary<string, TermStore>();

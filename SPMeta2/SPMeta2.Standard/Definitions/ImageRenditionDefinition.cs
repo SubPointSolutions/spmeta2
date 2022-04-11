@@ -54,10 +54,10 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ImageRenditionDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Height)
-                          .AddPropertyValue(p => p.Width)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Height", Height)
+                          .AddRawPropertyValue("Width", Width)
                           .ToString();
         }
 

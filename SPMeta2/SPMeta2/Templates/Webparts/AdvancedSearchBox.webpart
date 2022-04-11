@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebPart xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/WebPart/v2">
+  <Title>AdvancedSearchBox</Title>
+  <FrameType>Default</FrameType>
+  <Description />
+  <IsIncluded>true</IsIncluded>
+  <ZoneID>wpz</ZoneID>
+  <PartOrder>0</PartOrder>
+  <FrameState>Normal</FrameState>
+  <Height />
+  <Width />
+  <AllowRemove>true</AllowRemove>
+  <AllowZoneChange>true</AllowZoneChange>
+  <AllowMinimize>true</AllowMinimize>
+  <AllowConnect>true</AllowConnect>
+  <AllowEdit>true</AllowEdit>
+  <AllowHide>true</AllowHide>
+  <IsVisible>true</IsVisible>
+  <DetailLink />
+  <HelpLink />
+  <HelpMode>Modeless</HelpMode>
+  <Dir>Default</Dir>
+  <PartImageSmall />
+  <MissingAssembly>Cannot import this Web Part.</MissingAssembly>
+  <PartImageLarge />
+  <IsIncludedFilter />
+  <Assembly>Microsoft.Office.Server.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
+  <TypeName>Microsoft.Office.Server.Search.WebControls.AdvancedSearchBox</TypeName>
+  <SearchResultPageURL xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <TextQuerySectionLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <ShowAndQueryTextBox xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">false</ShowAndQueryTextBox>
+  <AndQueryTextBoxLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <ShowPhraseQueryTextBox xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">false</ShowPhraseQueryTextBox>
+  <PhraseQueryTextBoxLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <ShowOrQueryTextBox xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">false</ShowOrQueryTextBox>
+  <OrQueryTextBoxLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <ShowNotQueryTextBox xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">false</ShowNotQueryTextBox>
+  <NotQueryTextBoxLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <ScopeSectionLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <ShowScopes xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">false</ShowScopes>
+  <ScopeLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <DisplayGroup xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">Advanced Search</DisplayGroup>
+  <ShowLanguageOptions xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">true</ShowLanguageOptions>
+  <LanguagesLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <ShowResultTypePicker xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">true</ShowResultTypePicker>
+  <ResultTypeLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <ShowPropertiesSection xmlns="urn:schemas-microsoft-com:AdvancedSearchBox">false</ShowPropertiesSection>
+  <PropertiesSectionLabelText xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+  <Properties xmlns="urn:schemas-microsoft-com:AdvancedSearchBox" />
+</WebPart>

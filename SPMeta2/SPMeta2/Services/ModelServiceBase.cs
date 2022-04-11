@@ -53,10 +53,10 @@ namespace SPMeta2.Services
                 ModelHandlers = new Dictionary<Type, ModelHandlerBase>();
 
                 // should be a new instance all the time
-                // ServiceContainer.Instance.GetService<ModelTreeTraverseServiceBase>();
-                ModelTraverseService = new DefaultModelTreeTraverseService();
+                //// ServiceContainer.Instance.GetService<ModelTreeTraverseServiceBase>();
+                //ModelTraverseService = new DefaultModelTreeTraverseService();
 
-                InitModelTraverseService();
+
 
                 // default pre-post deployment services
                 PreDeploymentServices = new List<PreDeploymentServiceBase>();
@@ -66,8 +66,6 @@ namespace SPMeta2.Services
                 PostDeploymentServices.AddRange(ServiceContainer.Instance.GetServices<PostDeploymentServiceBase>());
             }
         }
-
-
 
         #endregion
 
@@ -121,12 +119,39 @@ namespace SPMeta2.Services
 
         #region properties
 
+        public Type CustomModelTreeTraverseServiceType { get; set; }
+
         // public ModelWeighServiceBase ModelWeighService { get; set; }
 
         private readonly List<ModelHandlerBase> _modelHandlerEvents = new List<ModelHandlerBase>();
         private ModelNode _activeModelNode = null;
 
-        public ModelTreeTraverseServiceBase ModelTraverseService { get; set; }
+        private ModelTreeTraverseServiceBase _modelTraverseService;
+
+        public ModelTreeTraverseServiceBase ModelTraverseService
+        {
+            get
+            {
+                if (_modelTraverseService == null)
+                {
+                    if (CustomModelTreeTraverseServiceType != null)
+                    {
+                        _modelTraverseService = ServiceContainer.Instance
+                                                               .CreateNewInstance(CustomModelTreeTraverseServiceType) as ModelTreeTraverseServiceBase;
+                    }
+                    else
+                    {
+                        _modelTraverseService = ServiceContainer.Instance
+                                                               .CreateNewService<ModelTreeTraverseServiceBase>();
+                    }
+
+                    InitModelTraverseService();
+                }
+
+                return _modelTraverseService;
+            }
+            set { _modelTraverseService = value; }
+        }
 
         public List<PreDeploymentServiceBase> PreDeploymentServices { get; set; }
         public List<PostDeploymentServiceBase> PostDeploymentServices { get; set; }
@@ -307,10 +332,10 @@ namespace SPMeta2.Services
         }
         private void InitModelTraverseService()
         {
-            ModelTraverseService.OnModelHandlerResolve += ResolveModelHandlerForNode;
+            _modelTraverseService.OnModelHandlerResolve += ResolveModelHandlerForNode;
 
             // these are hack due event propagation mis-disign
-            ModelTraverseService.OnModelProcessing += (node) =>
+            _modelTraverseService.OnModelProcessing += (node) =>
             {
                 RaiseOnModelNodeProcessing(this, new ModelProcessingEventArgs
                 {
@@ -322,10 +347,8 @@ namespace SPMeta2.Services
                 _activeModelNode = node;
             };
 
-            ModelTraverseService.OnModelProcessed += (node) =>
+            _modelTraverseService.OnModelProcessed += (node) =>
             {
-                CurrentModelNodeIndex++;
-
                 RaiseOnModelNodeProcessed(this, new ModelProcessingEventArgs
                 {
                     Model = CurrentModelNode,
@@ -333,26 +356,28 @@ namespace SPMeta2.Services
                     ProcessedModelNodeCount = CurrentModelNodeIndex
                 });
 
+                CurrentModelNodeIndex++;
+
                 _activeModelNode = null;
             };
 
             // on model fully-partially processed events
-            ModelTraverseService.OnModelFullyProcessing += (node) =>
+            _modelTraverseService.OnModelFullyProcessing += (node) =>
             {
 
             };
 
-            ModelTraverseService.OnModelFullyProcessed += (node) =>
+            _modelTraverseService.OnModelFullyProcessed += (node) =>
             {
 
             };
 
-            ModelTraverseService.OnChildModelsProcessing += (node, type, childNodels) =>
+            _modelTraverseService.OnChildModelsProcessing += (node, type, childNodels) =>
             {
 
             };
 
-            ModelTraverseService.OnChildModelsProcessed += (node, type, childNodels) =>
+            _modelTraverseService.OnChildModelsProcessed += (node, type, childNodels) =>
             {
 
             };
@@ -364,7 +389,7 @@ namespace SPMeta2.Services
 
         private void ProcessModelDeployment(object modelHost, ModelNode modelNode)
         {
-            CurrentModelNodeIndex = 0;
+            CurrentModelNodeIndex = 1;
 
             CurrentModelHost = modelHost;
             CurrentModelNode = modelNode;

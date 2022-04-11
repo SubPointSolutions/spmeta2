@@ -11,6 +11,7 @@ using System.Linq;
 using SPMeta2.Syntax.Default.Utils;
 using System.Text;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.Regression.CSOM.Extensions;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -57,8 +58,18 @@ namespace SPMeta2.Regression.CSOM.Validation
                                              .ShouldNotBeNull(spObject)
                                              .ShouldBeEqual(m => m.FileName, o => o.GetFileName())
                                              .ShouldBeEqual(m => m.DefaultCSSFile, o => o.GetDefaultCSSFile())
-                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription())
-                                             .ShouldBeEqual(m => m.Title, o => o.GetTitle());
+                                             .ShouldBeEqual(m => m.Description, o => o.GetMasterPageDescription());
+
+
+            if (folderModelHost.HostSite.ServerRelativeUrl == folderModelHost.HostWeb.ServerRelativeUrl)
+            {
+                assert.ShouldBeEqual(m => m.Title, o => o.GetTitle());
+            }
+            else
+            {
+                assert.SkipProperty(m => m.Title, "Skipping master page 'Title' update. Subweb is detcted.");
+            }
+
 
             if (definition.UIVersion.Count > 0)
             {
@@ -235,60 +246,5 @@ namespace SPMeta2.Regression.CSOM.Validation
         }
 
         #endregion
-    }
-
-    public static class SPListItemHelper
-    {
-        public static List<string> GetUIVersion(this ListItem item)
-        {
-            var result = new List<string>();
-
-            var values = item["UIVersion"] as string[];
-
-            if (values != null && values.Length > 0)
-                result.AddRange(values);
-
-            return result;
-        }
-
-        public static string GetTitle(this ListItem item)
-        {
-            return item["Title"] as string;
-        }
-
-        public static string GetContentTypeName(this ListItem item)
-        {
-            return item.ContentType.Name;
-        }
-
-        public static string GetDefaultCSSFile(this ListItem item)
-        {
-            return item["DefaultCssFile"] as string;
-        }
-
-        public static string GetFileName(this ListItem item)
-        {
-            return item["FileLeafRef"] as string;
-        }
-
-        public static string GetPublishingPageDescription(this ListItem item)
-        {
-            return item["Comments"] as string;
-        }
-
-        public static string GetPublishingPagePageLayoutFileName(this ListItem item)
-        {
-            var result = item["PublishingPageLayout"] as FieldUrlValue;
-
-            if (result != null)
-                return result.Url;
-
-            return string.Empty;
-        }
-
-        public static string GetMasterPageDescription(this ListItem item)
-        {
-            return item["MasterPageDescription"] as string;
-        }
     }
 }

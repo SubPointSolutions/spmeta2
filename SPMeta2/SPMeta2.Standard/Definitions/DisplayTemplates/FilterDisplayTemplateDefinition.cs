@@ -62,7 +62,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         public override string ToString()
         {
-            return new ToStringResult<FilterDisplayTemplateDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
                           .ToString();
         }
 

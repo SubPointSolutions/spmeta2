@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -124,9 +125,16 @@ namespace SPMeta2.Definitions
         /// Parent content type id. BuiltInContentTypeId class could be used to utilize out of the box content type ids.
         /// </summary>
         /// 
-        [ExpectRequired]
+        [ExpectRequired(GroupName = "Parent ContentType Id")]
         [DataMember]
         public string ParentContentTypeId { get; set; }
+
+        /// <summary>
+        /// Optional parent content type name. Must be used carefully in multi langual environments, because ct names will be different
+        /// </summary>
+        [ExpectRequired(GroupName = "Parent ContentType Id")]
+        [DataMember]
+        public string ParentContentTypeName { get; set; }
 
         [ExpectValidation]
         [DataMember]
@@ -138,6 +146,52 @@ namespace SPMeta2.Definitions
         [DataMember]
         [ExpectNullable]
         public string JSLink { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        public bool? ReadOnly { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        public bool? Sealed { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string NewFormUrl { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string NewFormTemplateName { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string EditFormUrl { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string EditFormTemplateName { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string DisplayFormUrl { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public string DisplayFormTemplateName { get; set; }
 
         #endregion
 

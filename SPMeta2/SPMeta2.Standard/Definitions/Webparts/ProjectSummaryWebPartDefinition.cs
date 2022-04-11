@@ -41,9 +41,9 @@ namespace SPMeta2.Standard.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<ProjectSummaryWebPartDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.PrimaryTaskListUrl)
-                          .AddPropertyValue(p => p.ListId)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("PrimaryTaskListUrl", PrimaryTaskListUrl)
+                          .AddRawPropertyValue("ListId", ListId)
                           .ToString();
         }
 

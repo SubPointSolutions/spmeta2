@@ -32,22 +32,14 @@
     <NoWarn>1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>SPMeta2.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
+  <!-- m2 build start -->
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug35|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug35\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -59,7 +51,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug35\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug40|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug40\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -69,9 +61,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug40\SPMeta2.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug40-$(spRuntime)\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug45|AnyCPU'">
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug45\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -84,29 +76,19 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug45\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-O365|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CI-O365\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\SPMeta2.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591</NoWarn>
-    <DebugType>full</DebugType>
+  <!-- m2 build end -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-CSOM2013|AnyCPU'">
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CI-CSOM2013\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\SPMeta2.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591</NoWarn>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug)\SPMeta2.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -134,6 +116,8 @@
     <Compile Include="Attributes\Identity\SingletonIdentityAttribute.cs" />
     <Compile Include="Attributes\Regression\ExpectArrayExtensionMethod.cs" />
     <Compile Include="Attributes\Regression\ExpectManyInstances.cs" />
+    <Compile Include="Attributes\Regression\ExpectRequiredBoolRange.cs" />
+    <Compile Include="Attributes\Regression\ExpectRequiredIntRange.cs" />
     <Compile Include="Attributes\Regression\ExpectWebpartType.cs" />
     <Compile Include="Attributes\Regression\ExpectNullable.cs" />
     <Compile Include="Attributes\Regression\ExpectRequired.cs" />
@@ -153,28 +137,44 @@
     <Compile Include="BuiltInDefinitions\BuiltInSecurityGroupDefinitions.cs" />
     <Compile Include="BuiltInDefinitions\BuiltInWikiPages.cs" />
     <Compile Include="Common\DefaultDefinitionRelationship.cs" />
+    <Compile Include="Common\IncrementalProvisionConfig.cs" />
     <Compile Include="Common\KeyNameValue.cs" />
+    <Compile Include="Common\ModelHash.cs" />
     <Compile Include="Common\ModelHostResolveContext.cs" />
+    <Compile Include="Common\DefaultModelNodePropertyBagValue.cs" />
     <Compile Include="Config\SearchSettingsConfig.cs" />
     <Compile Include="Definitions\AlternateUrlDefinition.cs" />
     <Compile Include="Definitions\AnonymousAccessSettingsDefinition.cs" />
+    <Compile Include="Definitions\AssociatedGroupsDefinition.cs" />
+    <Compile Include="Definitions\SuiteBarDefinition.cs" />
+    <Compile Include="Definitions\OfficialFileHostDefinition.cs" />
+    <Compile Include="Definitions\SharePointDesignerSettingsDefinition.cs" />
+    <Compile Include="Definitions\DeveloperDashboardSettingsDefinition.cs" />
     <Compile Include="Definitions\AppDefinition.cs" />
     <Compile Include="Definitions\AuditSettingsDefinition.cs" />
     <Compile Include="Definitions\Base\ContentPageDefinitionBase.cs" />
+    <Compile Include="Definitions\Base\DeleteNavigationNodesDefinitionBase.cs" />
+    <Compile Include="Definitions\Base\MasterPageDefinitionBase.cs" />
     <Compile Include="Definitions\ClearRecycleBinDefinition.cs" />
     <Compile Include="Definitions\ComposedLookItemDefinition.cs" />
     <Compile Include="Definitions\ComposedLookItemLinkDefinition.cs" />
     <Compile Include="Definitions\ContentDatabaseDefinition.cs" />
+    <Compile Include="Definitions\DeleteQuickNavigationNodesDefinition.cs" />
     <Compile Include="Definitions\DeleteWebPartsDefinition.cs" />
+    <Compile Include="Definitions\DiscussionReplyItemDefinition.cs" />
     <Compile Include="Definitions\Fields\DependentLookupFieldDefinition.cs" />
     <Compile Include="Definitions\DocumentParserDefinition.cs" />
     <Compile Include="Definitions\Fields\OutcomeChoiceFieldDefinition.cs" />
     <Compile Include="Definitions\Fields\GeolocationFieldDefinition.cs" />
+    <Compile Include="Definitions\DiscussionItemDefinition.cs" />
     <Compile Include="Definitions\ListItemFieldValuesDefinition.cs" />
+    <Compile Include="Definitions\HtmlMasterPageDefinition.cs" />
     <Compile Include="Definitions\MasterPagePreviewDefinition.cs" />
     <Compile Include="Definitions\MasterPageDefinition.cs" />
+    <Compile Include="Definitions\PeoplePickerSettingsDefinition.cs" />
     <Compile Include="Definitions\ResetRoleInheritanceDefinition.cs" />
     <Compile Include="Definitions\SupportedUICultureDefinition.cs" />
+    <Compile Include="Definitions\DeleteTopNavigationNodesDefinition.cs" />
     <Compile Include="Definitions\TreeViewSettings.cs" />
     <Compile Include="Definitions\RootWebDefinition.cs" />
     <Compile Include="Definitions\DiagnosticsServiceBaseDefinition.cs" />
@@ -198,6 +198,7 @@
     <Compile Include="Definitions\RegionalSettingsDefinition.cs" />
     <Compile Include="Definitions\SecureStoreApplicationDefinition.cs" />
     <Compile Include="Definitions\TargetApplicationDefinition.cs" />
+    <Compile Include="Definitions\TrustedAccessProviderDefinition.cs" />
     <Compile Include="Definitions\WebConfigModificationDefinition.cs" />
     <Compile Include="Definitions\Webparts\BlogAdminWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\BlogLinksWebPartDefinition.cs" />
@@ -216,9 +217,21 @@
     <Compile Include="Definitions\Webparts\UserTasksWebPartDefinition.cs" />
     <Compile Include="Definitions\Webparts\WebPartGalleryFileDefinition.cs" />
     <Compile Include="Definitions\Webparts\XmlWebPartDefinition.cs" />
+    <Compile Include="Definitions\UserDefinition.cs" />
+    <Compile Include="Definitions\WorkflowAssociationDefinition.cs" />
+    <Compile Include="Diagnostic\DiagnosticInfo.cs" />
+    <Compile Include="Diagnostic\SPMeta2Diagnostic.cs" />
+    <Compile Include="Diagnostic\ModelStatInfo.cs" />
+    <Compile Include="Enumerations\BuiltInOfficialFileHostAction.cs" />
     <Compile Include="Enumerations\BuiltInAddFieldOptions.cs" />
+    <Compile Include="Enumerations\BuiltInAggregationsStatus.cs" />
     <Compile Include="Enumerations\BuiltInAuditMaskType.cs" />
     <Compile Include="Enumerations\BuiltInBasePermissions.cs" />
+    <Compile Include="Enumerations\BuiltInDeveloperDashboardLevel.cs" />
+    <Compile Include="Enumerations\BuiltInListWriteSecurity.cs" />
+    <Compile Include="Enumerations\BuiltInTimeZoneId.cs" />
+    <Compile Include="Enumerations\BuiltInWorkflowIds.cs" />
+    <Compile Include="Enumerations\BuiltInWorkflowNames.cs" />
     <Compile Include="Enumerations\BuiltInToolbarType.cs" />
     <Compile Include="Enumerations\BuiltInViewScope.cs" />
     <Compile Include="Enumerations\BuiltInComposedLookItemNames.cs" />
@@ -331,6 +344,7 @@
     <Compile Include="Events\OnModelNodeProcessedEventArgs.cs" />
     <Compile Include="Events\ModelNodeProcessingEventArgs.cs" />
     <Compile Include="Events\OnModelNodeProcessingEventArgs.cs" />
+    <Compile Include="Exceptions\SPMeta2AggregateException.cs" />
     <Compile Include="Exceptions\SPMeta2Exception.cs" />
     <Compile Include="Exceptions\SPMeta2InvalidDefinitionPropertyException.cs" />
     <Compile Include="Exceptions\SPMeta2ModelDeploymentException.cs" />
@@ -338,9 +352,12 @@
     <Compile Include="Exceptions\SPMeta2NotSupportedException.cs" />
     <Compile Include="Exceptions\SPMeta2NotImplementedException.cs" />
     <Compile Include="Exceptions\SPMeta2UnsupportedModelHost.cs" />
+    <Compile Include="Extensions\DefinitionBaseExtensions.cs" />
     <Compile Include="Extensions\ModelDefinitionExtensions.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Definitions\ListItemFieldValueDefinition.cs" />
+    <Compile Include="Interfaces\IIncrementalProvisionService.cs" />
+    <Compile Include="Interfaces\IProvisionService.cs" />
     <Compile Include="ModelHandlers\ModelHandlerBase.cs" />
     <Compile Include="ModelHosts\ModelHostBase.cs" />
     <Compile Include="Models\ModelNode.cs" />
@@ -348,32 +365,59 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DefaultPreDeploymentTreeTraverseServiceBase.cs" />
     <Compile Include="Services\DeploymentServiceBase.cs" />
+    <Compile Include="Services\FluentModelValidationServiceBase.cs" />
     <Compile Include="Services\HashCodeServiceBase.cs" />
-    <Compile Include="Services\Impl\DefaultFieldInternalNamePropertyValidationService.cs" />
+    <Compile Include="Services\Impl\DefaultFileSystemPersistenceStorage.cs" />
+    <Compile Include="Services\Impl\DefaultIncrementalModelPrettyPrintService.cs" />
+    <Compile Include="Services\Impl\DefaultModelStatInfoService.cs" />
+    <Compile Include="Services\Impl\DefaultDiagnosticInfoService.cs" />
+    <Compile Include="Services\Impl\DefaultFluentModelValidationService.cs" />
+    <Compile Include="Services\Impl\DefaultModelCompatibilityService.cs" />
+    <Compile Include="Services\Impl\DefaultModelDotPrintService.cs" />
+    <Compile Include="Services\Impl\DefaultModelPrettyPrintService.cs" />
+    <Compile Include="Services\Impl\DefaultIncrementalModelTreeTraverseService.cs" />
+    <Compile Include="Services\Impl\DefaultTryRetryService.cs" />
+    <Compile Include="Services\Impl\DefaultWebPartPageTemplatesService.cs" />
+    <Compile Include="Services\Impl\Validation\DiscussionBoardListFieldDefinitionValidationService.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultContentTypeLinkValidationService.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultBooleanFieldDefinitionValidationService.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultFieldInternalNamePropertyValidationService.cs" />
     <Compile Include="Services\Impl\DefaultDefinitionRelationshipService.cs" />
-    <Compile Include="Services\Impl\DefaultNotAbsoluteUrlPropertiesValidationService.cs" />
-    <Compile Include="Services\Impl\DefaultVersionBasedPropertiesValidationService.cs" />
-    <Compile Include="Services\Impl\DefaultContentTypeIdPropertyValidationService.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultVersionBasedPropertiesValidationService.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultNotAbsoluteUrlPropertiesValidationService.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultContentTypeIdPropertyValidationService.cs" />
     <Compile Include="Services\Impl\DefaultListViewScopeTypesConvertService.cs" />
-    <Compile Include="Services\Impl\DefaultXmlBasedPropertiesValidationService.cs" />
-    <Compile Include="Services\Impl\DefaultRequiredPropertiesValidationService.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultXmlBasedPropertiesValidationService.cs" />
+    <Compile Include="Services\Impl\Validation\DefaultRequiredPropertiesValidationService.cs" />
     <Compile Include="Services\Impl\DefaultWebPartChromeTypesConvertService.cs" />
     <Compile Include="Services\Impl\DefaultXMLSerializationService.cs" />
     <Compile Include="Services\Impl\DefaultJSONSerializationService.cs" />
     <Compile Include="Services\Impl\DefaultModelTreeTraverseService.cs" />
     <Compile Include="Services\Impl\DefaultModelWeighService.cs" />
+    <Compile Include="Services\Impl\Validation\PreDeploymentValidationServiceBase.cs" />
     <Compile Include="Services\ListViewScopeTypesConvertService.cs" />
     <Compile Include="Services\LocalizationServiceBase.cs" />
     <Compile Include="Services\LogEventId.cs" />
     <Compile Include="Services\DefinitionRelationshipServiceBase.cs" />
+    <Compile Include="Services\LookupServiceBase.cs" />
+    <Compile Include="Services\MD5HashCodeServiceBase.cs" />
+    <Compile Include="Services\ModelCompatibilityServiceBase.cs" />
+    <Compile Include="Services\ModelStatInfoServiceBase.cs" />
+    <Compile Include="Services\ModelPrintServiceBase.cs" />
     <Compile Include="Services\ModelServiceBase.cs" />
     <Compile Include="Services\ModelTreeTraverseServiceBase.cs" />
     <Compile Include="Services\ModelWeighServiceBase.cs" />
     <Compile Include="Services\Impl\TraceSourceService.cs" />
+    <Compile Include="Services\PersistenceStorageServiceBase.cs" />
     <Compile Include="Services\PostDeploymentServiceBase.cs" />
     <Compile Include="Services\PreDeploymentServiceBase.cs" />
+    <Compile Include="Services\ModelDotPrintServiceBase.cs" />
+    <Compile Include="Services\ModelPrettyPrintServiceBase.cs" />
+    <Compile Include="Services\IncrementalProvisionServiceBaseExtensions.cs" />
     <Compile Include="Services\ProvisionServiceBase.cs" />
     <Compile Include="Services\SerializationServiceBase.cs" />
+    <Compile Include="Services\ServiceModelHandlers\DiscussionBoardListDefinitionValidationModelHandler.cs" />
+    <Compile Include="Services\ServiceModelHandlers\BooleanFieldDefinitionValidationModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultContentTypeIdPropertyModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultRequiredPropertiesModelHandler.cs" />
     <Compile Include="Services\ServiceModelHandlers\DefaultNotAbsoluteUrlPropertiesModelHandler.cs" />
@@ -385,30 +429,44 @@
     <Compile Include="Services\SPMetaServiceBase.cs" />
     <Compile Include="Services\TokenReplacementServiceBase.cs" />
     <Compile Include="Services\TraceServiceBase.cs" />
+    <Compile Include="Services\TryRetryServiceBase.cs" />
     <Compile Include="Services\WebPartChromeTypesConvertService.cs" />
+    <Compile Include="Services\WebPartPageTemplatesServiceBase.cs" />
     <Compile Include="Services\Webparts\WebPartParameterBindingsOptions.cs" />
     <Compile Include="ServiceContainer.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IFarmSolutionModelHostNode.cs" />
+    <Compile Include="Syntax\Default\AssociatedGroupsDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\SuiteBarDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\SharePointDesignerSettingsSyntax.cs" />
+    <Compile Include="Syntax\Default\DeveloperDashboardSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\ClearRecycleBinDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AnonymousAccessSettingsDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AlternateUrlDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AppPrincipalDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\AuditSettingsSyntax.cs" />
+    <Compile Include="Syntax\Default\DeleteQuickLaunchNavigationNodesDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\DeleteTopNavigationNodesDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\DiscussionReplyItemDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Extensions\DefinitionExtensions.cs" />
     <Compile Include="Syntax\Default\Fields\BooleanFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\BreakRoleInheritanceDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\BusinessDataFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\CalculatedFieldDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Fields\ChoiceFieldDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IDiscussionItemModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IListItemModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISearchSettingsHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurityRoleLinkHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecurityGroupHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\ICorePropertyHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IProfileTypePropertyHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISP2013WorkflowSubscriptionHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ITargetApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\ISecureStoreApplicationModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IQuickLaunchNavigationNodeHostModelNode.cs" />
+    <Compile Include="Syntax\Default\Interfaces\IWorkflowAssociationHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\Taxonomy\ITaxonomyTermGroupHostModelNode.cs" />
@@ -444,6 +502,13 @@
     <Compile Include="Syntax\Default\Interfaces\IContentTypeHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IFieldHostModelNode.cs" />
     <Compile Include="Syntax\Default\Interfaces\IHostModelNode.cs" />
+    <Compile Include="Syntax\Default\HtmlMasterPageDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\DiscussionItemDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\PeoplePickerSettingsDefintionSyntax.cs" />
+    <Compile Include="Syntax\Default\UserDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\TrustedAccessProviderDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\OfficialFileHostDefinitionSyntax.cs" />
+    <Compile Include="Syntax\Default\WorkflowAssociationDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\SupportedUICultureDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\BlogAdminWebPartDefinitionSyntax.cs" />
     <Compile Include="Syntax\Default\Webparts\BlogLinksWebPartDefinitionSyntax.cs" />
@@ -559,14 +624,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SP2013WebPartPageTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\SP2016WebPartPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SP2016WebPartPageTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\CamlQueryUtils.cs" />
     <Compile Include="Utils\ConvertUtils.cs" />
+    <Compile Include="Utils\CultureUtils.cs" />
+    <Compile Include="Utils\IndexedPropertyUtils.cs" />
+    <Compile Include="Utils\AdvancedSearchBoxWebPartXmlExtensions.cs" />
     <Compile Include="Utils\PageViewerWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ListViewWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ContentEditorWebPartXmlExtensions.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />
     <Compile Include="Utils\ResourceUtils.cs" />
     <Compile Include="Utils\ToStringResult.cs" />
+    <Compile Include="Utils\ToStringResultRaw.cs" />
     <Compile Include="Utils\UrlUtility.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
     <Compile Include="Utils\ValidationValueContext.cs" />
@@ -622,6 +696,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SP2013WebPartPageTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SP2016WebPartPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SP2016WebPartPageTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Templates\Webparts\ContentEditorWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\XsltListViewWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\ScriptEditorWebPart.webpart" />
@@ -666,11 +744,17 @@
     <EmbeddedResource Include="Templates\Webparts\SocialCommentWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\MyMembershipWebPart.webpart" />
     <EmbeddedResource Include="Templates\Webparts\BlogMonthQuickLaunch.webpart" />
+    <EmbeddedResource Include="Templates\Webparts\AdvancedSearchBox.webpart" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validation\Impl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

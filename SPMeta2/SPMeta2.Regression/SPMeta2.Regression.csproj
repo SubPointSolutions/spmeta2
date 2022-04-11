@@ -29,23 +29,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-O365|AnyCPU'">
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')">
+    <OutputPath>bin\Debug45-$(spRuntime)\</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CI-O365\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-CSOM2013|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CI-CSOM2013\</OutputPath>
+    <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug45-$(spRuntime)\SPMeta2.Regression.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -62,6 +56,8 @@
     <Compile Include="Definitions\Extended\WebpartPresenceOnPageDefinition.cs" />
     <Compile Include="ModelHandlers\EmptyModelHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\RegressionTraceService.cs" />
+    <Compile Include="Utils\RegressionTrace.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPMeta2\SPMeta2.csproj">
@@ -70,6 +66,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

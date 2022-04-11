@@ -51,7 +51,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             _currentListBindContext = XsltListViewWebPartModelHandler.LookupBindContext(host,
                                     wpModel.WebUrl, wpModel.WebId,
                                     wpModel.ListUrl, wpModel.ListTitle, wpModel.ListId,
-                                    wpModel.ViewName, wpModel.ViewId,
+                                    wpModel.ViewUrl, wpModel.ViewName, wpModel.ViewId,
                                     wpModel.TitleUrl);
 
             if (_currentListBindContext.TargetView != null)
@@ -73,7 +73,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             var bindContext = XsltListViewWebPartModelHandler.LookupBindContext(listItemModelHost,
                                     wpModel.WebUrl, wpModel.WebId,
                                     wpModel.ListUrl, wpModel.ListTitle, wpModel.ListId,
-                                    wpModel.ViewName, wpModel.ViewId,
+                                    wpModel.ViewUrl, wpModel.ViewName, wpModel.ViewId,
                                     wpModel.TitleUrl);
 
             var webId = listItemModelHost.HostWeb.Id;
@@ -100,7 +100,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 var bindingContext = XsltListViewWebPartModelHandler.LookupBindContext(host,
                                     wpModel.WebUrl, wpModel.WebId,
                                     wpModel.ListUrl, wpModel.ListTitle, wpModel.ListId,
-                                    wpModel.ViewName, wpModel.ViewId,
+                                    wpModel.ViewUrl, wpModel.ViewName, wpModel.ViewId,
                                     wpModel.TitleUrl);
 
                 // reverting back the dafult view
@@ -210,7 +210,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             var bindContext = XsltListViewWebPartModelHandler.LookupBindContext(listItemModelHost,
                                     typedDefinition.WebUrl, typedDefinition.WebId,
                                     typedDefinition.ListUrl, typedDefinition.ListTitle, typedDefinition.ListId,
-                                    typedDefinition.ViewName, typedDefinition.ViewId,
+                                    typedDefinition.ViewUrl, typedDefinition.ViewName, typedDefinition.ViewId,
                                     typedDefinition.TitleUrl);
 
             if (provisionContext.WebPartStoreKey.HasValue
@@ -221,7 +221,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 if (typedDefinition.WebId.HasGuidValue() || !string.IsNullOrEmpty(typedDefinition.WebUrl))
                 {
                     targetWeb = new LookupFieldModelHandler()
-                                    .GetTargetWeb(this.CurrentClientContext.Site, typedDefinition.WebUrl, typedDefinition.WebId);
+                                    .GetTargetWeb(this.CurrentClientContext.Site, 
+                                                  typedDefinition.WebUrl, 
+                                                  typedDefinition.WebId,
+                                                  provisionContext.ListItemModelHost);
                 }
 
                 var list = XsltListViewWebPartModelHandler.LookupList(targetWeb, typedDefinition.ListUrl, typedDefinition.ListTitle, typedDefinition.ListId);
@@ -266,7 +269,21 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                             attr.Remove();
                     }
 
+#if !NET35
                     hiddenView.ListViewXml = htmlSchemaXml.Root.GetInnerXmlAsString();
+
+                    // updating other attribute based properties, in the root node
+                    // partly related to following issue
+                    // List view scope does not apply in xslt list view webpart #1030
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1030
+
+                    var scopeValue = htmlSchemaXml.Root.GetAttributeValue("Scope");
+
+                    if (!string.IsNullOrEmpty(scopeValue))
+                    {
+                        hiddenView.Scope = (ViewScope)Enum.Parse(typeof(ViewScope), scopeValue);
+                    }
+#endif
 
                     hiddenView.Update();
                     context.ExecuteQueryWithTrace();

@@ -59,7 +59,8 @@ namespace SPMeta2.Common
                 {
                     typeof (BreakRoleInheritanceDefinition),
                     typeof (ResetRoleInheritanceDefinition),
-               
+                    typeof (SecurityRoleLinkDefinition),
+
                     typeof (PropertyDefinition)
                 }));
         }
@@ -73,6 +74,7 @@ namespace SPMeta2.Common
                     typeof (BreakRoleInheritanceDefinition),
                     typeof (ResetRoleInheritanceDefinition),
                     typeof (SecurityRoleLinkDefinition),
+
                     typeof (PropertyDefinition)
                 }));
         }
@@ -132,6 +134,9 @@ namespace SPMeta2.Common
                     
                     typeof (FeatureDefinition),
 
+                    // Incorrect provision order for SecurityGroup / SecurityRole #1017
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1017
+                    typeof (SecurityRoleDefinition),
                     typeof (SecurityGroupDefinition),
 
                     typeof (BreakRoleInheritanceDefinition),
@@ -147,15 +152,29 @@ namespace SPMeta2.Common
                     typeof (DependentLookupFieldDefinition),
 
                     typeof (ContentTypeDefinition),
-                    
                     typeof (SP2013WorkflowDefinition),
                     
                     typeof (ListDefinition),
+
                     // goes after list definitions to make sure you get history/task lists 
                     typeof (SP2013WorkflowSubscriptionDefinition),
+                    typeof (WorkflowAssociationDefinition),
 
                     typeof (MasterPageSettingsDefinition),
-                    typeof (WelcomePageDefinition)
+                    typeof (WelcomePageDefinition),
+
+                    typeof (WebDefinition),
+
+                    // moved navigation provision after lists
+                    // cause adding libraries would trigger 'Recent' link
+                    // https://github.com/SubPointSolutions/spmeta2/issues/865
+
+                    // removing navigation first, then add
+                    typeof (DeleteQuickLaunchNavigationNodesDefinition),
+                    typeof (DeleteTopNavigationNodesDefinition),
+                    
+                    typeof (QuickLaunchNavigationNodeDefinition),
+                    typeof (TopNavigationNodeDefinition),
                 }));
         }
 
@@ -171,8 +190,10 @@ namespace SPMeta2.Common
                     
                     typeof (PropertyDefinition),
 
-                    typeof (SecurityGroupDefinition),
+                    // Incorrect provision order for SecurityGroup / SecurityRole #1017
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1017
                     typeof (SecurityRoleDefinition),
+                    typeof (SecurityGroupDefinition),
 
                     typeof (UserCustomActionDefinition),
 

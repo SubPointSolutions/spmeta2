@@ -20,7 +20,7 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectAddHostExtensionMethod]
 
@@ -50,10 +50,10 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         public override string ToString()
         {
-            return new ToStringResult<TaxonomyTermStoreDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Id)
-                          .AddPropertyValue(p => p.UseDefaultSiteCollectionTermStore)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Id", Id)
+                          .AddRawPropertyValue("UseDefaultSiteCollectionTermStore", UseDefaultSiteCollectionTermStore)
                           .ToString();
         }
 

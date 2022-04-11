@@ -3,7 +3,7 @@ using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
-
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
 
@@ -102,23 +102,5 @@ namespace SPMeta2.Regression.SSOM.Validation
         }
 
         #endregion
-    }
-
-    internal static class SPGroupLinkExtensions
-    {
-        public static SPGroup GetAssociatedVisitorGroup(this SPGroup group)
-        {
-            return group.ParentWeb.AssociatedVisitorGroup;
-        }
-
-        public static SPGroup GetAssociatedOwnerGroup(this SPGroup group)
-        {
-            return group.ParentWeb.AssociatedOwnerGroup;
-        }
-
-        public static SPGroup GetAssociatedMemberGroup(this SPGroup group)
-        {
-            return group.ParentWeb.AssociatedMemberGroup;
-        }
     }
 }

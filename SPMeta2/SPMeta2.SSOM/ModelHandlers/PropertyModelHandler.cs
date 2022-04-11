@@ -137,7 +137,5 @@ namespace SPMeta2.SSOM.ModelHandlers
         }
 
         #endregion
-
-
     }
 }

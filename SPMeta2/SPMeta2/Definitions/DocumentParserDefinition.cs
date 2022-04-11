@@ -43,9 +43,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<DocumentParserDefinition>(this)
-                          .AddPropertyValue(p => p.FileExtension)
-                          .AddPropertyValue(p => p.ProgId)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("FileExtension", FileExtension)
+                          .AddRawPropertyValue("ProgId", ProgId)
                           .ToString();
         }
 

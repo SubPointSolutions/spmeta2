@@ -104,12 +104,133 @@ namespace SPMeta2.Containers.Assertion
             return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
         }
 
+        public AssertPair<TSrc, TDst> ShouldBeEqualIfHasValue(Expression<Func<TSrc, Guid?>> srcExp,
+           Expression<Func<TDst, Guid?>> dstExp)
+        {
+            var value = Src.GetExpressionValue(srcExp).Value as Guid?;
+
+            if (value.HasValue)
+                return ShouldBeEqual(srcExp, dstExp);
+
+            return SkipProperty(srcExp, "Property is null or empty.");
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqualIfHasValue(Expression<Func<TSrc, int?>> srcExp,
+           Expression<Func<TDst, int?>> dstExp)
+        {
+            var value = Src.GetExpressionValue(srcExp).Value as int?;
+
+            if (value.HasValue)
+                return ShouldBeEqual(srcExp, dstExp);
+
+            return SkipProperty(srcExp, "Property is null or empty.");
+        }
+
+
+        public AssertPair<TSrc, TDst> ShouldBeEqualIfHasValue(Expression<Func<TSrc, bool?>> srcExp,
+            Expression<Func<TDst, bool?>> dstExp)
+        {
+            var value = Src.GetExpressionValue(srcExp).Value as bool?;
+
+            if (value.HasValue)
+                return ShouldBeEqual(srcExp, dstExp);
+
+            return SkipProperty(srcExp, "Property is null or empty.");
+        }
+
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, bool?>> srcExp, Expression<Func<TDst, bool?>> dstExp)
         {
             return ShouldBeEqual(srcExp, srcExp, dstExp, dstExp);
         }
 
         #region string
+
+
+
+
+        public AssertPair<TSrc, TDst> ShouldBeEndOfIfNotNullOrEmpty(
+             Expression<Func<TSrc, string>> srcExp,
+             Expression<Func<TDst, string>> dstExp)
+        {
+            var value = Src.GetExpressionValue(srcExp).Value as string;
+
+            if (!string.IsNullOrEmpty(value))
+                return ShouldBeEndOf(srcExp, dstExp);
+
+            return SkipProperty(srcExp);
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBePartOfIfNotNullOrEmpty(
+             Expression<Func<TSrc, string>> srcExp,
+             Expression<Func<TDst, string>> dstExp)
+        {
+            var value = Src.GetExpressionValue(srcExp).Value as string;
+
+            if (!string.IsNullOrEmpty(value))
+                return ShouldBePartOf(srcExp, dstExp);
+
+            return SkipProperty(srcExp);
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqualIfNotNullOrEmpty(
+             Expression<Func<TSrc, string>> srcExp,
+             Expression<Func<TDst, string>> dstExp)
+        {
+            var value = Src.GetExpressionValue(srcExp).Value as string;
+
+            if (!string.IsNullOrEmpty(value))
+                return ShouldBeEqual(srcExp, dstExp);
+
+            return SkipProperty(srcExp);
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(
+           Expression<Func<TSrc, bool>> srcExp,
+           bool isValid)
+        {
+            return ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(srcExp);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    //Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(
+            Expression<Func<TSrc, string>> srcExp,
+            bool isValid)
+        {
+            return ShouldBeEqual((p, s, d) =>
+            {
+                var srcProp = s.GetExpressionValue(srcExp);
+
+                return new PropertyValidationResult
+                {
+                    Tag = p.Tag,
+                    Src = srcProp,
+                    //Dst = dstProp,
+                    IsValid = isValid
+                };
+            });
+        }
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, string>> srcExp)
+        {
+            var srcInfo = Src.GetExpressionValue(srcExp);
+
+            var pX = Expression.Parameter(typeof(TDst));
+
+            var body = Expression.Property(pX, srcInfo.Name);
+            var lambda = Expression.Lambda<Func<TDst, string>>(body, pX);
+
+            return ShouldBeEqual(srcExp, lambda);
+        }
 
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, string>> srcExp, Expression<Func<TDst, string>> dstExp)
         {
@@ -154,6 +275,20 @@ namespace SPMeta2.Containers.Assertion
             return InternalShouldBeEqual<byte[]>(srcExp, srcAlias, dstExp, dstAlias);
         }
 
+
+
+        public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, Guid>> srcExp)
+        {
+            var srcInfo = Src.GetExpressionValue(srcExp);
+
+            var pX = Expression.Parameter(typeof(TDst));
+
+            var body = Expression.Property(pX, srcInfo.Name);
+            var lambda = Expression.Lambda<Func<TDst, Guid>>(body, pX);
+
+            return ShouldBeEqual(srcExp, lambda);
+
+        }
 
         public AssertPair<TSrc, TDst> ShouldBeEqual(Expression<Func<TSrc, Guid>> srcExp, Expression<Func<TDst, Guid>> dstExp)
         {
@@ -386,6 +521,16 @@ namespace SPMeta2.Containers.Assertion
         public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, int>> srcPropExp, string message)
         {
             return InternalSkipProperty<int>(srcPropExp, message);
+        }
+
+        public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, bool?>> srcPropExp)
+        {
+            return SkipProperty(srcPropExp, "Property is null or empty.");
+        }
+
+        public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, bool>> srcPropExp)
+        {
+            return SkipProperty(srcPropExp, "Property is null or empty.");
         }
 
         public AssertPair<TSrc, TDst> SkipProperty(Expression<Func<TSrc, bool>> srcPropExp, string message)

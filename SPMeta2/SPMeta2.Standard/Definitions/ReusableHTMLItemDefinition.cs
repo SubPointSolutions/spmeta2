@@ -44,9 +44,9 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<ReusableHTMLItemDefinition>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.ReusableHTML)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("ReusableHTML", ReusableHTML)
                           .ToString();
         }
 

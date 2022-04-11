@@ -28,7 +28,7 @@ namespace SPMeta2.Regression.CSOM.Standard.Validation.Fields
 
             var assert = ServiceFactory.AssertService.NewAssert(model, definition, spObject);
 
-            // HTMLFieldDefinition specific validation
+            ValidateField(assert, spObject, definition);
         }
     }
 }

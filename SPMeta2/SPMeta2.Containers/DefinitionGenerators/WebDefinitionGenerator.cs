@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SPMeta2.Containers.Services.Base;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
@@ -21,5 +22,18 @@ namespace SPMeta2.Containers.DefinitionGenerators
                 def.WebTemplate = BuiltInWebTemplates.Collaboration.TeamSite;
             });
         }
+
+        public override IEnumerable<DefinitionBase> GetAdditionalArtifacts()
+        {
+            return new[] {
+                new SecurityGroupDefinition  { Name = "SPMeta2 Test Group 1" },
+                new SecurityGroupDefinition  { Name = "SPMeta2 Test Group 2" },
+                new SecurityGroupDefinition  { Name = "SPMeta2 Test Group 3" },
+                new SecurityGroupDefinition  { Name = "SPMeta2 Test Group 4" },
+                new SecurityGroupDefinition  { Name = "SPMeta2 Test Group 5" }
+            };
+        }
+
+
     }
 }

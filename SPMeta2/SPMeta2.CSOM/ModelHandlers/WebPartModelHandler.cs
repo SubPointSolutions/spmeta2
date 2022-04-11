@@ -86,8 +86,6 @@ namespace SPMeta2.CSOM.ModelHandlers
         //    WithExistingWebPart(listItem.File, webPartModel, action);
         //}
 
-
-
         protected void WithExistingWebPart(File pageFile, WebPartDefinition webPartModel,
              Action<WebPart, Microsoft.SharePoint.Client.WebParts.WebPartDefinition> action)
         {
@@ -110,6 +108,14 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             if (listItemModelHost.HostFile != null)
                 return listItemModelHost.HostFile;
+
+            // additional check for edge cases
+            // these need to be raised and handled appropriately 
+
+            // WebpartModelHandler null reference exception #1118
+            // https://github.com/SubPointSolutions/spmeta2/issues/1118
+            if (listItemModelHost.HostListItem == null || (listItemModelHost.HostListItem.ServerObjectIsNull == true))
+                throw new SPMeta2Exception("Cannot find a HostFile/HostListItem for the giving page (ListItemModelHost). Both HostFile/HostListItem are null. Please report this issue at https://github.com/SubPointSolutions/spmeta2/issues");
 
             return listItemModelHost.HostListItem.File;
         }
@@ -160,6 +166,14 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(webPartModel.WebpartFileName))
             {
+#if NET35
+                // webPartFile.OpenBinaryStream should be re-implemented for SP2010
+
+            throw new SPMeta2NotImplementedException("Not implemented for SP2010 - https://github.com/SubPointSolutions/spmeta2/issues/769");
+#endif
+
+#if !NET35
+
                 lock (_wpCacheLock)
                 {
                     var wpKey = webPartModel.WebpartFileName.ToLower();
@@ -221,6 +235,8 @@ namespace SPMeta2.CSOM.ModelHandlers
                             _wpCache[wpKey] = result;
                     }
                 }
+
+#endif
             }
 
             if (!string.IsNullOrEmpty(webPartModel.WebpartType))
@@ -237,6 +253,9 @@ namespace SPMeta2.CSOM.ModelHandlers
             var xml = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXml)
                                             .SetTitle(definition.Title)
                                             .SetID(definition.Id);
+
+            if (!string.IsNullOrEmpty(definition.AuthorizationFilter))
+                xml.SetAuthorizationFilter(definition.AuthorizationFilter);
 
             if (definition.Width.HasValue)
                 xml.SetWidth(definition.Width.Value);
@@ -259,7 +278,7 @@ namespace SPMeta2.CSOM.ModelHandlers
                 urlValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
                     Value = urlValue,
-                    Context = CurrentClientContext
+                    Context = CurrentModelHost
                 }).Value;
 
                 TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced value: [{0}]", urlValue);
@@ -289,12 +308,14 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (!string.IsNullOrEmpty(definition.ExportMode))
                 xml.SetExportMode(definition.ExportMode);
 
+            if (definition.Hidden.HasValue)
+                xml.SetHidden(definition.Hidden.Value);
+
             // bindings
             ProcessParameterBindings(definition, xml);
 
             // properties
             ProcessWebpartProperties(definition, xml);
-
 
             return xml.ToString();
         }
@@ -327,6 +348,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
 
         protected ClientContext CurrentClientContext { get; set; }
+        protected CSOMModelHostBase CurrentModelHost { get; set; }
 
         protected virtual void OnBeforeDeploy(ListItemModelHost host, WebPartDefinitionBase webpart)
         {
@@ -349,6 +371,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 OnBeforeDeploy(listItemModelHost, webPartModel);
 
+                CurrentModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
                 CurrentClientContext = listItemModelHost.HostClientContext;
 
                 var context = listItemModelHost.HostClientContext;
@@ -357,6 +380,12 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                 if (listItemModelHost.HostFolder != null)
                 {
+                    // TODO, re-implement for SP2010 CSOM
+                    // the following stuff is needed only for the web part deployment to the non-web part pages
+                    // like, view/upload/details pages in the lost/libs
+                    // hope no one would use that case on 2010 - folks, migrate to 2013 at least! :)
+#if !NET35
+
                     if (!listItemModelHost.HostFolder.IsPropertyAvailable("Properties") ||
                         listItemModelHost.HostFolder.Properties.FieldValues.Count == 0)
                     {
@@ -365,9 +394,11 @@ namespace SPMeta2.CSOM.ModelHandlers
 
                         listItemModelHost.HostFolder.Context.ExecuteQueryWithTrace();
                     }
+
+#endif
                 }
 
-                // TODO
+#if !NET35
                 var doesFileHasListItem =
                     //Forms folders
                     !(listItemModelHost.HostFolder != null
@@ -376,6 +407,22 @@ namespace SPMeta2.CSOM.ModelHandlers
                        &&
                        listItemModelHost.HostFolder.Properties.FieldValues["vti_winfileattribs"].ToString() ==
                        "00000012"));
+
+                // is parent /forms folder or nay other special page?
+                if (doesFileHasListItem)
+                {
+                    doesFileHasListItem = !listItemModelHost.IsSpecialFolderContext;
+                }
+
+#endif
+
+#if NET35
+                // TODO, re-implement for SP2010 CSOM
+                // the following stuff is needed only for the web part deployment to the non-web part pages
+
+                var doesFileHasListItem = true;
+#endif
+
 
                 ModuleFileModelHandler.WithSafeFileOperation(listItemModelHost.HostList,
                     currentPageFile, pageFile =>

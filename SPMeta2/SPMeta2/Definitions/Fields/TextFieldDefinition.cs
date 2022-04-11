@@ -17,7 +17,7 @@ namespace SPMeta2.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
     [ExpectManyInstances]
@@ -61,8 +61,8 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<TextFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.MaxLength)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("MaxLength", MaxLength)
                           .ToString();
         }
 

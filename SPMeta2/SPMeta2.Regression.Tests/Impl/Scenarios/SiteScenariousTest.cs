@@ -13,6 +13,7 @@ using System.Text;
 
 using SPMeta2.Syntax.Default;
 using System.IO;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -37,6 +38,28 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
         #region default
 
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Sites")]
+        public void CanDeploy_Simple_Site_WithNullableSecondaryContactLogin()
+        {
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>();
+
+                //site.PrefixName = string.Empty;
+
+                site.SecondaryContactEmail = null;
+                site.SecondaryContactLogin = null;
+                site.SecondaryContactName = null;
+
+                var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
+                {
+                    webApplication.AddSite(site);
+                });
+
+                TestModel(model);
+            });
+        }
 
         [TestMethod]
         [TestCategory("Regression.Scenarios.Sites")]
@@ -83,6 +106,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Sites")]
         public void CanDeploy_Simple_Site_UnderRandomManagedPath()
         {
+            // /some-path/some-site
+
             WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
             {
                 var managedPath = ModelGeneratorService.GetRandomDefinition<PrefixDefinition>(def =>
@@ -92,6 +117,38 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
                 var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>(def =>
                 {
+                    def.PrefixName = managedPath.Path;
+                });
+
+                var model = SPMeta2Model.NewWebApplicationModel(webApplication =>
+                {
+                    webApplication.AddPrefix(managedPath);
+                    webApplication.AddSite(site);
+                });
+
+                TestModel(model);
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("Regression.Scenarios.Sites")]
+        public void CanDeploy_Simple_Site_UnderRandomManagedPath_AsRoot()
+        {
+            // /some-path/
+
+            // Enhance SiteDefinition provision - enable provision under the managed path  #853 
+            // https://github.com/SubPointSolutions/spmeta2/issues/853
+
+            WithExpectedUnsupportedCSOMnO365RunnerExceptions(() =>
+            {
+                var managedPath = ModelGeneratorService.GetRandomDefinition<PrefixDefinition>(def =>
+                {
+                    def.PrefixType = BuiltInPrefixTypes.ExplicitInclusion;
+                });
+
+                var site = ModelGeneratorService.GetRandomDefinition<SiteDefinition>(def =>
+                {
+                    def.Url = "/";
                     def.PrefixName = managedPath.Path;
                 });
 

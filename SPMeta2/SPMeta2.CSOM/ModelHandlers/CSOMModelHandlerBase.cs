@@ -1,18 +1,18 @@
-﻿using SPMeta2.CSOM.Services;
-using SPMeta2.ModelHandlers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting;
 using System.Text;
+
 using Microsoft.SharePoint.Client;
+
+using SPMeta2.CSOM.Services;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.Definitions;
 using SPMeta2.Exceptions;
+using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.Utils;
-
+using SPMeta2.CSOM.Services.Impl;
 
 namespace SPMeta2.CSOM.ModelHandlers
 {
@@ -24,6 +24,8 @@ namespace SPMeta2.CSOM.ModelHandlers
         {
             TokenReplacementService = ServiceContainer.Instance.GetService<CSOMTokenReplacementService>();
             LocalizationService = ServiceContainer.Instance.GetService<CSOMLocalizationService>();
+
+            ClientRuntimeQueryService = ServiceContainer.Instance.GetService<ClientRuntimeQueryServiceBase>() ?? new DefaultClientRuntimeQueryService();
 
             // TODO, move to ServiceContainer
             ContentTypeLookupService = new CSOMContentTypeLookupService();
@@ -39,6 +41,8 @@ namespace SPMeta2.CSOM.ModelHandlers
         public TokenReplacementServiceBase TokenReplacementService { get; set; }
         public LocalizationServiceBase LocalizationService { get; set; }
 
+        public ClientRuntimeQueryServiceBase ClientRuntimeQueryService { get; set; }
+
         #endregion
 
         #region utils
@@ -46,6 +50,11 @@ namespace SPMeta2.CSOM.ModelHandlers
         protected virtual object GetPropertyValue(object obj, string propName)
         {
             return ReflectionUtils.GetPropertyValue(obj, propName);
+        }
+
+        protected virtual bool IsSharePointOnlineContext(ClientContext context)
+        {
+            return ClientRuntimeContextExtensions.IsSharePointOnlineContext(context);
         }
 
         #endregion
@@ -61,7 +70,7 @@ namespace SPMeta2.CSOM.ModelHandlers
             {
                 TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
                       string.Format("CSOM runtime doesn't have [{0}] methods support. Update CSOM runtime to a new version. Provision is skipped",
-                        string.Join(", ", targetProps)));
+                        string.Join(", ", targetProps.ToArray())));
 
                 return;
             }
@@ -108,15 +117,11 @@ namespace SPMeta2.CSOM.ModelHandlers
                 }
                 else
                 {
-                    throw new SPMeta2Exception(string.Format("Can't find Update() methods on client object of type:[{0}]", obj.GetType()));
+                    throw new SPMeta2Exception(String.Format("Can't find Update() methods on client object of type:[{0}]", obj.GetType()));
                 }
             }
         }
 
         #endregion
-
-
-
-
     }
 }

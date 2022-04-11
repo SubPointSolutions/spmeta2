@@ -8,20 +8,21 @@ using SPMeta2.Services.Impl;
 using SPMeta2.Standard.Definitions.Fields;
 using SPMeta2.Utils;
 using System.Collections.Generic;
+using SPMeta2.Regression.Utils;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
     [TestClass]
-    public class HashCodeServiceTests : SPMeta2RegresionTestBase
+    public class HashCodeServiceTests : SPMeta2DefinitionRegresionTestBase
     {
         #region tests
 
         [TestMethod]
         [TestCategory("Regression.Services.HashCodeService")]
+        [TestCategory("CI.Core")]
         public void CanGetHashForAllDefinitions()
         {
-            var service = new MD5HashCodeServiceBase();
-
+            var service = ServiceContainer.Instance.GetService<HashCodeServiceBase>();
 
             var spMetaAssembly = typeof(FieldDefinition).Assembly;
             var spMetaStandardAssembly = typeof(TaxonomyFieldDefinition).Assembly;
@@ -34,14 +35,14 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
             var hashes = new Dictionary<string, string>();
 
-            Trace.WriteLine("Checking hashes for definitions...");
+            RegressionUtils.WriteLine("Checking hashes for definitions...");
 
             foreach (var defType in allDefinitions)
             {
                 var defInstance = ModelGeneratorService.GetRandomDefinition(defType);
-                Trace.WriteLine(string.Format("Definition:[{0}] - [{1}]", defType, defInstance));
+                RegressionUtils.WriteLine(string.Format("Definition:[{0}] - [{1}]", defType, defInstance));
 
-                TraceUtils.WithScope(trace =>
+                IndentableTrace.WithScope(trace =>
                 {
                     var hash1 = service.GetHashCode(defInstance);
                     var hash2 = service.GetHashCode(defInstance);

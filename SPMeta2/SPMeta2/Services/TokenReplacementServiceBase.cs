@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SPMeta2.Services
 {
@@ -8,6 +9,8 @@ namespace SPMeta2.Services
 
         public object Context { get; set; }
         public string Value { get; set; }
+
+        public bool IsSiteRelativeUrl { get; set; }
 
         #endregion
     }
@@ -35,6 +38,21 @@ namespace SPMeta2.Services
         {
 
         }
+
+        #endregion
+
+        #region classes
+
+        public class TokenReplacementResultEventArgs : EventArgs
+        {
+            public TokenReplacementResult Result { get; set; }
+        }
+
+        #endregion
+
+        #region events
+
+        public EventHandler<TokenReplacementResultEventArgs> OnTokenReplaced;
 
         #endregion
 

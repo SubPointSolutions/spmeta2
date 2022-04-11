@@ -45,9 +45,9 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<AlternateUrlDefinition>(this)
-                          .AddPropertyValue(p => p.Url)
-                          .AddPropertyValue(p => p.UrlZone)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Url", Url)
+                          .AddRawPropertyValue("UrlZone", UrlZone)
 
                           .ToString();
         }

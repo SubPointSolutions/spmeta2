@@ -24,20 +24,43 @@ namespace SPMeta2.Regression.Impl.Tests.ModelHandlers.Base
 
         static ModelHandlerTestBase()
         {
-            RegressionService = new RegressionTestService();
-            RegressionService.ModelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
+
         }
 
         #endregion
 
         #region properties
 
+        private ModelGeneratorService _modelGeneratorService;
+
         public ModelGeneratorService ModelGeneratorService
         {
-            get { return RegressionService.ModelGeneratorService; }
+            get
+            {
+                if (_modelGeneratorService == null)
+                {
+                    _modelGeneratorService = new ModelGeneratorService();
+                    _modelGeneratorService.RegisterDefinitionGenerators(typeof(ImageRenditionDefinitionGenerator).Assembly);
+                }
+
+                return _modelGeneratorService;
+            }
         }
 
-        public static RegressionTestService RegressionService { get; set; }
+        private static RegressionTestService _regressionService;
+
+        public static RegressionTestService RegressionService
+        {
+            get
+            {
+                if (_regressionService == null)
+                {
+                    _regressionService = new RegressionTestService();
+                }
+
+                return _regressionService;
+            }
+        }
 
         public RandomService Rnd { get; set; }
 

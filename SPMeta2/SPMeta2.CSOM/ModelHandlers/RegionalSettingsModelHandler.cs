@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Microsoft.SharePoint.Client;
 
@@ -6,6 +7,8 @@ using SPMeta2.Common;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
+using SPMeta2.Services;
 using SPMeta2.Utils;
 
 namespace SPMeta2.CSOM.ModelHandlers
@@ -36,6 +39,16 @@ namespace SPMeta2.CSOM.ModelHandlers
             var context = web.Context;
 
             var settings = GetCurrentRegionalSettings(web);
+            var shouldUpdate = SupportSetters(settings);
+
+            if (shouldUpdate && definition.TimeZoneId.HasValue)
+            {
+                // pre-load TimeZones for the further lookup
+                context.Load(settings);
+                context.Load(settings, s => s.TimeZones);
+
+                context.ExecuteQueryWithTrace();
+            }
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -48,7 +61,6 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
-            bool shouldUpdate;
             MapRegionalSettings(context, settings, definition, out shouldUpdate);
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -64,7 +76,7 @@ namespace SPMeta2.CSOM.ModelHandlers
 
             if (shouldUpdate)
             {
-                context.AddQuery(new ClientActionInvokeMethod(settings, "Update", null));
+                ClientRuntimeQueryService.InvokeMethod(settings, "Update");
                 context.ExecuteQueryWithTrace();
             }
         }
@@ -82,6 +94,12 @@ namespace SPMeta2.CSOM.ModelHandlers
             var supportedRuntime = ReflectionUtils.HasMethod(settings, "Update")
                 && ReflectionUtils.HasPropertyPublicSetter(settings, "AdjustHijriDays");
 
+            if (!supportedRuntime)
+            {
+                TraceService.Critical((int)LogEventId.ModelProvisionCoreCall,
+                        "CSOM runtime doesn't have RegionalSettings.Update() methods support. Update CSOM runtime to a new version. RegionalSettings provision is skipped");
+            }
+
             return supportedRuntime;
         }
 
@@ -96,84 +114,101 @@ namespace SPMeta2.CSOM.ModelHandlers
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "AdjustHijriDays")
                 && definition.AdjustHijriDays.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "AdjustHijriDays", definition.AdjustHijriDays.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "AdjustHijriDays", definition.AdjustHijriDays.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "AlternateCalendarType")
                 && definition.AlternateCalendarType.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "AlternateCalendarType", definition.AlternateCalendarType.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "AlternateCalendarType", definition.AlternateCalendarType.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "CalendarType")
                 && definition.CalendarType.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "CalendarType", definition.CalendarType.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "CalendarType", definition.CalendarType.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "Collation")
                 && definition.Collation.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "Collation", definition.Collation.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "Collation", definition.Collation.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "FirstDayOfWeek")
                 && definition.FirstDayOfWeek.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "FirstDayOfWeek", definition.FirstDayOfWeek.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "FirstDayOfWeek", definition.FirstDayOfWeek.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "FirstWeekOfYear")
                 && definition.FirstWeekOfYear.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "FirstWeekOfYear", definition.FirstWeekOfYear.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "FirstWeekOfYear", definition.FirstWeekOfYear.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "LocaleId")
                 && definition.LocaleId.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "LocaleId", definition.LocaleId.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "LocaleId", definition.LocaleId.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDayStartHour")
                 && definition.WorkDayStartHour.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "WorkDayStartHour", definition.WorkDayStartHour.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "WorkDayStartHour", definition.WorkDayStartHour.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDayEndHour")
                 && definition.WorkDayEndHour.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "WorkDayEndHour", definition.WorkDayEndHour.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "WorkDayEndHour", definition.WorkDayEndHour.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "WorkDays")
                 && definition.WorkDays.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "WorkDays", definition.WorkDays.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "WorkDays", definition.WorkDays.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "ShowWeeks")
                 && definition.ShowWeeks.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "ShowWeeks", definition.ShowWeeks.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "ShowWeeks", definition.ShowWeeks.Value);
                 shouldUpdate = true;
             }
 
             if (ReflectionUtils.HasPropertyPublicSetter(settings, "Time24")
                 && definition.Time24.HasValue)
             {
-                context.AddQuery(new ClientActionSetProperty(settings, "Time24", definition.Time24.Value));
+                ClientRuntimeQueryService.SetProperty(settings, "Time24", definition.Time24.Value);
+                shouldUpdate = true;
+            }
+
+            if (ReflectionUtils.HasPropertyPublicSetter(settings, "TimeZone")
+                && definition.TimeZoneId.HasValue)
+            {
+                var targetZone = settings.TimeZones
+                    .ToArray()
+                    .FirstOrDefault(z => z.Id == definition.TimeZoneId.Value);
+
+                if (targetZone == null)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Cannot find TimeZone by ID:[{0}]", definition.TimeZoneId));
+                }
+
+                ClientRuntimeQueryService.SetProperty(settings, "TimeZone", targetZone);
                 shouldUpdate = true;
             }
         }

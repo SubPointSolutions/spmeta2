@@ -10,6 +10,7 @@ using SPMeta2.Syntax.Default.Utils;
 using SPMeta2.Utils;
 using System.Text;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Regression.SSOM.Extensions;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -170,32 +171,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             {
                 assert.SkipProperty(m => m.Values, "Values.Count == 0. Skipping.");
             }
-        }
-    }
-
-    internal static class WebPartPageDefinitionEx
-    {
-        public static byte[] GetWebPartPageTemplateContent(this WebPartPageDefinition definition)
-        {
-            return Encoding.UTF8.GetBytes(new WebPartPageModelHandler().GetWebPartPageTemplateContent(definition));
-        }
-
-        public static byte[] GetCustomnPageContent(this WebPartPageDefinition definition)
-        {
-            return Encoding.UTF8.GetBytes(definition.CustomPageLayout);
-        }
-    }
-
-    internal static class SPListItemExtensions
-    {
-        public static byte[] GetContent(this SPListItem item)
-        {
-            byte[] result = null;
-
-            using (var stream = item.File.OpenBinaryStream())
-                result = ModuleFileUtils.ReadFully(stream);
-
-            return result;
         }
     }
 }

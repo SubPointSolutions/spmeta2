@@ -19,7 +19,7 @@ namespace SPMeta2.Definitions.Webparts
     [DefaultRootHost(typeof(WebDefinition))]
     [DefaultParentHost(typeof(ListDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     //[ExpectAddHostExtensionMethod]
     [ExpectWithExtensionMethod]
@@ -66,8 +66,8 @@ namespace SPMeta2.Definitions.Webparts
 
         public override string ToString()
         {
-            return new ToStringResult<WebPartGalleryFileDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.Group)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("Group", Group)
                           .ToString();
         }
 

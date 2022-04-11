@@ -78,8 +78,8 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<URLFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.DisplayFormat)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("DisplayFormat", DisplayFormat)
                           .ToString();
         }
 

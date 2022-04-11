@@ -57,17 +57,29 @@ namespace SPMeta2.CSOM.ModelHandlers
                 ModelHost = modelHost
             });
 
+            // TODO, https://github.com/SubPointSolutions/spmeta2/issues/761
+            // re-implement with native prop bag to suport SP2010
+            // SP2010 CSOM does not have CustomMasterUrl / MasterUrl props
+
+#if !NET35
+
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl))
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrlL: [{0}]", masterPageSettings.SiteMasterPageUrl);
-                web.CustomMasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SiteMasterPageUrl);
+                var url = ResolveUrlWithTokens(webModelHost, masterPageSettings.SiteMasterPageUrl);
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.MasterUrl: [{0}]", url);
+                web.CustomMasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, url);
             }
 
             if (!string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))
             {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", masterPageSettings.SystemMasterPageUrl);
-                web.MasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, masterPageSettings.SystemMasterPageUrl);
+                var url = ResolveUrlWithTokens(webModelHost, masterPageSettings.SystemMasterPageUrl);
+
+                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Setting web.CustomMasterUrl: [{0}]", url);
+                web.MasterUrl = UrlUtility.CombineUrl(siteRelativeUrl, url);
             }
+
+#endif
 
             if (!string.IsNullOrEmpty(masterPageSettings.SiteMasterPageUrl) ||
                 !string.IsNullOrEmpty(masterPageSettings.SystemMasterPageUrl))
@@ -101,6 +113,21 @@ namespace SPMeta2.CSOM.ModelHandlers
                     ModelHost = modelHost
                 });
             }
+        }
+
+        protected virtual string ResolveUrlWithTokens(WebModelHost webModelHost, string url)
+        {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Original url: [{0}]", url);
+            url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
+            {
+                Value = url,
+                Context = webModelHost,
+                IsSiteRelativeUrl = true
+            }).Value;
+
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Token replaced url: [{0}]", url);
+
+            return url;
         }
 
         #endregion

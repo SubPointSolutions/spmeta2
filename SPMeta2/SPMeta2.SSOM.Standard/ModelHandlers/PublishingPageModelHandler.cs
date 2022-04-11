@@ -97,7 +97,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
                     pageItem[BuiltInFieldId.ContentTypeId] = BuiltInPublishingContentTypeId.Page;
 
                     pageItem[BuiltInPublishingFieldId.Contact] = list.ParentWeb.CurrentUser;
-                    pageItem[BuiltInPublishingFieldId.PublishingPageContent] = publishingPageModel.Content;
+
+                    if (!string.IsNullOrEmpty(publishingPageModel.Content))
+                        pageItem[BuiltInPublishingFieldId.PublishingPageContent] = publishingPageModel.Content;
 
                     var contentTypeStringValue = ConvertUtils.ToString(currentPageLayoutItem[BuiltInPublishingFieldId.AssociatedContentType]);
 

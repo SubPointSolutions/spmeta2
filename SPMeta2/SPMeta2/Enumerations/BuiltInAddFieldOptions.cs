@@ -1,8 +1,12 @@
-﻿namespace SPMeta2.Enumerations
+﻿using System;
+
+namespace SPMeta2.Enumerations
 {
     /// <summary>
     /// Reflects built-in SharePoint AddFieldOptions class.
     /// </summary>
+
+    [Flags]
     public enum BuiltInAddFieldOptions
     {
         DefaultValue = 0,

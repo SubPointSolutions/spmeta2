@@ -107,13 +107,13 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<EventReceiverDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Type)
-                          .AddPropertyValue(p => p.Assembly)
-                          .AddPropertyValue(p => p.Class)
-                          .AddPropertyValue(p => p.SequenceNumber)
-                          .AddPropertyValue(p => p.Synchronization)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Type", Type)
+                          .AddRawPropertyValue("Assembly", Assembly)
+                          .AddRawPropertyValue("Class", Class)
+                          .AddRawPropertyValue("SequenceNumber", SequenceNumber)
+                          .AddRawPropertyValue("Synchronization", Synchronization)
                           .ToString();
         }
 

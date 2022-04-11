@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -9,6 +10,17 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions
 {
+    [Serializable]
+    [DataContract]
+    public class IndexedPropertyValue
+    {
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Value { get; set; }
+    }
+
     /// <summary>
     /// Allows too define and deploy SharePoint web site.
     /// </summary>
@@ -42,6 +54,7 @@ namespace SPMeta2.Definitions
 
             TitleResource = new List<ValueForUICulture>();
             DescriptionResource = new List<ValueForUICulture>();
+            IndexedPropertyKeys = new List<IndexedPropertyValue>();
         }
 
         #endregion
@@ -141,15 +154,60 @@ namespace SPMeta2.Definitions
 
         [DataMember]
         [ExpectValidation]
-        //[ExpectUpdateAsUrl(Extension = ".png")]
+        [ExpectUpdateAsUrl(Extension = ".png")]
         [ExpectNullable]
         public string SiteLogoUrl { get; set; }
 
         [DataMember]
         [ExpectValidation]
-        //[ExpectUpdateAsUrl(Extension = ".css")]
+        [ExpectUpdateAsUrl(Extension = ".css")]
         [ExpectNullable]
         public string AlternateCssUrl { get; set; }
+
+        /// <summary>
+        /// Gets the set of property keys for properties that need to be exposed through Site Data Web Service.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public List<IndexedPropertyValue> IndexedPropertyKeys { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        // [ExpectUpdateAsEmailAddress]
+        public string RequestAccessEmail { get; set; }
+
+        [DataMember]
+        [ExpectNullable]
+        [ExpectValidation]
+        public bool? MembersCanShare { get; set; }
+
+        /// <summary>
+        /// Name of the security group to be set as AssociatedMemberGroup, group must exist 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        [IdentityKey]
+        [ExpectUpdateAsTestSecurityGroup]
+        public string AssociatedMemberGroupName { get; set; }
+
+        /// <summary>
+        /// Name of the security group to be set as AssociatedOwnerGroup, group must exist 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        [IdentityKey]
+        [ExpectUpdateAsTestSecurityGroup]
+        public string AssociatedOwnerGroupName { get; set; }
+
+        /// <summary>
+        /// Name of the security group to be set as AssociatedOwnerGroup, group must exist 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        [IdentityKey]
+        [ExpectUpdateAsTestSecurityGroup]
+        public string AssociatedVisitorGroupName { get; set; }
 
         #endregion
 
@@ -157,14 +215,14 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WebDefinition>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.Description)
-                          .AddPropertyValue(p => p.LCID)
-                          .AddPropertyValue(p => p.UseUniquePermission)
-                          .AddPropertyValue(p => p.Url)
-                          .AddPropertyValue(p => p.WebTemplate)
-                          .AddPropertyValue(p => p.CustomWebTemplate)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("Description", Description)
+                          .AddRawPropertyValue("LCID", LCID)
+                          .AddRawPropertyValue("UseUniquePermission", UseUniquePermission)
+                          .AddRawPropertyValue("Url", Url)
+                          .AddRawPropertyValue("WebTemplate", WebTemplate)
+                          .AddRawPropertyValue("CustomWebTemplate", CustomWebTemplate)
 
                           .ToString();
         }

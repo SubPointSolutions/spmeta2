@@ -117,6 +117,15 @@ namespace SPMeta2.Definitions.Base
         [DataMember]
         public List<ParameterBindingValue> ParameterBindings { get; set; }
 
+        /// <summary>
+        /// Represents AuthorizationFilter, audience targeting
+        /// Usual format is ";;;;" + security group name
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+
+        public string AuthorizationFilter { get; set; }
+
         #endregion
 
         #region properties
@@ -190,6 +199,11 @@ namespace SPMeta2.Definitions.Base
         [DataMember]
         [ExpectValidation]
         public List<WebPartProperty> Properties { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        [ExpectUpdate]
+        public bool? Hidden { get; set; }
 
         #endregion
 

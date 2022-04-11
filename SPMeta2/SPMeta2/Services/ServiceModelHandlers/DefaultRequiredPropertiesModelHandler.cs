@@ -25,6 +25,9 @@ namespace SPMeta2.Services.ServiceModelHandlers
 
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
+            //var aggregateException = new c();
+            var exceptions = new List<SPMeta2ModelValidationException>();
+
             var props = ReflectionUtils.GetPropertiesWithCustomAttribute<ExpectRequired>(model, true);
 
             var requiredPropsGroups = props
@@ -37,14 +40,9 @@ namespace SPMeta2.Services.ServiceModelHandlers
                 {
                     var isAllValid = AllOfThem(model, group.ToList());
 
-                    if (!isAllValid)
+                    if (isAllValid.Count > 0)
                     {
-                        throw new SPMeta2ModelValidationException(
-                            string.Format("All properties with [{0}] attribute should be set. Definition:[{1}]",
-                            group.Key, model))
-                        {
-                            Definition = model
-                        };
+                        exceptions.AddRange(isAllValid);
                     }
                 }
                 else
@@ -59,14 +57,22 @@ namespace SPMeta2.Services.ServiceModelHandlers
 
                     if (!oneOfThem)
                     {
-                        throw new SPMeta2ModelValidationException(
+                        var ex = new SPMeta2ModelValidationException(
                             string.Format("One of the properties with [{0}] attribute should be set. Definition:[{1}]",
                             group.Key, model))
                         {
                             Definition = model
                         };
+
+                        exceptions.Add(ex);
                     }
                 }
+            }
+
+            if (exceptions.Count > 0)
+            {
+                throw new SPMeta2AggregateException("Required properties validation error",
+                    exceptions.OfType<Exception>());
             }
         }
 
@@ -77,17 +83,22 @@ namespace SPMeta2.Services.ServiceModelHandlers
             return result.Any(p => p.IsValid);
         }
 
-        private bool AllOfThem(object obj, List<PropertyInfo> props)
+        private List<SPMeta2ModelValidationException> AllOfThem(object obj, List<PropertyInfo> props)
         {
+            var r = new List<SPMeta2ModelValidationException>();
+
             var result = ValidateProps(obj, props);
 
-            if (!result.All(p => p.IsValid))
+            foreach (var res in result.Where(rr => !rr.IsValid))
             {
-                throw new Exception(string.Format("Property [{0}] is not valid.",
-                    result.First(r => !r.IsValid).Name));
+                r.Add(new SPMeta2ModelValidationException(string.Format("Property [{0}] is not valid.",
+                    res.Name))
+                {
+                    Definition = obj as DefinitionBase
+                });
             }
 
-            return result.All(p => p.IsValid);
+            return r;
         }
 
         protected List<PropResult> ValidateProps(object obj, List<PropertyInfo> props)
@@ -100,6 +111,12 @@ namespace SPMeta2.Services.ServiceModelHandlers
 
                 result.Name = prop.Name;
                 result.IsValid = true;
+
+
+                // Some properties can be 0, so we need to pass them as successes
+
+                // Can't provision list with NoListTemplate template type #944
+                // https://github.com/SubPointSolutions/spmeta2/issues/944
 
                 if (prop.PropertyType == typeof(string))
                 {
@@ -129,11 +146,32 @@ namespace SPMeta2.Services.ServiceModelHandlers
                 {
                     var value = prop.GetValue(obj, null) as int?;
 
-                    if (value.HasValue && value.Value > 0)
-                    { }
+                    // any valud range?
+                    // ExpectRequiredIntRange
+
+                    var allowedRangeProperty = prop.GetCustomAttributes(typeof(ExpectRequiredIntRange), true)
+                                                   .FirstOrDefault() as ExpectRequiredIntRange;
+
+                    if (allowedRangeProperty != null)
+                    {
+                        var minValue = allowedRangeProperty.MinValue;
+                        var maxValue = allowedRangeProperty.MaxValue;
+
+                        if (value.HasValue && (value.Value >= minValue && value.Value <= maxValue))
+                        { }
+                        else
+                        {
+                            result.IsValid = false;
+                        }
+                    }
                     else
                     {
-                        result.IsValid = false;
+                        if (value.HasValue && value.Value > 0)
+                        { }
+                        else
+                        {
+                            result.IsValid = false;
+                        }
                     }
                 }
                 else if (prop.PropertyType == typeof(byte[]))
@@ -156,6 +194,42 @@ namespace SPMeta2.Services.ServiceModelHandlers
                     else
                     {
                         result.IsValid = false;
+                    }
+                }
+                else if (prop.PropertyType == typeof(bool) ||
+                    prop.PropertyType == typeof(bool?))
+                {
+                    var value = prop.GetValue(obj, null) as bool?;
+
+                    // any valud range?
+                    // ExpectRequiredBoolRange
+                    var allowedBoolProperty = prop.GetCustomAttributes(typeof(ExpectRequiredBoolRange), true)
+                                                   .FirstOrDefault() as ExpectRequiredBoolRange;
+
+                    if (allowedBoolProperty != null)
+                    {
+                        var allowedBoolPropertyValue = allowedBoolProperty.ExpectedValue;
+
+                        if (value != null && value.HasValue)
+                        {
+                            result.IsValid = value == allowedBoolPropertyValue;
+                        }
+                        else
+                        {
+                            result.IsValid = false;
+                        }
+                    }
+                    else
+                    {
+                        // all set 'boolean' values as to be true unless values are defined via ExpectRequiredBoolRange
+                        if (value != null && value.HasValue)
+                        {
+
+                        }
+                        else
+                        {
+                            result.IsValid = false;
+                        }
                     }
                 }
                 else

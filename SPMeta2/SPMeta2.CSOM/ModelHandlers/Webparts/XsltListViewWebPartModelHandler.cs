@@ -39,6 +39,8 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             public Guid DefaultViewId { get; set; }
 
             public List List { get; set; }
+
+            public Guid WebId { get; set; }
         }
 
         #endregion
@@ -56,44 +58,59 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
         protected override string GetWebpartXmlDefinition(ListItemModelHost listItemModelHost, WebPartDefinitionBase webPartModel)
         {
-            var wpModel = webPartModel.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());
-            var bindContext = LookupBindContext(listItemModelHost, wpModel);
+            var typedModel = webPartModel.WithAssertAndCast<XsltListViewWebPartDefinition>("model", value => value.RequireNotNull());
+            var bindContext = LookupBindContext(listItemModelHost, typedModel);
 
             var wpXml = WebpartXmlExtensions.LoadWebpartXmlDocument(BuiltInWebPartTemplates.XsltListViewWebPart)
                                 .SetListName(bindContext.ListId.ToString())
                                 .SetListId(bindContext.ListId.ToString())
+                                .SetWebId(bindContext.WebId.ToString())
                                 .SetTitleUrl(bindContext.TitleUrl)
-                                .SetJSLink(wpModel.JSLink);
+                                .SetJSLink(typedModel.JSLink);
 
-            if (wpModel.CacheXslStorage.HasValue)
-                wpXml.SetOrUpdateProperty("CacheXslStorage", wpModel.CacheXslStorage.Value.ToString());
+            if (typedModel.CacheXslStorage.HasValue)
+                wpXml.SetOrUpdateProperty("CacheXslStorage", typedModel.CacheXslStorage.Value.ToString());
 
-            if (wpModel.CacheXslTimeOut.HasValue)
-                wpXml.SetOrUpdateProperty("CacheXslTimeOut", wpModel.CacheXslTimeOut.Value.ToString());
+            if (typedModel.CacheXslTimeOut.HasValue)
+                wpXml.SetOrUpdateProperty("CacheXslTimeOut", typedModel.CacheXslTimeOut.Value.ToString());
 
-            if (!string.IsNullOrEmpty(wpModel.BaseXsltHashKey))
-                wpXml.SetOrUpdateProperty("BaseXsltHashKey", wpModel.BaseXsltHashKey);
+            if (!string.IsNullOrEmpty(typedModel.BaseXsltHashKey))
+                wpXml.SetOrUpdateProperty("BaseXsltHashKey", typedModel.BaseXsltHashKey);
 
             // xsl
-            if (!string.IsNullOrEmpty(wpModel.Xsl))
-                wpXml.SetOrUpdateCDataProperty("Xsl", wpModel.Xsl);
+            if (!string.IsNullOrEmpty(typedModel.Xsl))
+                wpXml.SetOrUpdateCDataProperty("Xsl", typedModel.Xsl);
 
-            if (!string.IsNullOrEmpty(wpModel.XslLink))
-                wpXml.SetOrUpdateProperty("XslLink", wpModel.XslLink);
+            if (!string.IsNullOrEmpty(typedModel.XslLink))
+                wpXml.SetOrUpdateProperty("XslLink", typedModel.XslLink);
 
-            if (!string.IsNullOrEmpty(wpModel.GhostedXslLink))
-                wpXml.SetOrUpdateProperty("GhostedXslLink", wpModel.GhostedXslLink);
+            if (!string.IsNullOrEmpty(typedModel.GhostedXslLink))
+                wpXml.SetOrUpdateProperty("GhostedXslLink", typedModel.GhostedXslLink);
 
             // xml
-            if (!string.IsNullOrEmpty(wpModel.XmlDefinition))
-                wpXml.SetOrUpdateCDataProperty("XmlDefinition", wpModel.Xsl);
+            if (!string.IsNullOrEmpty(typedModel.XmlDefinition))
+                wpXml.SetOrUpdateCDataProperty("XmlDefinition", typedModel.XmlDefinition);
 
-            if (!string.IsNullOrEmpty(wpModel.XmlDefinitionLink))
-                wpXml.SetOrUpdateProperty("XmlDefinitionLink", wpModel.XmlDefinitionLink);
+            if (!string.IsNullOrEmpty(typedModel.XmlDefinitionLink))
+                wpXml.SetOrUpdateProperty("XmlDefinitionLink", typedModel.XmlDefinitionLink);
 
 #if !NET35
-            if (wpModel.ShowTimelineIfAvailable.HasValue)
-                wpXml.SetOrUpdateProperty("ShowTimelineIfAvailable", wpModel.ShowTimelineIfAvailable.Value.ToString());
+            if (typedModel.ShowTimelineIfAvailable.HasValue)
+                wpXml.SetOrUpdateProperty("ShowTimelineIfAvailable", typedModel.ShowTimelineIfAvailable.Value.ToString());
+#endif
+
+            if (typedModel.DisableColumnFiltering.HasValue)
+                wpXml.SetOrUpdateProperty("DisableColumnFiltering", typedModel.DisableColumnFiltering.Value.ToString());
+
+#if !NET35
+            if (typedModel.DisableSaveAsNewViewButton.HasValue)
+                wpXml.SetOrUpdateProperty("DisableSaveAsNewViewButton", typedModel.DisableSaveAsNewViewButton.Value.ToString());
+
+            if (typedModel.DisableViewSelectorMenu.HasValue)
+                wpXml.SetOrUpdateProperty("DisableViewSelectorMenu", typedModel.DisableViewSelectorMenu.Value.ToString());
+
+            if (typedModel.InplaceSearchEnabled.HasValue)
+                wpXml.SetOrUpdateProperty("InplaceSearchEnabled", typedModel.InplaceSearchEnabled.Value.ToString());
 #endif
 
             return wpXml.ToString();
@@ -164,6 +181,7 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                 // reverting back the dafult view
                 var view = bindingContext.List.GetView(_currentListBindContext.DefaultViewId);
+
                 view.DefaultView = true;
                 view.Update();
 
@@ -192,8 +210,13 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
                 if (typedDefinition.WebId.HasGuidValue() || !string.IsNullOrEmpty(typedDefinition.WebUrl))
                 {
-                    targetWeb = new LookupFieldModelHandler()
-                                    .GetTargetWeb(this.CurrentClientContext.Site, typedDefinition.WebUrl, typedDefinition.WebId);
+                    var lookupFieldModelHandler = new LookupFieldModelHandler();
+
+                    targetWeb = lookupFieldModelHandler.GetTargetWeb(
+                                    this.CurrentClientContext.Site,
+                                    typedDefinition.WebUrl,
+                                    typedDefinition.WebId,
+                                    provisionContext.ListItemModelHost);
                 }
 
                 var list = LookupList(targetWeb, typedDefinition.ListUrl, typedDefinition.ListTitle, typedDefinition.ListId);
@@ -204,11 +227,43 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 context.Load(hiddenView);
                 context.ExecuteQueryWithTrace();
 
-                // patching the toolbar value
+                // always replace HtmlSchemaXml witjh the real view
+                // some properties aren't coming with CSOM
+
+                if (bindContext.OriginalView != null)
+                {
+                    var updatedSchemaXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
+                    var originalSchemaXml = XDocument.Parse(bindContext.OriginalView.HtmlSchemaXml);
+
+                    updatedSchemaXml.Root.ReplaceWith(originalSchemaXml.Root);
+
+#if !NET35
+                    // updating inner xml definition for view
+                    hiddenView.ListViewXml = updatedSchemaXml.Root.GetInnerXmlAsString();
+                    
+                    // updating other attribute based properties, in the root node
+                    // partly related to following issue
+                    // List view scope does not apply in xslt list view webpart #1030
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1030
+
+                    var scopeValue = updatedSchemaXml.Root.GetAttributeValue("Scope");
+
+                    if(!string.IsNullOrEmpty(scopeValue))
+                    {
+                        hiddenView.Scope = (ViewScope)Enum.Parse(typeof(ViewScope), scopeValue);
+                    }
+#endif
+                }
 
                 if (!string.IsNullOrEmpty(typedDefinition.Toolbar))
                 {
+                    // work with the update schema XML
                     var htmlSchemaXml = XDocument.Parse(hiddenView.HtmlSchemaXml);
+
+                    if (bindContext.OriginalView != null)
+                    {
+                        htmlSchemaXml = XDocument.Parse(bindContext.OriginalView.HtmlSchemaXml);
+                    }
 
                     var useShowAlwaysValue =
                         (typedDefinition.Toolbar.ToUpper() == BuiltInToolbarType.Standard.ToUpper())
@@ -238,11 +293,13 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                             attr.Remove();
                     }
 
+#if !NET35
                     hiddenView.ListViewXml = htmlSchemaXml.Root.GetInnerXmlAsString();
-
-                    hiddenView.Update();
-                    context.ExecuteQueryWithTrace();
+#endif
                 }
+
+                hiddenView.Update();
+                context.ExecuteQueryWithTrace();
             }
         }
 
@@ -252,14 +309,14 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             return LookupBindContext(listItemModelHost,
                 wpModel.WebUrl, wpModel.WebId,
                 wpModel.ListUrl, wpModel.ListTitle, wpModel.ListId,
-                wpModel.ViewName, wpModel.ViewId,
+                wpModel.ViewUrl, wpModel.ViewName, wpModel.ViewId,
                 wpModel.TitleUrl);
         }
 
         internal static ListBindContext LookupBindContext(ListItemModelHost listItemModelHost,
            string webUrl, Guid? webId,
            string listUrl, string listTitle, Guid? listId,
-           string viewTitle, Guid? viewId,
+           string viewUrl, string viewTitle, Guid? viewId,
             string webPartTitleUrl
             )
         {
@@ -275,9 +332,16 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
 
             if (webId.HasGuidValue() || !string.IsNullOrEmpty(webUrl))
             {
-                targetWeb = new LookupFieldModelHandler()
-                                .GetTargetWeb(listItemModelHost.HostClientContext.Site,
-                                        webUrl, webId);
+                var lookupFieldModelHandler = new LookupFieldModelHandler();
+
+                targetWeb = lookupFieldModelHandler
+                                .GetTargetWeb(
+                                        listItemModelHost.HostClientContext.Site,
+                                        webUrl, 
+                                        webId,
+                                        listItemModelHost);
+
+                result.WebId = targetWeb.Id;
             }
 
             var list = LookupList(targetWeb, listUrl, listTitle, listId);
@@ -288,19 +352,37 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
                 view = list.Views.GetById(viewId.Value);
             else if (!string.IsNullOrEmpty(viewTitle))
                 view = list.Views.GetByTitle(viewTitle);
+            else if (!string.IsNullOrEmpty(viewUrl))
+            {
+                var views = list.Views;
+
+                context.Load(views, v => v.Include(r => r.ServerRelativeUrl));
+                context.ExecuteQueryWithTrace();
+
+                view = views.ToArray()
+                            .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(viewUrl.ToUpper()));
+            }
 
             context.Load(list, l => l.Id);
             context.Load(list, l => l.DefaultViewUrl);
             context.Load(list, l => l.Title);
+
+            // TODO, https://github.com/SubPointSolutions/spmeta2/issues/765
+            // list.DefaultView is not available, so a full fetch for list view is a must for SP2010.
+
+#if !NET35
             context.Load(list, l => l.DefaultView);
+#endif
 
             if (view != null)
             {
                 context.Load(view);
                 context.ExecuteQueryWithTrace();
 
+#if !NET35
                 result.OriginalView = list.DefaultView;
                 result.OriginalViewId = list.DefaultView.Id;
+#endif
 
                 result.TargetView = view;
                 result.TargetViewId = view.Id;
@@ -315,13 +397,18 @@ namespace SPMeta2.CSOM.ModelHandlers.Webparts
             result.ListId = list.Id;
             result.List = list;
 
+
+            result.List = list;
+
             if (webPartTitleUrl == null)
             {
                 if (string.IsNullOrEmpty(result.TitleUrl))
                     result.TitleUrl = list.DefaultViewUrl;
             }
 
+#if !NET35
             result.DefaultViewId = list.DefaultView.Id;
+#endif
 
             return result;
         }

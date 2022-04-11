@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.DefaultSyntax;
 using SPMeta2.SSOM.ModelHandlers.Base;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -50,7 +51,7 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             TraceService.Information((int)LogEventId.ModelProvisionProcessingNewObject, "Processing new list");
 
-            var listId = default(Guid);
+            Guid listId;
 
             // create with the random title to avoid issue with 2 lists + diff URL and same Title
             // list Title will be renamed later on
@@ -67,10 +68,10 @@ namespace SPMeta2.SSOM.ModelHandlers
                                 listTitle,
                                 listModel.Description ?? string.Empty,
 #pragma warning disable 618
-                                listModel.GetListUrl(),
+ listModel.GetListUrl(),
 #pragma warning restore 618
-                                string.Empty,
-                                (int)listModel.TemplateType,
+ string.Empty,
+                                listModel.TemplateType,
                                 string.Empty);
             }
             else if (!string.IsNullOrEmpty(listModel.TemplateName))
@@ -84,9 +85,9 @@ namespace SPMeta2.SSOM.ModelHandlers
                                listTitle,
                                listModel.Description ?? string.Empty,
 #pragma warning disable 618
-                               listModel.GetListUrl(),
+ listModel.GetListUrl(),
 #pragma warning restore 618
-                               listTemplate.FeatureId.ToString(),
+ listTemplate.FeatureId.ToString(),
                                (int)listTemplate.Type,
                                listTemplate.DocumentTemplate);
             }
@@ -102,10 +103,15 @@ namespace SPMeta2.SSOM.ModelHandlers
         {
             var list = currentObject;
 
-            list.Title = definition.Title;
+            // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(currentObject.ParentWeb.UICulture, () =>
+            {
+                list.Title = definition.Title;
 
-            // SPBug, again & again, must not be null
-            list.Description = definition.Description ?? string.Empty;
+                // SPBug, again & again, must not be null
+                list.Description = definition.Description ?? string.Empty;
+            });
+
             list.ContentTypesEnabled = definition.ContentTypesEnabled;
 
             if (!string.IsNullOrEmpty(definition.DraftVersionVisibility))
@@ -159,6 +165,46 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.MajorWithMinorVersionsLimit.HasValue)
                 list.MajorWithMinorVersionsLimit = definition.MajorWithMinorVersionsLimit.Value;
 
+            if (definition.NavigateForFormsPages.HasValue)
+                list.NavigateForFormsPages = definition.NavigateForFormsPages.Value;
+
+            if (definition.EnableAssignToEmail.HasValue)
+                list.EnableAssignToEmail = definition.EnableAssignToEmail.Value;
+
+            if (definition.DisableGridEditing.HasValue)
+                list.DisableGridEditing = definition.DisableGridEditing.Value;
+
+#if !NET35
+            if (definition.IndexedRootFolderPropertyKeys.Any())
+            {
+                foreach (var indexedProperty in definition.IndexedRootFolderPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    if (list.RootFolder.Properties.ContainsKey(propName))
+                        list.RootFolder.Properties[propName] = propValue;
+                    else
+                        list.RootFolder.Properties.Add(propName, propValue);
+
+                    if (!list.IndexedRootFolderPropertyKeys.Contains(propName))
+                        list.IndexedRootFolderPropertyKeys.Add(propName);
+                }
+            }
+#endif
+
+            if (definition.WriteSecurity.HasValue)
+                list.WriteSecurity = definition.WriteSecurity.Value;
+
+            if (definition.ReadSecurity.HasValue)
+                list.ReadSecurity = definition.ReadSecurity.Value;
+
             var docLibrary = list as SPDocumentLibrary;
 
             if (docLibrary != null)
@@ -183,7 +229,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                     docLibrary.DocumentTemplateUrl = urlValue;
                 }
             }
-
 
             ProcessLocalization(list, definition);
         }
@@ -227,39 +272,59 @@ namespace SPMeta2.SSOM.ModelHandlers
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-            var webModelHost = modelHost.WithAssertAndCast<WebModelHost>("modelHost", value => value.RequireNotNull());
-            var web = webModelHost.HostWeb;
+            // could either be web or list model host
+            // https://github.com/SubPointSolutions/spmeta2/issues/829
+
+            SPWeb web = null;
+            SPList hostList = null;
+
+            if (modelHost is WebModelHost)
+                web = (modelHost as WebModelHost).HostWeb;
+            else if (modelHost is ListModelHost)
+            {
+                web = (modelHost as ListModelHost).HostList.ParentWeb;
+                hostList = (modelHost as ListModelHost).HostList;
+            }
+            else
+            {
+                throw new SPMeta2UnsupportedModelHostException(
+                    string.Format("Unsupported model host type:[{0}]", modelHost.GetType()));
+            }
 
             var listDefinition = model as ListDefinition;
 
-            if (web != null && listDefinition != null)
+            if ((web != null || hostList != null) && listDefinition != null)
             {
-                // This is very important line ->  adding new 'fake list'
-                //
-                // Nintex workflow deployment web service updates the list, so that version of the list becomes +4
-                // Current SPWeb has not been updated, current list will be 4 versions behind so you will have 'Save conflict' exception
-                //
-                // We try to add new list, so SPListCollection is invalidated.
-                // Surely, we won't save this list.
-                try
+                if (hostList == null)
                 {
-                    var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, Microsoft.SharePoint.SPListTemplateType.GenericList);
-                    var tmpList = web.Lists[tmpListId];
+                    // This is very important line ->  adding new 'fake list'
+                    //
+                    // Nintex workflow deployment web service updates the list, so that version of the list becomes +4
+                    // Current SPWeb has not been updated, current list will be 4 versions behind so you will have 'Save conflict' exception
+                    //
+                    // We try to add new list, so SPListCollection is invalidated.
+                    // Surely, we won't save this list.
+                    try
+                    {
+                        var tmpListId = web.Lists.Add(Guid.NewGuid().ToString(), string.Empty, SPListTemplateType.GenericList);
+                        var tmpList = web.Lists[tmpListId];
 
-                    tmpList.Delete();
+                        tmpList.Delete();
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
-                catch (Exception)
-                {
-                }
+
 
 #pragma warning disable 618
-                var list = web.GetList(SPUtility.ConcatUrls(web.ServerRelativeUrl, listDefinition.GetListUrl()));
+                var list = hostList ?? web.GetList(SPUtility.ConcatUrls(web.ServerRelativeUrl, listDefinition.GetListUrl()));
 #pragma warning restore 618
 
-                var listModelHost = new ListModelHost
+                var listModelHost = ModelHostBase.Inherit<ListModelHost>(modelHost as ModelHostBase, host =>
                 {
-                    HostList = list
-                };
+                    host.HostList = list;
+                });
 
                 if (childModelType == typeof(ModuleFileDefinition))
                 {
@@ -319,13 +384,13 @@ namespace SPMeta2.SSOM.ModelHandlers
             if (definition.TitleResource.Any())
             {
                 foreach (var locValue in definition.TitleResource)
-                    LocalizationService.ProcessUserResource(obj,obj.TitleResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.TitleResource, locValue);
             }
 
             if (definition.DescriptionResource.Any())
             {
                 foreach (var locValue in definition.DescriptionResource)
-                    LocalizationService.ProcessUserResource(obj,obj.DescriptionResource, locValue);
+                    LocalizationService.ProcessUserResource(obj, obj.DescriptionResource, locValue);
             }
         }
 

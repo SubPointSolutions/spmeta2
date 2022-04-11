@@ -70,9 +70,9 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<PublishingPageDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.PageLayoutFileName)
-                          .AddPropertyValue(p => p.Description)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("PageLayoutFileName", PageLayoutFileName)
+                          .AddRawPropertyValue("Description", Description)
                           .ToString();
         }
 

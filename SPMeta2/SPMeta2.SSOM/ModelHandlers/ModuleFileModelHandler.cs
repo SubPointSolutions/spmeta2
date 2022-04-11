@@ -18,7 +18,18 @@ namespace SPMeta2.SSOM.ModelHandlers
 {
     public class ModuleFileModelHandler : SSOMModelHandlerBase
     {
+        #region static
+
+        static ModuleFileModelHandler()
+        {
+            MaxMinorVersionCount = 50;
+        }
+
+        #endregion
+
         #region properties
+
+        private static int MaxMinorVersionCount { get; set; }
 
         public override Type TargetType
         {
@@ -197,10 +208,16 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private string GetSafeFileUrl(SPFolder folder, ModuleFileDefinition moduleFile)
         {
-            if (folder.ServerRelativeUrl != "/")
-                return folder.ServerRelativeUrl + "/" + moduleFile.FileName;
+            var result = moduleFile.FileName;
 
-            return moduleFile.FileName;
+            if (folder.ServerRelativeUrl != "/")
+            {
+                result = UrlUtility.CombineUrl(folder.ServerRelativeUrl, moduleFile.FileName);
+            }
+
+            result = result.Replace("//", "/");
+
+            return result;
         }
 
         public static void WithSafeFileOperation(
@@ -227,7 +244,22 @@ namespace SPMeta2.SSOM.ModelHandlers
                     file.UndoCheckOut();
 
                 if (list != null && (list.EnableMinorVersions && file.Exists && file.Level == SPFileLevel.Published))
+                {
                     file.UnPublish("Provision");
+
+                    // Module file provision fails at minor version 511 #930
+                    // https://github.com/SubPointSolutions/spmeta2/issues/930
+
+                    // checking out .511 version will result in an exception
+                    // can be cause by multiple provisions of the same file (such as on dev/test environment)
+                    if (file.MinorVersion >= MaxMinorVersionCount)
+                    {
+                        file.Publish("Provision");
+
+                        if (list.EnableModeration)
+                            file.Approve("Provision");
+                    }
+                }
 
                 if (list != null && (file.Exists && file.CheckOutType == SPFile.SPCheckOutType.None))
                     file.CheckOut();

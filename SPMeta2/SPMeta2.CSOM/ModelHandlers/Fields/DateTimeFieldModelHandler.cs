@@ -46,8 +46,10 @@ namespace SPMeta2.CSOM.ModelHandlers.Fields
             if (!string.IsNullOrEmpty(typedFieldModel.DisplayFormat))
                 typedField.DisplayFormat = (DateTimeFieldFormatType)Enum.Parse(typeof(DateTimeFieldFormatType), typedFieldModel.DisplayFormat);
 
+#if !NET35
             if (!string.IsNullOrEmpty(typedFieldModel.FriendlyDisplayFormat))
                 typedField.FriendlyDisplayFormat = (DateTimeFieldFriendlyFormatType)Enum.Parse(typeof(DateTimeFieldFriendlyFormatType), typedFieldModel.FriendlyDisplayFormat);
+#endif
         }
 
         protected override void ProcessSPFieldXElement(XElement fieldTemplate, FieldDefinition fieldModel)

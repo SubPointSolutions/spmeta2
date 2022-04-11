@@ -164,7 +164,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
             }
             else if (definition.UseDefinedWebTemplates.HasValue && definition.UseDefinedWebTemplates.Value)
             {
-                var currentLocaleId = (uint)web.CurrencyLocaleID;
+                var currentLocaleId = (uint)web.Locale.LCID;
                 var webTemplates = new List<SPWebTemplate>();
 
                 webTemplates.AddRange(web.Site.GetWebTemplates(currentLocaleId).OfType<SPWebTemplate>());
@@ -183,7 +183,7 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers
 
                 if (selectedWebTemplates.Any())
                 {
-                    publishingWeb.SetAvailableWebTemplates(selectedWebTemplates, 0,
+                    publishingWeb.SetAvailableWebTemplates(selectedWebTemplates, (uint)web.Locale.LCID,
                         definition.ResetAllSubsitesToInheritWebTemplates.HasValue
                             ? definition.ResetAllSubsitesToInheritWebTemplates.Value
                             : false);

@@ -12,28 +12,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\SPMeta2.SSOM.Standard.XML</DocumentationFile>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <NoWarn>1591</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug35|AnyCPU'">
+  <!-- m2 build start -->
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug35|AnyCPU') and ('$(spRuntime)' != '')">
     <OutputPath>bin\Debug35-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
@@ -45,8 +25,8 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug35-$(spRuntime)\SPMeta2.SSOM.Standard.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
-    <OutputPath>bin\Debug40\</OutputPath>
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug40|AnyCPU') and ('$(spRuntime)' != '')">
+    <OutputPath>bin\Debug40-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -55,10 +35,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug40\SPMeta2.SSOM.Standard.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug40-$(spRuntime)\SPMeta2.SSOM.Standard.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug45|AnyCPU'">
-    <OutputPath>bin\Debug45\</OutputPath>
+  <PropertyGroup Condition="('$(Configuration)|$(Platform)' == 'Debug45|AnyCPU') and ('$(spRuntime)' != '')">
+    <OutputPath>bin\Debug45-$(spRuntime)\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -67,7 +47,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug45\SPMeta2.SSOM.Standard.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug45-$(spRuntime)\SPMeta2.SSOM.Standard.XML</DocumentationFile>
+  </PropertyGroup>
+  <!-- m2 build end -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\SPMeta2.SSOM.Standard.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -75,47 +68,43 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>SPMeta2.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1212|AnyCPU'">
-    <OutputPath>bin\1212\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug40|AnyCPU'">
-    <OutputPath>bin\Debug40\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug45|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug45\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\SPMeta2.SSOM.Standard.XML</DocumentationFile>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-O365|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CI-O365\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\SPMeta2.SSOM.Standard.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI-CSOM2013|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CI-CSOM2013\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\SPMeta2.SSOM.Standard.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.Office.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.Office.DocumentManagement.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.Office.Server, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.Office.Server.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.Office.Server.Search.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.Office.Server.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.Office.Server.UserProfiles.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.SharePoint.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint.Portal, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.SharePoint.Portal.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint.Publishing, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.SharePoint.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint.Security, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.SharePoint.Security.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(spRuntime)'=='16' " Include="Microsoft.SharePoint.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2016 - 16.0.4306.1001\SSOM\Microsoft.SharePoint.Taxonomy.dll</HintPath>
+    </Reference>
     <Reference Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" Include="Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SPMeta2.Dependencies\SharePoint\SP2013 - 15.0.4569.1000\SSOM\Microsoft.Office.DocumentManagement.dll</HintPath>
@@ -198,6 +187,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelHandlers\DesignPackageModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\CorePropertyModelHandler.cs" />
+    <Compile Include="ModelHandlers\DocumentSetModelHandler.cs" />
     <Compile Include="ModelHandlers\Base\ItemControlTemplateModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\ReusableTextItemModelHandlerBase.cs" />
     <Compile Include="ModelHandlers\Base\TemplateModelHandlerBase.cs" />
@@ -210,7 +202,8 @@
     <Compile Include="ModelHandlers\Fields\HTMLFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\ImageFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\LinkFieldModelHandler.cs" />
-    <Compile Include="ModelHandlers\ManagedPropertyModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\ManagedPropertyModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\MetadataNavigationSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\ReusableTextItemModelHandler.cs" />
     <Compile Include="ModelHandlers\ReusableHTMLItemModelHandler.cs" />
     <Compile Include="ModelHandlers\SearchSettingsModelHandler.cs" />
@@ -218,48 +211,50 @@
     <Compile Include="ModelHandlers\PageLayoutAndSiteTemplateSettingsModelHandler.cs" />
     <Compile Include="ModelHandlers\Fields\TaxonomyFieldModelHandler.cs" />
     <Compile Include="ModelHandlers\AudienceModelHandler.cs" />
-    <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\ImageRenditionModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\PublishingPageLayoutModelHandler.cs" />
     <Compile Include="ModelHandlers\PublishingPageModelHandler.cs" />
-    <Compile Include="ModelHandlers\SearchResultModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\SearchResultModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\SearchConfigurationModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermLabelModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermStoreModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermSetModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyTermModelHandler.cs" />
     <Compile Include="ModelHandlers\Taxonomy\TaxonomyGroupModelHandler.cs" />
-    <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\WebNavigationSettingsModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\AdvancedSearchBoxModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\CategoryWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\CommunityAdminWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\Webparts\CommunityJoinWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\Webparts\ContentBySearchWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\CommunityAdminWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\CommunityJoinWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\ContentBySearchWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\DocumentSetContentsWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\DocumentSetPropertiesWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\MyMembershipWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\Webparts\RefinementScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\Webparts\ResultScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\MyMembershipWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\RefinementScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\ResultScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\RSSAggregatorWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\SearchBoxScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
-    <Compile Include="ModelHandlers\Webparts\SearchNavigationWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\SearchBoxScriptWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\SearchNavigationWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\SiteDocumentsModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SocialCommentWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\SummaryLinkWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContactFieldControlModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\ContentByQueryWebPartModelHandler.cs" />
-    <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\SiteFeedWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="ModelHandlers\Webparts\TableOfContentsWebPartModelHandler.cs" />
     <Compile Include="ModelHandlers\Webparts\TagCloudWebPartModelHandler.cs" />
     <Compile Include="ModelHosts\TermModelHost.cs" />
     <Compile Include="ModelHosts\TermSetModelHost.cs" />
     <Compile Include="ModelHosts\TermGroupModelHost.cs" />
     <Compile Include="ModelHosts\TermStoreModelHost.cs" />
-    <Compile Include="ModelHandlers\Webparts\ProjectSummaryWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(Configuration)'=='Debug'" />
+    <Compile Include="ModelHandlers\Webparts\ProjectSummaryWebPartModelHandler.cs" Condition="'$(spRuntime)'=='15' Or '$(spRuntime)'=='16' or  '$(Configuration)'=='Debug'" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingPageTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PublishingPageTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\StandardSSOMIncrementalProvisionService.cs" />
     <Compile Include="Services\StandardSSOMProvisionService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +281,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

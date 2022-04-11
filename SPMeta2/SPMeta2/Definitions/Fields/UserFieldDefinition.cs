@@ -124,11 +124,11 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<UserFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.AllowDisplay)
-                          .AddPropertyValue(p => p.Presence)
-                          .AddPropertyValue(p => p.SelectionGroup)
-                          .AddPropertyValue(p => p.SelectionMode)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("AllowDisplay", AllowDisplay)
+                          .AddRawPropertyValue("Presence", Presence)
+                          .AddRawPropertyValue("SelectionGroup", SelectionGroup)
+                          .AddRawPropertyValue("SelectionMode", SelectionMode)
                           .ToString();
         }
 

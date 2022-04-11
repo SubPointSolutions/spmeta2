@@ -6,6 +6,8 @@ using SPMeta2.Definitions.Fields;
 using SPMeta2.Utils;
 using Microsoft.SharePoint;
 using SPMeta2.Containers.Utils;
+using System.Xml.Linq;
+using SPMeta2.Enumerations;
 
 namespace SPMeta2.Regression.SSOM.Validation.Fields
 {
@@ -36,6 +38,8 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             typedFieldAssert.ShouldBeEqual(m => m.CurrencyLocaleId, o => o.CurrencyLocaleId);
             typedFieldAssert.ShouldBeEqual(m => m.DateFormat, o => o.GetDateFormat());
 
+
+
             typedFieldAssert.ShouldBeEqual(m => m.OutputType, o => o.GetOutputType());
             //
             typedFieldAssert.ShouldBeEqual(m => m.DisplayFormat, o => o.GetDisplayFormat());
@@ -50,7 +54,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
             else
                 typedFieldAssert.SkipProperty(m => m.Formula);
 
-            TraceUtils.WithScope(s =>
+            IndentableTrace.WithScope(s =>
             {
                 s.WriteLine(string.Format("Formula: Src:[{0}] Dst:[{1}]", typedDefinition.Formula, typedField.Formula));
             });
@@ -114,7 +118,38 @@ namespace SPMeta2.Regression.SSOM.Validation.Fields
 
         public static string GetDateFormat(this SPFieldCalculated field)
         {
+            var value = field.DateFormat.ToString(); ;
+
+            // also, wihtint expected range
+            field.GetDateFormatString();
+
             return field.DateFormat.ToString();
         }
+
+        public static string GetDateFormatString(this SPField field)
+        {
+            var value = GetDateFormat(field);
+
+            // Format="0" when provisioning CalculatedField #969
+            // https://github.com/SubPointSolutions/spmeta2/issues/969
+
+            if (string.Compare(value, BuiltInDateTimeFieldFormatType.DateOnly, true) == 0)
+                return BuiltInDateTimeFieldFormatType.DateOnly;
+
+            if (string.Compare(value, BuiltInDateTimeFieldFormatType.DateTime, true) == 0)
+                return BuiltInDateTimeFieldFormatType.DateTime;
+
+            throw new ArgumentException("BuiltInDateTimeFieldFormatType was:" + value);
+
+        }
+
+        public static string GetDateFormat(this SPField field)
+        {
+            var xml = field.SchemaXml;
+
+            return ConvertUtils.ToString(XElement.Parse(xml).GetAttributeValue(BuiltInFieldAttributes.Format));
+        }
     }
+
+
 }

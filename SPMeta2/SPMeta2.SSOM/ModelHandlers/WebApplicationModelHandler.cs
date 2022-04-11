@@ -10,6 +10,8 @@ using System.Text;
 using SPMeta2.Utils;
 using Microsoft.SharePoint.Administration;
 using System.Security;
+using SPMeta2.ModelHosts;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -34,49 +36,167 @@ namespace SPMeta2.SSOM.ModelHandlers
             DeployWebApplication(farmModelHost, farmModelHost.HostFarm, webApplicationDefinition);
         }
 
-        private void DeployWebApplication(FarmModelHost farmModelHost, SPFarm farm, WebApplicationDefinition webApplicationDefinition)
+        protected virtual SPWebApplication LookupWebApplication(WebApplicationDefinition definition)
         {
             var webApps = SPWebService.ContentService.WebApplications;
+            return FindWebApplication(definition, webApps);
+        }
 
-            var webAppBuilder = new SPWebApplicationBuilder(farm);
+        public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
+        {
+            var modelHost = modelHostContext.ModelHost;
+            var model = modelHostContext.Model;
+            var childModelType = modelHostContext.ChildModelType;
+            var action = modelHostContext.Action;
 
-            webAppBuilder.Port = webApplicationDefinition.Port;
-            webAppBuilder.ApplicationPoolId = webApplicationDefinition.ApplicationPoolId;
+            var webApplicationDefinition = model.WithAssertAndCast<WebApplicationDefinition>("model", value => value.RequireNotNull());
 
-            if (!string.IsNullOrEmpty(webApplicationDefinition.ManagedAccount))
+            if (modelHost is WebApplicationModelHost)
             {
-                webAppBuilder.IdentityType = IdentityType.SpecificUser;
+                base.WithResolvingModelHost(modelHostContext);
+                return;
 
-                var managedAccounts = new SPFarmManagedAccountCollection(SPFarm.Local);
-                var maccount = managedAccounts.FindOrCreateAccount(webApplicationDefinition.ManagedAccount);
+            }
 
-                webAppBuilder.ManagedAccount = maccount;
+            var farmModelHost = modelHost.WithAssertAndCast<FarmModelHost>("modelHost", value => value.RequireNotNull());
+            var existingWebApp = LookupWebApplication(webApplicationDefinition);
+
+            if (existingWebApp == null)
+            {
+                throw new SPMeta2Exception(string.Format(
+                    "Cannot find web aplication by definition:[]",
+                    webApplicationDefinition));
+            }
+
+            var webAppModelHost = ModelHostBase.Inherit<WebApplicationModelHost>(farmModelHost, h =>
+            {
+                h.HostWebApplication = existingWebApp;
+            });
+
+            action(webAppModelHost);
+        }
+
+        private void DeployWebApplication(FarmModelHost farmModelHost,
+            SPFarm farm,
+            WebApplicationDefinition definition)
+        {
+            var existingWebApp = LookupWebApplication(definition);
+
+            InvokeOnModelEvent(this, new ModelEventArgs
+            {
+                CurrentModelNode = null,
+                Model = null,
+                EventType = ModelEventType.OnProvisioning,
+                Object = existingWebApp,
+                ObjectType = typeof(SPWebApplication),
+                ObjectDefinition = definition,
+                ModelHost = farmModelHost
+            });
+
+            if (existingWebApp == null)
+            {
+                var webAppBuilder = new SPWebApplicationBuilder(farm);
+
+                webAppBuilder.Port = definition.Port;
+                webAppBuilder.ApplicationPoolId = definition.ApplicationPoolId;
+
+                if (!string.IsNullOrEmpty(definition.ManagedAccount))
+                {
+                    webAppBuilder.IdentityType = IdentityType.SpecificUser;
+
+                    var managedAccounts = new SPFarmManagedAccountCollection(SPFarm.Local);
+                    var maccount = managedAccounts.FindOrCreateAccount(definition.ManagedAccount);
+
+                    webAppBuilder.ManagedAccount = maccount;
+                }
+                else
+                {
+                    webAppBuilder.ApplicationPoolUsername = definition.ApplicationPoolUsername;
+
+                    var password = new SecureString();
+
+                    foreach (char c in definition.ApplicationPoolPassword.ToCharArray())
+                        password.AppendChar(c);
+
+                    webAppBuilder.ApplicationPoolPassword = password;
+                }
+
+                webAppBuilder.CreateNewDatabase = definition.CreateNewDatabase;
+
+                webAppBuilder.DatabaseName = definition.DatabaseName;
+                webAppBuilder.DatabaseServer = definition.DatabaseServer;
+
+                webAppBuilder.UseNTLMExclusively = definition.UseNTLMExclusively;
+
+                webAppBuilder.HostHeader = definition.HostHeader;
+                webAppBuilder.AllowAnonymousAccess = definition.AllowAnonymousAccess;
+                webAppBuilder.UseSecureSocketsLayer = definition.UseSecureSocketsLayer;
+
+                var webApp = webAppBuilder.Create();
+                webApp.Provision();
+
+                ProcessWebApplicationProperties(existingWebApp, definition);
+
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = webApp,
+                    ObjectType = typeof(SPWebApplication),
+                    ObjectDefinition = definition,
+                    ModelHost = farmModelHost
+                });
+
+                webApp.Update();
             }
             else
             {
-                webAppBuilder.ApplicationPoolUsername = webApplicationDefinition.ApplicationPoolUsername;
+                ProcessWebApplicationProperties(existingWebApp, definition);
 
-                var password = new SecureString();
+                InvokeOnModelEvent(this, new ModelEventArgs
+                {
+                    CurrentModelNode = null,
+                    Model = null,
+                    EventType = ModelEventType.OnProvisioned,
+                    Object = existingWebApp,
+                    ObjectType = typeof(SPWebApplication),
+                    ObjectDefinition = definition,
+                    ModelHost = farmModelHost
+                });
 
-                foreach (char c in webApplicationDefinition.ApplicationPoolPassword.ToCharArray())
-                    password.AppendChar(c);
-
-                webAppBuilder.ApplicationPoolPassword = password;
+                existingWebApp.Update();
             }
+        }
 
-            webAppBuilder.CreateNewDatabase = webApplicationDefinition.CreateNewDatabase;
+        protected virtual void ProcessAllowedInlineDownloadedMimeTypes(SPWebApplication webApp, WebApplicationDefinition definition)
+        {
+            if (definition.AllowedInlineDownloadedMimeTypes != null && definition.AllowedInlineDownloadedMimeTypes.Any())
+            {
+                // override if only ShouldOverrideAllowedInlineDownloadedMimeTypes is set to tru
+                if (definition.ShouldOverrideAllowedInlineDownloadedMimeTypes == true)
+                    webApp.AllowedInlineDownloadedMimeTypes.Clear();
 
-            webAppBuilder.DatabaseName = webApplicationDefinition.DatabaseName;
-            webAppBuilder.DatabaseServer = webApplicationDefinition.DatabaseServer;
+                foreach (var value in definition.AllowedInlineDownloadedMimeTypes)
+                    if (!webApp.AllowedInlineDownloadedMimeTypes.Contains(value))
+                        webApp.AllowedInlineDownloadedMimeTypes.Add(value);
+            }
+        }
 
-            webAppBuilder.UseNTLMExclusively = webApplicationDefinition.UseNTLMExclusively;
+        protected virtual void ProcessWebApplicationProperties(SPWebApplication webApp, WebApplicationDefinition definition)
+        {
+            ProcessAllowedInlineDownloadedMimeTypes(webApp, definition);
+        }
 
-            webAppBuilder.HostHeader = webApplicationDefinition.HostHeader;
-            webAppBuilder.AllowAnonymousAccess = webApplicationDefinition.AllowAnonymousAccess;
-            webAppBuilder.UseSecureSocketsLayer = webApplicationDefinition.UseSecureSocketsLayer;
+        private static SPWebApplication FindWebApplication(WebApplicationDefinition definition, SPWebApplicationCollection webApps)
+        {
+            var existingWebApp = webApps.FirstOrDefault(w =>
+            {
+                var webAppUri = w.GetResponseUri(SPUrlZone.Default);
 
-            var webApp = webAppBuilder.Create();
-            webApp.Provision();
+                return webAppUri.Port == definition.Port;
+            });
+            return existingWebApp;
         }
 
         #endregion

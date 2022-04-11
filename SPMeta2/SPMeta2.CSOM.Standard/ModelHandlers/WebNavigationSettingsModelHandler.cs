@@ -209,11 +209,20 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     }
                 }
 
+                if (navigationModel.AddNewPagesToNavigation.HasValue)
+                {
+                    thisWebNavSettings.AddNewPagesToNavigation = navigationModel.AddNewPagesToNavigation.Value;
+                }
+
+                if (navigationModel.CreateFriendlyUrlsForNewPages.HasValue)
+                {
+                    thisWebNavSettings.CreateFriendlyUrlsForNewPages = navigationModel.CreateFriendlyUrlsForNewPages.Value;
+                }
             }
 
             if (navigationModel.DisplayShowHideRibbonAction.HasValue)
             {
-                allProperties["__DisplayShowHideRibbonActionId"] = navigationModel.DisplayShowHideRibbonAction.ToString();
+                allProperties[BuiltInWebPropertyId.DisplayShowHideRibbonActionId] = navigationModel.DisplayShowHideRibbonAction.ToString();
                 shouldUpdateWeb = true;
             }
 

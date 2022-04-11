@@ -18,6 +18,7 @@ using SPMeta2.Models;
 using SPMeta2.Syntax.Default.Modern;
 using SPMeta2.Utils;
 using SPMeta2.Syntax.Default;
+using SPMeta2.Services;
 
 namespace SPMeta2.Containers.Services
 {
@@ -26,16 +27,7 @@ namespace SPMeta2.Containers.Services
         public AssertServiceBase AssertService { get; set; }
         public RandomService RndService { get; set; }
 
-        public bool HasTestMethod(string methodPrefix, Type definition, MethodInfo[] methods)
-        {
-            var methodName = string.Format("{0}{1}", methodPrefix, definition.Name);
 
-            Trace.WriteLine(string.Format("Asserting method:[{0}]", methodName));
-
-            var targetMethod = methods.FirstOrDefault(m => m.Name == methodName);
-
-            return targetMethod != null;
-        }
 
         public RegressionTestService()
         {
@@ -55,6 +47,8 @@ namespace SPMeta2.Containers.Services
 
             EnablePropertyValidation = true;
             EnableEventValidation = true;
+
+            EnableDefinitionImmutabilityValidation = false;
 
             InitConfig();
         }
@@ -130,12 +124,16 @@ namespace SPMeta2.Containers.Services
 
         private bool _hasInit = false;
 
+        public static string CurrentProvisionRunnerAsssmbly { get; set; }
+
         protected virtual void InitRunnerImplementations()
         {
             if (_hasInit) return;
 
             foreach (var asmFileName in ProvisionRunnerAssemblies)
             {
+                CurrentProvisionRunnerAsssmbly = asmFileName;
+
                 var asmImpl = Assembly.LoadFrom(asmFileName);
 
                 var types = ReflectionUtils.GetTypesFromAssembly<ProvisionRunnerBase>(asmImpl);
@@ -155,7 +153,7 @@ namespace SPMeta2.Containers.Services
         {
             var runnerLibraries = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.RunnerLibraries);
 
-            Trace.WriteLine(string.Format("Testing with runner libraries: [{0}]", runnerLibraries));
+            ContainerTraceUtils.WriteLine(string.Format("Testing with runner libraries: [{0}]", runnerLibraries));
 
             if (!string.IsNullOrEmpty(runnerLibraries))
             {
@@ -173,7 +171,9 @@ namespace SPMeta2.Containers.Services
 
             //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.O365.dll");
             //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.CSOM.dll");
-            //  ProvisionRunnerAssemblies.Add("SPMeta2.Regression.Runners.SSOM.dll");
+
+            //ProvisionRunnerAssemblies.Clear();
+            //ProvisionRunnerAssemblies.Add("SPMeta2.Containers.SSOM.dll");
         }
 
         protected ProvisionRunnerBase CurrentProvisionRunner;
@@ -197,23 +197,35 @@ namespace SPMeta2.Containers.Services
             }
             catch (Exception e)
             {
+                var targetExeption = e;
                 var isAllowedException = false;
 
+                if (e is SPMeta2ModelDeploymentException)
+                {
+                    targetExeption = e.InnerException;
+                }
+
                 foreach (var allowedType in exceptionTypes)
-                    if (e.GetType().IsAssignableFrom(allowedType))
+                {
+                    //if (targetExeption.GetType().IsAssignableFrom(allowedType))
+                    // we need a specific type matching to avoid missed excpetions
+
+                    // SPMeta2.Exceptions.SPMeta2UnsupportedModelHostException: model host should be ListModelHost/WebModelHost/SiteModelHost on deploy a model to a SiteCollection using the Feature Receiver (SSOM) #1035
+                    // https://github.com/SubPointSolutions/spmeta2/issues/1035
+                    if (targetExeption.GetType() == allowedType)
                         isAllowedException = true;
+                }
 
                 if (isAllowedException)
                 {
-                    // TODO, Trace utils to report
+                    Trace.WriteLine
+                        (string.Format("Handled expected exception:[{0}] - [{1}]",
+                            targetExeption.GetType().Name, targetExeption));
                 }
                 else
                 {
-                    // TOOD, trace utils to report
-
                     throw;
                 }
-
             }
         }
 
@@ -369,12 +381,26 @@ namespace SPMeta2.Containers.Services
 
                 hook.OnProvisioned = true;
 
-                AssertService.IsNotNull(context.Object);
-                AssertService.IsNotNull(context.ObjectDefinition);
+                var farmDef = context.ObjectDefinition as FarmSolutionDefinition;
 
-                AssertService.IsNotNull(context.ModelHost);
+                if (farmDef != null && farmDef.ShouldDelete == true)
+                {
+                    // by passing checking the object within onb provisioed event
+                    // farm solution is expected to be deleted
+                }
+                else
+                {
+                    if (context.Object == null)
+                    {
+                        Console.WriteLine("");
+                    }
 
-                AssertService.IsInstanceOfType(context.Object, typeof(TObjectType));
+                    AssertService.IsNotNull(context.Object);
+                    AssertService.IsNotNull(context.ObjectDefinition);
+
+                    AssertService.IsNotNull(context.ModelHost);
+                    AssertService.IsInstanceOfType(context.Object, typeof(TObjectType));
+                }
             });
         }
 
@@ -426,7 +452,58 @@ namespace SPMeta2.Containers.Services
             TestModels(new ModelNode[] { model });
         }
 
+        private static HashCodeServiceBase _hasService = ServiceContainer.Instance.GetService<HashCodeServiceBase>();
+        private static Dictionary<DefinitionBase, string> _definitionHashes = new Dictionary<DefinitionBase, string>();
+
+        private static void PersistDefinitionHashes(IEnumerable<ModelNode> models)
+        {
+            var defs = models.SelectMany(s => s.FindNodes(n => { return true; })
+                                               .Select(n => n.Value as DefinitionBase));
+
+            foreach (var def in defs)
+            {
+                var hash = GetDefinitionHash(def);
+
+                if (!_definitionHashes.ContainsKey(def))
+                    _definitionHashes.Add(def, hash);
+                else
+                    _definitionHashes[def] = hash;
+            }
+        }
+
+        private static string GetDefinitionHash(DefinitionBase def)
+        {
+            return _hasService.GetHashCode(def);
+        }
+
+
+        private void PleaseMakeSureDefinitionsWereNotChangedByModelHandlers(IEnumerable<ModelNode> models)
+        {
+            var defs = models.SelectMany(s => s.FindNodes(n => { return true; })
+                                            .Select(n => n.Value as DefinitionBase));
+
+            foreach (var def in defs)
+            {
+                var oldHash = _definitionHashes[def];
+                var currentHash = GetDefinitionHash(def);
+
+                if (oldHash != currentHash)
+                {
+                    throw new SPMeta2Exception(
+                        string.Format("Definition was changed by model handler. Avoid changing definitions while provisioning them. [{0}]", def));
+                }
+            }
+        }
+
         public void TestModels(IEnumerable<ModelNode> models)
+        {
+            TestModels(models, false);
+        }
+
+        public Action<ProvisionRunnerBase> BeforeProvisionRunnerExcecution { get; set; }
+        public Action<ProvisionRunnerBase> AfterProvisionRunnerExcecution { get; set; }
+
+        public void TestModels(IEnumerable<ModelNode> models, bool deployOnce)
         {
             // force XML serialiation
             GetSerializedAndRestoredModels(models);
@@ -435,19 +512,39 @@ namespace SPMeta2.Containers.Services
 
             foreach (var model in models)
             {
+                ContainerTraceUtils.WriteLine(string.Format(".ToPrettyPrint() result:"));
+                ContainerTraceUtils.WriteLine(model.ToPrettyPrint());
+
+                ContainerTraceUtils.WriteLine(string.Format(".ToDotGraph result:"));
+                ContainerTraceUtils.WriteLine(model.ToDotGraph());
+
+                if (EnableDefinitionImmutabilityValidation)
+                    PersistDefinitionHashes(new[] { model });
+
                 var allHooks = new List<EventHooks>();
 
                 WithProvisionRunnerContext(runnerContext =>
                 {
                     var runner = runnerContext.Runner;
 
+                    if (BeforeProvisionRunnerExcecution != null)
+                        BeforeProvisionRunnerExcecution(runner);
+
                     var omModelType = GetRunnerType(runner);
-                    var hooks = GetHooks(model);
+                    var hooks = new List<EventHooks>();
 
-                    foreach (var hook in hooks)
-                        hook.Tag = runner.Name;
+                    if (!deployOnce)
+                    {
+                        if (this.EnableDefinitionValidation)
+                        {
+                            hooks = GetHooks(model);
 
-                    allHooks.AddRange(hooks);
+                            foreach (var hook in hooks)
+                                hook.Tag = runner.Name;
+
+                            allHooks.AddRange(hooks);
+                        }
+                    }
 
                     if (model.Value.GetType() == typeof(FarmDefinition))
                         runner.DeployFarmModel(model);
@@ -463,15 +560,26 @@ namespace SPMeta2.Containers.Services
                     {
                         throw new SPMeta2NotImplementedException(
                             string.Format("Runner does not support model of type: [{0}]", model.Value.GetType()));
-
                     }
 
-                    if (this.EnableDefinitionValidation)
+                    if (!deployOnce)
                     {
-                        var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
-                        AssertService.IsFalse(hasMissedOrInvalidProps);
+                        if (this.EnableDefinitionValidation)
+                        {
+                            var hasMissedOrInvalidProps = ResolveModelValidation(model, hooks);
+                            AssertService.IsFalse(hasMissedOrInvalidProps);
+                        }
                     }
+
+                    if (AfterProvisionRunnerExcecution != null)
+                        AfterProvisionRunnerExcecution(runner);
                 });
+
+                if (!deployOnce)
+                {
+                    if (EnableDefinitionImmutabilityValidation)
+                        PleaseMakeSureDefinitionsWereNotChangedByModelHandlers(new[] { model });
+                }
             }
         }
 
@@ -512,6 +620,9 @@ namespace SPMeta2.Containers.Services
             {
                 var runner = runnerContext.Runner;
 
+                if (BeforeProvisionRunnerExcecution != null)
+                    BeforeProvisionRunnerExcecution(runner);
+
                 ValidateDefinitionHostRunnerSupport<TDefinition>(runner);
 
                 var omModelType = GetRunnerType(runner);
@@ -527,14 +638,22 @@ namespace SPMeta2.Containers.Services
                         definitionSetup(def as TDefinition);
                 }
 
-                var hooks = GetHooks(definitionSandbox);
+                var hooks = new List<EventHooks>();
 
-                foreach (var hook in hooks)
-                    hook.Tag = runner.Name;
+                if (this.EnableDefinitionValidation)
+                {
+                    hooks = GetHooks(definitionSandbox);
 
-                GetSerializedAndRestoredModels(definitionSandbox);
+                    foreach (var hook in hooks)
+                        hook.Tag = runner.Name;
 
-                allHooks.AddRange(hooks);
+                    GetSerializedAndRestoredModels(definitionSandbox);
+                    allHooks.AddRange(hooks);
+                }
+                else
+                {
+                    GetSerializedAndRestoredModels(definitionSandbox);
+                }
 
                 if (definitionSandbox.Value.GetType() == typeof(FarmDefinition))
                     runner.DeployFarmModel(definitionSandbox);
@@ -553,6 +672,9 @@ namespace SPMeta2.Containers.Services
                     var hasMissedOrInvalidProps = ResolveModelValidation(definitionSandbox, hooks);
                     AssertService.IsFalse(hasMissedOrInvalidProps);
                 }
+
+                if (AfterProvisionRunnerExcecution != null)
+                    AfterProvisionRunnerExcecution(runner);
 
                 result = definitionSandbox;
             });
@@ -586,13 +708,12 @@ namespace SPMeta2.Containers.Services
         private bool ResolveModelValidation(ModelNode modelNode, string start, List<EventHooks> hooks)
         {
             // should be re-written with ModelTreeTraverseService
-
-            Trace.WriteLine(string.Format(""));
+            ContainerTraceUtils.WriteLine(string.Format(""));
 
             var hasMissedOrInvalidProps = false;
 
             var model = modelNode.Value;
-            Trace.WriteLine(string.Format("[INF]{2}MODEL CHECK [{0}] - ( {1} )", model.GetType(), model.ToString(), start));
+            ContainerTraceUtils.WriteLine(string.Format("[INF]{2}MODEL CHECK [{0}] - ( {1} )", model.GetType(), model.ToString(), start));
 
             //if (model.RequireSelfProcessing || modelNode.Options.RequireSelfProcessing)
             if (modelNode.Options.RequireSelfProcessing)
@@ -618,7 +739,7 @@ namespace SPMeta2.Containers.Services
 
                     if (modelValidationResult == null)
                     {
-                        Trace.WriteLine(string.Format("[ERR]{2} Missing validation for model [{0}] - ( {1} )",
+                        ContainerTraceUtils.WriteLine(string.Format("[ERR]{2} Missing validation for model [{0}] - ( {1} )",
                             model.GetType(), model.ToString(), start));
 
                         hasMissedOrInvalidProps = true;
@@ -632,7 +753,7 @@ namespace SPMeta2.Containers.Services
                         if ((!property.IsValid) ||
                             (property.IsValid && !ShowOnlyFalseResults))
                         {
-                            Trace.WriteLine(
+                            ContainerTraceUtils.WriteLine(
                                 string.Format(
                                     "[INF]{6} [{4}] - Src prop: [{0}] Src value: [{1}] Dst prop: [{2}] Dst value: [{3}] Message:[{5}]",
                                     new object[]
@@ -654,11 +775,11 @@ namespace SPMeta2.Containers.Services
 
                     }
 
-                    Trace.WriteLine(string.Format("[INF]{0}PROPERTY CHECK", start));
+                    ContainerTraceUtils.WriteLine(string.Format("[INF]{0}PROPERTY CHECK", start));
 
                     if (EnablePropertyValidation)
                     {
-                        Trace.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == true. Checking...", start));
+                        ContainerTraceUtils.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == true. Checking...", start));
 
                         foreach (var shouldBeValidatedProp in shouldBeValidatedProperties.OrderBy(p => p.Name))
                         {
@@ -697,7 +818,7 @@ namespace SPMeta2.Containers.Services
                             {
                                 if (!ShowOnlyFalseResults)
                                 {
-                                    Trace.WriteLine(string.Format("[INF]{2} [{0}] - [{1}]",
+                                    ContainerTraceUtils.WriteLine(string.Format("[INF]{2} [{0}] - [{1}]",
                                         "VALIDATED",
                                         shouldBeValidatedProp.Name,
                                         start));
@@ -705,7 +826,7 @@ namespace SPMeta2.Containers.Services
                             }
                             else
                             {
-                                Trace.WriteLine(string.Format("[ERR]{2} [{0}] - [{1}]",
+                                ContainerTraceUtils.WriteLine(string.Format("[ERR]{2} [{0}] - [{1}]",
                                     "MISSED",
                                     shouldBeValidatedProp.Name,
                                     start));
@@ -714,14 +835,14 @@ namespace SPMeta2.Containers.Services
                     }
                     else
                     {
-                        Trace.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == false. Skipping...", start));
+                        ContainerTraceUtils.WriteLine(string.Format("[INF]{0}EnablePropertyValidation == false. Skipping...", start));
                     }
 
-                    Trace.WriteLine(string.Format("[INF]{0}EVENT CHECK", start));
+                    ContainerTraceUtils.WriteLine(string.Format("[INF]{0}EVENT CHECK", start));
 
                     if (EnableEventValidation && !modelNode.RegIsExcludeFromEventsValidation())
                     {
-                        Trace.WriteLine(string.Format("[INF]{0}EnableEventValidation == true. Checking...", start));
+                        ContainerTraceUtils.WriteLine(string.Format("[INF]{0}EnableEventValidation == true. Checking...", start));
 
                         var hook = hooks.FirstOrDefault(h => h.ModelNode == modelNode);
 
@@ -731,23 +852,23 @@ namespace SPMeta2.Containers.Services
                         }
                         else
                         {
-                            Trace.WriteLine(string.Format("[ERR]{2} Missing hook validation for model [{0}] - ( {1} )",
+                            ContainerTraceUtils.WriteLine(string.Format("[ERR]{2} Missing hook validation for model [{0}] - ( {1} )",
                                 model.GetType(), model.ToString(), start));
                         }
                     }
                     else
                     {
-                        Trace.WriteLine(string.Format("[INF]{0}EnableEventValidation == false. Skipping...", start));
+                        ContainerTraceUtils.WriteLine(string.Format("[INF]{0}EnableEventValidation == false. Skipping...", start));
                     }
                 }
                 else
                 {
-                    Trace.WriteLine(string.Format("[INF]{0} Skipping due .RegIsExcludedFromValidation ==  TRUE", start));
+                    ContainerTraceUtils.WriteLine(string.Format("[INF]{0} Skipping due .RegIsExcludedFromValidation ==  TRUE", start));
                 }
             }
             else
             {
-                Trace.WriteLine(string.Format("[INF]{0} Skipping due RequireSelfProcessing ==  FALSE", start));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]{0} Skipping due RequireSelfProcessing ==  FALSE", start));
             }
 
             foreach (var childModel in modelNode.ChildModels)
@@ -763,7 +884,7 @@ namespace SPMeta2.Containers.Services
 
         protected void ResolveHook(EventHooks eventHooks, string start)
         {
-            TraceUtils.WithScope(traceScope =>
+            IndentableTrace.WithScope(traceScope =>
             {
                 if (eventHooks.OnProvisioning)
                 {
@@ -804,15 +925,17 @@ namespace SPMeta2.Containers.Services
 
                 CurrentProvisionRunner = provisionRunner;
 
-                Trace.WriteLine(string.Format("[INF]    Testing with runner impl: [{0}]", type));
-                Trace.WriteLine(string.Empty);
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Testing with runner impl: [{0}]", type));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Testing with Is64BitProcess flag: [{0}]", Environment.Is64BitProcess));
+                ContainerTraceUtils.WriteLine(string.Format(@"[INF]    Testing as user: [{0}\{1}]", Environment.UserDomainName, Environment.UserName));
+                ContainerTraceUtils.WriteLine(string.Empty);
 
-                Trace.WriteLine(string.Format("[INF]        - Current VM: [{0}]", Environment.MachineName));
-                Trace.WriteLine(string.Format("[INF]        - Current VM CPU: [{0}]", Environment.ProcessorCount));
-                Trace.WriteLine(string.Empty);
+                ContainerTraceUtils.WriteLine(string.Format("[INF]        - Current VM: [{0}]", Environment.MachineName));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]        - Current VM CPU: [{0}]", Environment.ProcessorCount));
+                ContainerTraceUtils.WriteLine(string.Empty);
 
-                Trace.WriteLine(string.Format("[INF]        - ProvisionGenerationCount: [{0}]", ProvisionGenerationCount));
-                Trace.WriteLine(string.Format("[INF]        - EnableDefinitionValidation: [{0}]", EnableDefinitionValidation));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]        - ProvisionGenerationCount: [{0}]", ProvisionGenerationCount));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]        - EnableDefinitionValidation: [{0}]", EnableDefinitionValidation));
 
                 action(new ProvisionRunnerContext
                 {
@@ -864,6 +987,8 @@ namespace SPMeta2.Containers.Services
 
 
         #endregion
+
+        public bool EnableDefinitionImmutabilityValidation { get; set; }
     }
 
     public class ProvisionRunnerContext

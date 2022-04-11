@@ -5,43 +5,38 @@ using System.Linq.Expressions;
 
 namespace SPMeta2.Utils
 {
-    public class ToStringResult<TType>
+    public class ToStringResult<TType> : ToStringResultRaw
     {
+        #region constructors
         public ToStringResult(TType obj)
             : this(obj, string.Empty)
         {
 
         }
 
-        public ToStringResult(TType obj, string initialString)
+        public ToStringResult(TType obj, string initialString) : base(initialString)
         {
             SrcObject = obj;
-            Values = new Dictionary<string, string>();
-
-            InitialString = initialString;
         }
+
+        #endregion
+
+        #region static
 
         public static ToStringResult<TType> New(TType obj)
         {
             return new ToStringResult<TType>(obj);
         }
 
-        public override string ToString()
-        {
-            var result = new List<string>();
+        #endregion
 
-            foreach (var key in Values.Keys)
-                result.Add(string.Format("{0}:[{1}]", key, Values[key]));
+        #region properties
 
-            if (!string.IsNullOrEmpty(InitialString))
-                return InitialString + " " + string.Join(" ", result.ToArray());
-
-            return string.Join(" ", result.ToArray());
-        }
-
-        public string InitialString { get; set; }
         public TType SrcObject { get; set; }
-        public Dictionary<string, string> Values { get; set; }
+
+        #endregion
+
+        #region methods
 
         public ToStringResult<TType> AddPropertyValue(Expression<Func<TType, object>> exp)
         {
@@ -50,33 +45,11 @@ namespace SPMeta2.Utils
             var key = srcProp.Name;
             var value = srcProp.Value;
 
-            var valueString = string.Empty;
-
-            if (value is IEnumerable && !(value is string))
-            {
-                var enumerableValues = new List<string>();
-
-                var enumerator = (value as IEnumerable).GetEnumerator();
-
-                while (enumerator.MoveNext())
-                {
-                    if (enumerator.Current != null)
-                        enumerableValues.Add(enumerator.Current.ToString());
-                    else
-                        enumerableValues.Add(string.Empty);
-                }
-
-                valueString = string.Join("|", enumerableValues.ToArray());
-            }
-            else
-            {
-                valueString = value == null ? string.Empty : value.ToString();
-            }
-
-            if (!Values.ContainsKey(key))
-                Values.Add(key, valueString);
+            AddRawPropertyValue(key, value);
 
             return this;
         }
+
+        #endregion
     }
 }

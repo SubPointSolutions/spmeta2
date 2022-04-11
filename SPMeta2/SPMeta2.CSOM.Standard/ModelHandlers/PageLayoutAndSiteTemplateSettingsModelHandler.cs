@@ -155,7 +155,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 if (targetLayout != null)
                 {
-                    var resultString = CreateLayoutXmlString(targetLayout);
+                    var resultString = CreateLayoutXmlString(targetLayout, webModelHost.HostSite.RootWeb.ServerRelativeUrl);
                     SetPropertyBagValue(web, "__DefaultPageLayout", resultString);
                 }
             }
@@ -165,6 +165,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
         {
             var rootWeb = webModelHost.HostSite.RootWeb;
             var context = rootWeb.Context;
+            context.Load(rootWeb, r => r.ServerRelativeUrl);
 
             var masterPageList = rootWeb.QueryAndGetListByUrl("/_catalogs/masterpage");
 
@@ -207,13 +208,13 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 if (selectedPageLayouts.Any())
                 {
-                    var resultString = CreateLayoutsXmlString(selectedPageLayouts);
+                    var resultString = CreateLayoutsXmlString(selectedPageLayouts,rootWeb.ServerRelativeUrl);
                     SetPropertyBagValue(web, "__PageLayouts", resultString);
                 }
             }
         }
 
-        private static string CreateLayoutXmlString(ListItem pageLayout)
+        private static string CreateLayoutXmlString(ListItem pageLayout, string serverRelativeWebUrl)
         {
             var xmlDocument = new XmlDocument();
             var rootXmlNode = xmlDocument.CreateElement("pagelayouts");
@@ -228,7 +229,9 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             // remove starting slash
             // https://github.com/SubPointSolutions/spmeta2/issues/544
-            var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString();
+
+            var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString()
+                                        .Replace(serverRelativeWebUrl, string.Empty);
 
             xmlAttribute2.Value = UrlUtility.RemoveStartingSlash(fileRef);
 
@@ -238,7 +241,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             return xmlNode.OuterXml;
         }
 
-        private static string CreateLayoutsXmlString(IEnumerable<ListItem> pageLayouts)
+        private static string CreateLayoutsXmlString(IEnumerable<ListItem> pageLayouts, string serverRelativeWebUrl)
         {
             var xmlDocument = new XmlDocument();
             var rootXmlNode = xmlDocument.CreateElement("pagelayouts");
@@ -255,7 +258,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
                 // remove starting slash
                 // https://github.com/SubPointSolutions/spmeta2/issues/544
-                var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString();
+                var fileRef = pageLayout[BuiltInInternalFieldNames.FileRef].ToString()
+                                                    .Replace(serverRelativeWebUrl, string.Empty);
 
                 xmlAttribute2.Value = UrlUtility.RemoveStartingSlash(fileRef);
 

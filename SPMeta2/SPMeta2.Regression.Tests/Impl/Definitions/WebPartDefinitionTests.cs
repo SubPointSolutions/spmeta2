@@ -13,21 +13,21 @@ using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 namespace SPMeta2.Regression.Tests.Impl.Definitions
 {
     [TestClass]
-    public class WebPartDefinitionTests : SPMeta2RegresionScenarioTestBase
+    public class WebPartDefinitionTests : SPMeta2DefinitionRegresionTestBase
     {
         #region common
 
-        [ClassInitializeAttribute]
-        public static void Init(TestContext context)
-        {
-            InternalInit();
-        }
+        //[ClassInitializeAttribute]
+        //public static void Init(TestContext context)
+        //{
+        //    InternalInit();
+        //}
 
-        [ClassCleanupAttribute]
-        public static void Cleanup()
-        {
-            InternalCleanup();
-        }
+        //[ClassCleanupAttribute]
+        //public static void Cleanup()
+        //{
+        //    InternalCleanup();
+        //}
 
         #endregion
 
@@ -35,6 +35,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.WebPartDefinitionTests")]
+        [TestCategory("CI.Core")]
         [ExpectedException(typeof(SPMeta2InvalidDefinitionPropertyException))]
         public void WebPartDefinitionTests_WebpartType_NonAssemblyQualifiedName_ShouldFail()
         {
@@ -48,6 +49,7 @@ namespace SPMeta2.Regression.Tests.Impl.Definitions
 
         [TestMethod]
         [TestCategory("Regression.Definitions.WebPartDefinitionTests")]
+        [TestCategory("CI.Core")]
         public void WebPartDefinitionTests_WebpartType_AssemblyQualifiedName_ShouldPass()
         {
             var type = "Microsoft.SharePoint.Publishing.WebControls.ContentByQueryWebPart, Microsoft.SharePoint.Publishing, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";

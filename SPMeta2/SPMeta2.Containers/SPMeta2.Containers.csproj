@@ -66,6 +66,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SPMeta2.Dependencies\BouncyCastle\1.8.1\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
@@ -82,10 +86,20 @@
     <Compile Include="Common\EventHits.cs" />
     <Compile Include="Consts\DefaultContainers.cs" />
     <Compile Include="Consts\EnvironmentConsts.cs" />
+    <Compile Include="CustomWebPartPageLayoutTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CustomWebPartPageLayoutTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="DefaultDwpWebpartTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultDwpWebpartTemplates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultHtmlMasterPageTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultHtmlMasterPageTemplates.resx</DependentUpon>
     </Compile>
     <Compile Include="DefaultMasterPagePreviewTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -102,11 +116,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultWebpartTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefinitionGenerators\AssociatedGroupsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SuiteBarDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\OfficialFileHostDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\SharePointDesignerSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ClearRecycleBinDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AuditSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\ComposedLookItemLinkDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DeleteQuickLaunchNavigationNodesDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DeleteTopNavigationNodesDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\DeleteWebPartsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\AnonymousAccessSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DiscussionReplyItemDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\HtmlMasterPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DiscussionItemDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\PeoplePickerSettingsDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\SupportedUICultureDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\DependentLookupFieldDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Fields\GeolocationFieldDefinitionGenerator.cs" />
@@ -180,6 +204,8 @@
     <Compile Include="DefinitionGenerators\SP2013WorkflowSubscriptionDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\TopNavigationNodeDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\UserCustomActionDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\DeveloperDashboardSettingsDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\TrustedAccessProviderDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebApplicationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\RootWebDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\Webparts\BlogAdminWebPartDefinitionGenerator.cs" />
@@ -212,6 +238,8 @@
     <Compile Include="DefinitionGenerators\WebPartPageDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WebConfigModificationDefinitionGenerator.cs" />
     <Compile Include="DefinitionGenerators\WikiPageDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\UserDefinitionGenerator.cs" />
+    <Compile Include="DefinitionGenerators\WorkflowAssociationDefinitionGenerator.cs" />
     <Compile Include="Exceptions\SPMeta2UnsupportedRunnerException.cs" />
     <Compile Include="Extensions\ModelNodeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -230,8 +258,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DocumentTemplates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ContainerTraceUtils.cs" />
     <Compile Include="Utils\RunnerEnvironment.cs" />
-    <Compile Include="Utils\TraceUtils.cs" />
+    <Compile Include="Utils\IndentableTrace.cs" />
+    <Compile Include="Utils\X509Utils.cs" />
     <Compile Include="WorkflowXAMLDefinitions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -249,9 +279,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CustomWebPartPageLayoutTemplates.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomWebPartPageLayoutTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="DefaultDwpWebpartTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DefaultDwpWebpartTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefaultHtmlMasterPageTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultHtmlMasterPageTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="DefaultMasterPagePreviewTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -287,7 +325,31 @@
     <None Include="Containers\Apps\1.0.0.0\SPMeta2.Containers.AppContainer.app">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\DesignPackages\ci-1-1.0.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.1.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.2.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.3.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.4.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\DesignPackages\ci-1-1.5.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Containers\Farm\SPMeta2.Containers.FarmSolutionWebAppContainer1.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Containers\Sandbox\SPMeta2.Containers.SandboxSolutionContainer.wsp">
@@ -296,6 +358,10 @@
     <None Include="Containers\WebTemplates\M2CustomTeamSite.wsp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Containers\WebTemplates\M2CustomWebAsTemplate.wsp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
     <None Include="Resources\SPMeta2-MSWord-Template.dotx" />
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +375,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

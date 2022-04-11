@@ -20,7 +20,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(ListDefinition), typeof(RootWebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -75,7 +75,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
         [ExpectValidation]
         [DataMember]
         public string TargetListTemplateId { get; set; }
-        
+
 
         #endregion
 
@@ -83,11 +83,11 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         public override string ToString()
         {
-            return new ToStringResult<JavaScriptDisplayTemplateDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.TargetControlType)
-                          .AddPropertyValue(p => p.Standalone)
-                          .AddPropertyValue(p => p.TargetScope)
-                          .AddPropertyValue(p => p.TargetListTemplateId)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("TargetControlType", TargetControlType)
+                          .AddRawPropertyValue("Standalone", Standalone)
+                          .AddRawPropertyValue("TargetScope", TargetScope)
+                          .AddRawPropertyValue("TargetListTemplateId", TargetListTemplateId)
                           .ToString();
         }
 

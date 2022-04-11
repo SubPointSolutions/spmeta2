@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls.WebParts;
+
 using Microsoft.SharePoint;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.Extensions;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
-using System.Web.UI.WebControls.WebParts;
 using SPMeta2.Enumerations;
+using SPMeta2.SSOM.Services;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -54,8 +57,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var listViewDefinition = model.WithAssertAndCast<ListViewDefinition>("model", value => value.RequireNotNull());
                 var currentView = FindView(list, listViewDefinition);
 
-                var serverRelativeFileUrl = string.Empty;
-
+                string serverRelativeFileUrl;
                 if (currentView != null)
                     serverRelativeFileUrl = currentView.ServerRelativeUrl;
                 else
@@ -117,21 +119,12 @@ namespace SPMeta2.SSOM.ModelHandlers
             return Regex.Replace(url, ".aspx", string.Empty, RegexOptions.IgnoreCase);
         }
 
-        protected SPView FindView(SPList targetList, ListViewDefinition listViewModel)
+        protected virtual SPView FindView(SPList targetList, ListViewDefinition listViewModel)
         {
-            // lookup by title
-            var currentView = targetList.Views.FindByName(listViewModel.Title);
+            var service = ServiceContainer.Instance.GetService<SSOMListViewLookupService>();
+            var result = service.FindView(targetList, listViewModel);
 
-            // lookup by URL match
-            if (currentView == null && !string.IsNullOrEmpty(listViewModel.Url))
-            {
-                TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving view by URL: [{0}]", listViewModel.Url);
-
-                var safeUrl = listViewModel.Url.ToUpper();
-                currentView = targetList.Views.OfType<SPView>().FirstOrDefault(w => w.Url.ToUpper().EndsWith(safeUrl));
-            }
-
-            return currentView;
+            return result;
         }
 
         protected void ProcessView(object modelHost, SPList targetList, ListViewDefinition listViewModel)
@@ -157,8 +150,29 @@ namespace SPMeta2.SSOM.ModelHandlers
                 viewFields.AddRange(listViewModel.Fields.ToArray());
 
                 var isPersonalView = false;
-                var viewType = (Microsoft.SharePoint.SPViewCollection.SPViewType)Enum.Parse(typeof(Microsoft.SharePoint.SPViewCollection.SPViewType),
+                var viewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType),
                     string.IsNullOrEmpty(listViewModel.Type) ? BuiltInViewType.Html : listViewModel.Type);
+
+                // nasty hack
+
+                // The provision of calendars is not working properly #935
+                // https://github.com/SubPointSolutions/spmeta2/issues/935
+                if (listViewModel.Types.Count() > 0)
+                {
+                    SPViewCollection.SPViewType? finalType = null;
+
+                    foreach (var type in listViewModel.Types)
+                    {
+                        var tmpViewType = (SPViewCollection.SPViewType)Enum.Parse(typeof(SPViewCollection.SPViewType), type);
+
+                        if (finalType == null)
+                            finalType = tmpViewType;
+                        else
+                            finalType = finalType | tmpViewType;
+                    }
+
+                    viewType = finalType.Value;
+                }
 
                 // TODO, handle personal view creation
                 currentView = targetList.Views.Add(
@@ -203,6 +217,9 @@ namespace SPMeta2.SSOM.ModelHandlers
 
         private void MapProperties(SPList targetList, SPView currentView, ListViewDefinition listViewModel)
         {
+            if (listViewModel.MobileDefaultView.HasValue)
+                currentView.MobileDefaultView = listViewModel.MobileDefaultView.Value;
+
             // if any fields specified, overwrite
             if (listViewModel.Fields.Any())
             {
@@ -223,11 +240,29 @@ namespace SPMeta2.SSOM.ModelHandlers
                     typeof(SPViewScope), scopeValue);
             }
 
+            // There is no value in setting Aggregations if AggregationsStatus is not to "On"
+            if (!string.IsNullOrEmpty(listViewModel.AggregationsStatus) && listViewModel.AggregationsStatus == "On")
+            {
+                if (!string.IsNullOrEmpty(listViewModel.Aggregations))
+                    currentView.Aggregations = listViewModel.Aggregations;
+
+                currentView.AggregationsStatus = listViewModel.AggregationsStatus;
+            }
+
             currentView.Hidden = listViewModel.Hidden;
+            if (listViewModel.InlineEdit.HasValue)
+            {
+                currentView.InlineEdit = listViewModel.InlineEdit.Value.ToString(CultureInfo.InvariantCulture);
+            }
+
             currentView.Title = listViewModel.Title;
+
             currentView.RowLimit = (uint)listViewModel.RowLimit;
             currentView.DefaultView = listViewModel.IsDefault;
             currentView.Paged = listViewModel.IsPaged;
+
+            if (listViewModel.IncludeRootFolder.HasValue)
+                currentView.IncludeRootFolder = listViewModel.IncludeRootFolder.Value;
 
 #if !NET35
             if (!string.IsNullOrEmpty(listViewModel.JSLink))
@@ -251,13 +286,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                 var viewStyle = targetList.ParentWeb.ViewStyles.StyleByID(listViewModel.ViewStyleId.Value);
                 currentView.ApplyStyle(viewStyle);
             }
+
+            if (listViewModel.TabularView.HasValue)
+            {
+                currentView.TabularView = listViewModel.TabularView.Value;
+            }
         }
 
         protected SPContentTypeId LookupListContentTypeByName(SPList targetList, string name)
         {
             var targetContentType = targetList.ContentTypes
                    .OfType<SPContentType>()
-                   .FirstOrDefault(ct => ct.Name.ToUpper() == name.ToUpper());
+                   .FirstOrDefault(ct => String.Equals(ct.Name, name, StringComparison.CurrentCultureIgnoreCase));
 
             if (targetContentType == null)
                 throw new SPMeta2Exception(string.Format("Cannot find content type by name ['{0}'] in list: [{1}]",

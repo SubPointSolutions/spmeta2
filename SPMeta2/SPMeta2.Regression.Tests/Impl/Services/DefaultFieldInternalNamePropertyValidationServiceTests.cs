@@ -11,14 +11,16 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Fields;
 using SPMeta2.Enumerations;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.Tests.Base;
 using SPMeta2.Services.Impl;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
+using SPMeta2.Services.Impl.Validation;
 
 namespace SPMeta2.Regression.Tests.Impl.Services
 {
     [TestClass]
-    public class DefaultFieldInternalNamePropertyValidationServiceTests : SPMeta2RegresionScenarioTestBase
+    public class DefaultFieldInternalNamePropertyValidationServiceTests : SPMeta2DefinitionRegresionTestBase
     {
         #region constructors
 
@@ -39,6 +41,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultFieldInternalNamePropertyValidationServiceTests")]
+        [TestCategory("CI.Core")]
         public void ShouldPass_On_InternalName_LessThan_32()
         {
             var model = SPMeta2Model.NewSiteModel(site =>
@@ -51,6 +54,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultFieldInternalNamePropertyValidationServiceTests")]
+        [TestCategory("CI.Core")]
         public void ShouldPass_On_Empty_InternalName()
         {
             var model = SPMeta2Model.NewSiteModel(site =>
@@ -66,6 +70,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
 
         [TestMethod]
         [TestCategory("Regression.Services.DefaultFieldInternalNamePropertyValidationServiceTests")]
+        [TestCategory("CI.Core")]
         public void ShouldFail_On_InternalName_MoreThan_32()
         {
             var isValid = false;
@@ -83,8 +88,7 @@ namespace SPMeta2.Regression.Tests.Impl.Services
             }
             catch (Exception e)
             {
-                isValid = e is SPMeta2ModelDeploymentException
-                          && e.InnerException is SPMeta2ModelValidationException;
+                isValid = IsCorrectValidationException(e);
             }
 
             Assert.IsTrue(isValid);

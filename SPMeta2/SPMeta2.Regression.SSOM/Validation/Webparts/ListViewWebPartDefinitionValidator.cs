@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.WebPartPages;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
@@ -118,6 +119,7 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                               !string.IsNullOrEmpty(definition.ListUrl) ||
                               definition.ListId.HasValue;
                 var hasView = !string.IsNullOrEmpty(definition.ViewName) ||
+                              !string.IsNullOrEmpty(definition.ViewUrl) ||
                               definition.ViewId.HasValue; ;
 
                 // list
@@ -233,6 +235,38 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                     assert.SkipProperty(m => m.ViewName, "ViewName is null or empty. Skipping.");
                 }
 
+                if (!string.IsNullOrEmpty(definition.ViewUrl))
+                {
+                    // web part gonna have hidden view
+                    // so validation is a bit tricky, done by other properties
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcView = targetList.Views.OfType<SPView>()
+                                        .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(s.ViewUrl.ToUpper()));
+                      
+                        var dstView = targetList.Views[new Guid(typedObject.ViewGuid)];
+
+                        var srcProp = s.GetExpressionValue(m => m.ViewUrl);
+                        var dstProp = d.GetExpressionValue(o => o.ViewGuid);
+
+                        var isValid = srcView.ViewFields.Count == dstView.ViewFields.Count
+                                      && srcView.Query == dstView.Query;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.ViewUrl, "ViewName is null or empty. Skipping.");
+                }
+
                 //  title link
                 if (string.IsNullOrEmpty(definition.TitleUrl))
                 {
@@ -242,9 +276,17 @@ namespace SPMeta2.Regression.SSOM.Validation.Webparts
                         assert.ShouldBeEqual((p, s, d) =>
                         {
                             var srcProp = s.GetExpressionValue(m => m.TitleUrl);
-                            var srcView = string.IsNullOrEmpty(s.ViewName) ?
-                                targetList.Views[s.ViewId.Value] :
-                                targetList.Views[s.ViewName];
+                            SPView srcView = null;
+
+                            if (s.ViewId.HasValue && s.ViewId != default(Guid))
+                                srcView = targetList.Views[s.ViewId.Value];
+                            else if (!string.IsNullOrEmpty(s.ViewName))
+                                srcView = targetList.Views[s.ViewName];
+                            else if (!string.IsNullOrEmpty(s.ViewUrl))
+                            {
+                                srcView = targetList.Views.OfType<SPView>()
+                                    .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(s.ViewUrl.ToUpper()));
+                            }
 
                             return new PropertyValidationResult
                             {

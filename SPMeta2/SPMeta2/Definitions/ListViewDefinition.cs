@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -49,6 +50,11 @@ namespace SPMeta2.Definitions
             Type = BuiltInViewType.Html;
 
             TitleResource = new List<ValueForUICulture>();
+
+            InlineEdit = null;
+            TabularView = null;
+
+            Types = new Collection<string>();
         }
 
         #endregion
@@ -134,6 +140,14 @@ namespace SPMeta2.Definitions
         public bool IsPaged { get; set; }
 
         /// <summary>
+        /// Gets or sets whether the list view should include bulk operation checkboxes if the current list view supports them.
+        /// </summary>
+        [ExpectValidation]
+        //[ExpectUpdate]
+        [DataMember]
+        public bool? TabularView { get; set; }
+
+        /// <summary>
         /// ISDefault flag of the target list view.
         /// </summary>
         /// 
@@ -145,7 +159,29 @@ namespace SPMeta2.Definitions
         [ExpectValidation]
         [ExpectUpdate]
         [DataMember]
+        public bool? MobileDefaultView { get; set; }
+        
+
+        /// <summary>
+        /// Gets or sets whether the list view should include parent folder item.
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? IncludeRootFolder { get; set; }
+
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
         public bool Hidden { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string that specifies whether the view is in inline edit mode.
+        /// </summary>
+        [ExpectValidation]
+        //[ExpectUpdate]
+        [DataMember]
+        public bool? InlineEdit { get; set; }
 
         /// <summary>
         /// Set of the internal field names of the target list view.
@@ -186,17 +222,42 @@ namespace SPMeta2.Definitions
         [DataMember]
         public string Type { get; set; }
 
+        /// <summary>
+        /// If set, used insted of .Type property.
+        /// Allows to define multiple types of view, such as 'ViewType.Calendar | ViewType.Recurrence'
+        /// </summary>
+        [ExpectValidation]
+        //[ExpectRequired]
+        [DataMember]
+
+        public Collection<string> Types { get; set; }
+
+        /// <summary>
+        /// Gets or sets field references for one or more aggregate, or total, columns used in a view.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string Aggregations { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string that specifies whether aggregate, or total, columns are used in the view.
+        /// A string that specifies "On" if an aggregate column is used in the view; otherwise, an empty string.
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public string AggregationsStatus { get; set; }
+
         #endregion
 
         #region methods
 
         public override string ToString()
         {
-            return new ToStringResult<ListViewDefinition>(this)
-                         .AddPropertyValue(p => p.Title)
-                         .AddPropertyValue(p => p.Url)
-                         .AddPropertyValue(p => p.IsDefault)
-                         .AddPropertyValue(p => p.Query)
+            return new ToStringResultRaw()
+                         .AddRawPropertyValue("Title", Title)
+                         .AddRawPropertyValue("Url", Url)
+                         .AddRawPropertyValue("IsDefault", IsDefault)
+                         .AddRawPropertyValue("Query", Query)
 
                          .ToString();
         }

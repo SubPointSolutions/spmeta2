@@ -1,18 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
-using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Enumerations;
-using SPMeta2.Exceptions;
 using SPMeta2.Regression.CSOM.Utils;
 using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.Definitions.Fields;
 
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -39,51 +36,12 @@ namespace SPMeta2.Regression.CSOM.Validation
             ValidateField(assert, spObject, definition);
         }
 
-        //protected Site ExtractSiteFromHost(object modelHost)
-        //{
-        //    if (modelHost is SiteModelHost)
-        //        return (modelHost as SiteModelHost).HostSite;
-
-        //    if (modelHost is ListModelHost)
-        //        return (modelHost as ListModelHost).HostSite;
-
-        //    return null;
-        //}
-
-        //protected Web ExtractWebFromHost(object modelHost)
-        //{
-        //    if (modelHost is SiteModelHost)
-        //        return (modelHost as SiteModelHost).HostWeb;
-
-        //    if (modelHost is ListModelHost)
-        //        return (modelHost as ListModelHost).HostWeb;
-
-        //    return null;
-        //}
-
         protected bool IsListScopedField
         {
             get { return HostList != null; }
         }
         protected List HostList { get; set; }
-       // protected Site HostSite { get; set; }
-
-        protected Field GetField(object modelHost, FieldDefinition definition)
-        {
-            if (modelHost is SiteModelHost)
-                return FindExistingSiteField(modelHost as SiteModelHost, definition);
-            if (modelHost is WebModelHost)
-                return FindExistingWebField(modelHost as WebModelHost, definition);
-            else if (modelHost is ListModelHost)
-                return FindExistingListField((modelHost as ListModelHost).HostList, definition);
-            else
-            {
-                throw new SPMeta2NotSupportedException(
-                    string.Format("Validation for artifact of type [{0}] under model host [{1}] is not supported.",
-                    definition.GetType(),
-                    modelHost.GetType()));
-            }
-        }
+        // protected Site HostSite { get; set; }
 
         protected virtual void CustomFieldTypeValidation(AssertPair<FieldDefinition, Field> assert, Field spObject,
            FieldDefinition definition)
@@ -93,27 +51,94 @@ namespace SPMeta2.Regression.CSOM.Validation
 
         protected void ValidateField(AssertPair<FieldDefinition, Field> assert, Field spObject, FieldDefinition definition)
         {
-            assert
-                .ShouldNotBeNull(spObject)
-                .ShouldBeEqual(m => m.Title, o => o.Title)
-                //.ShouldBeEqual(m => m.InternalName, o => o.InternalName)
-                    .ShouldBeEqual(m => m.Id, o => o.Id);
-                //.ShouldBeEqual(m => m.FieldType, o => o.TypeAsString)
-                    //.ShouldBeEqual(m => m.Group, o => o.Group);
-
             var context = spObject.Context;
-
-            if (!string.IsNullOrEmpty(definition.Group))
-                assert.ShouldBeEqual(m => m.Group, o => o.Group);
-            else
-                assert.SkipProperty(m => m.Group);
 
             CustomFieldTypeValidation(assert, spObject, definition);
 
-            if (!string.IsNullOrEmpty(definition.StaticName))
-                assert.ShouldBeEqual(m => m.StaticName, o => o.StaticName);
+            assert
+                .ShouldNotBeNull(spObject)
+                .ShouldBeEqual(m => m.Title, o => o.Title)
+                .ShouldBeEqual(m => m.Id, o => o.Id);
+
+            assert.ShouldBeEqualIfNotNullOrEmpty(m => m.Group, o => o.Group);
+            assert.ShouldBeEqualIfNotNullOrEmpty(m => m.StaticName, o => o.StaticName);
+
+            if (definition is LookupFieldDefinition)
+            {
+                var depLookupDefinition = definition as LookupFieldDefinition;
+
+                // cjeck against CountRelated for lookups
+                if (depLookupDefinition.CountRelated.HasValue
+                    && depLookupDefinition.ReadOnlyField.HasValue)
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ReadOnlyField);
+
+                        var isValid = (bool)srcProp.Value == depLookupDefinition.CountRelated.Value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.ReadOnlyField, "CountRelated / ReadOnlyField is null or empty");
+
+                    //if (definition.ReadOnlyField.HasValue)
+                    //    assert.ShouldBeEqual(m => m.ReadOnlyField, o => o.ReadOnlyField);
+                    //else
+                    //    assert.SkipProperty(m => m.ReadOnlyField, "ReadOnlyField is null or empty");
+                }
+            }
             else
-                assert.SkipProperty(m => m.StaticName);
+            {
+                if (definition.ReadOnlyField.HasValue)
+                    assert.ShouldBeEqual(m => m.ReadOnlyField, o => o.ReadOnlyField);
+                else
+                    assert.SkipProperty(m => m.ReadOnlyField, "ReadOnlyField is null or empty");
+            }
+
+            assert.SkipProperty(m => m.DefaultFormula, "Not supported in CSOM API yet");
+
+            if (!string.IsNullOrEmpty(definition.DefaultFormula))
+            {
+                assert.ShouldBeEqual((p, s, d) =>
+                {
+                    var srcProp = s.GetExpressionValue(m => m.DefaultFormula);
+
+                    var isValid = false;
+
+                    var dstXmlNode = XDocument.Parse(d.SchemaXml).Root;
+                    var defaultValueNode = dstXmlNode.Descendants("DefaultFormula").FirstOrDefault();
+
+                    if (defaultValueNode == null)
+                    {
+                        isValid = false;
+                    }
+                    else
+                    {
+                        isValid = defaultValueNode.Value == s.DefaultFormula;
+                    }
+
+                    return new PropertyValidationResult
+                    {
+                        Tag = p.Tag,
+                        Src = srcProp,
+                        Dst = null,
+                        IsValid = isValid
+                    };
+                });
+            }
+            else
+            {
+                assert.SkipProperty(m => m.DefaultFormula, "DefaultFormula is null or empty. Skipping.");
+            }
 
             if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.DefaultValue))
             {
@@ -249,33 +274,19 @@ namespace SPMeta2.Regression.CSOM.Validation
                     "Target InternalName is different to source InternalName. Could be an error if this is not a list scoped field");
             }
 
-            if (!string.IsNullOrEmpty(definition.ValidationFormula))
-                assert.ShouldBeEqual(m => m.ValidationFormula, o => o.ValidationFormula);
-            else
-                assert.SkipProperty(m => m.ValidationFormula, string.Format("ValidationFormula value is not set. Skippping."));
-
-            if (!string.IsNullOrEmpty(definition.ValidationMessage))
-                assert.ShouldBeEqual(m => m.ValidationMessage, o => o.ValidationMessage);
-            else
-                assert.SkipProperty(m => m.ValidationMessage, string.Format("ValidationFormula value is not set. Skippping."));
+            assert.ShouldBeEqualIfNotNullOrEmpty(m => m.ValidationFormula, o => o.ValidationFormula);
+            assert.ShouldBeEqualIfNotNullOrEmpty(m => m.ValidationMessage, o => o.ValidationMessage);
 
             // taxonomy field seems to prodice issues w/ Required/Description validation
             if (!SkipRequredPropValidation)
                 assert.ShouldBeEqual(m => m.Required, o => o.Required);
             else
-                assert.SkipProperty(m => m.Required, "Skipping Required prop validation.");
+                assert.SkipProperty(m => m.Required);
 
-            if (!string.IsNullOrEmpty(definition.Description))
-                assert.ShouldBeEqual(m => m.Description, o => o.Description);
-            else
-                assert.SkipProperty(m => m.Description, "Skipping Description prop validation.");
-
+            assert.ShouldBeEqualIfNotNullOrEmpty(m => m.Description, o => o.Description);
             assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
 
-            if (!string.IsNullOrEmpty(definition.DefaultValue))
-                assert.ShouldBePartOf(m => m.DefaultValue, o => o.DefaultValue);
-            else
-                assert.SkipProperty(m => m.DefaultValue, string.Format("Default value is not set. Skippping."));
+            assert.ShouldBePartOfIfNotNullOrEmpty(m => m.DefaultValue, o => o.DefaultValue);
 
             if (!string.IsNullOrEmpty(spObject.JSLink) &&
                 (spObject.JSLink == "SP.UI.Taxonomy.js|SP.UI.Rte.js(d)|SP.Taxonomy.js(d)|ScriptForWebTaggingUI.js(d)" ||
@@ -289,49 +300,25 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBePartOf(m => m.JSLink, o => o.JSLink);
             }
 
-            if (definition.EnforceUniqueValues.HasValue)
-                assert.ShouldBeEqual(m => m.EnforceUniqueValues, o => o.EnforceUniqueValues);
+            assert.ShouldBeEqualIfHasValue(m => m.EnforceUniqueValues, o => o.EnforceUniqueValues);
+
+            assert.ShouldBeEqualIfHasValue(m => m.ShowInDisplayForm, o => o.GetShowInDisplayForm());
+            assert.ShouldBeEqualIfHasValue(m => m.ShowInEditForm, o => o.GetShowInEditForm());
+            assert.ShouldBeEqualIfHasValue(m => m.ShowInListSettings, o => o.GetShowInListSettings());
+            assert.ShouldBeEqualIfHasValue(m => m.ShowInNewForm, o => o.GetShowInNewForm());
+            assert.ShouldBeEqualIfHasValue(m => m.ShowInVersionHistory, o => o.GetShowInVersionHistory());
+            assert.ShouldBeEqualIfHasValue(m => m.ShowInViewForms, o => o.GetShowInViewForms());
+
+            if (definition is DependentLookupFieldDefinition)
+            {
+                assert.SkipProperty(m => m.Indexed, "Skipping Indexed prop for DependentLookupFieldDefinition");
+            }
             else
-                assert.SkipProperty(m => m.EnforceUniqueValues, "EnforceUniqueValues is NULL");
+            {
+                assert.ShouldBeEqual(m => m.Indexed, o => o.Indexed);
+            }
 
-            if (definition.ShowInDisplayForm.HasValue)
-                assert.ShouldBeEqual(m => m.ShowInDisplayForm, o => o.GetShowInDisplayForm());
-            else
-                assert.SkipProperty(m => m.ShowInDisplayForm, "ShowInDisplayForm is NULL");
-
-            if (definition.ShowInEditForm.HasValue)
-                assert.ShouldBeEqual(m => m.ShowInEditForm, o => o.GetShowInEditForm());
-            else
-                assert.SkipProperty(m => m.ShowInEditForm, "ShowInEditForm is NULL");
-
-            if (definition.ShowInListSettings.HasValue)
-                assert.ShouldBeEqual(m => m.ShowInListSettings, o => o.GetShowInListSettings());
-            else
-                assert.SkipProperty(m => m.ShowInListSettings, "ShowInListSettings is NULL");
-
-            if (definition.ShowInNewForm.HasValue)
-                assert.ShouldBeEqual(m => m.ShowInNewForm, o => o.GetShowInNewForm());
-            else
-                assert.SkipProperty(m => m.ShowInNewForm, "ShowInNewForm is NULL");
-
-            if (definition.ShowInVersionHistory.HasValue)
-                assert.ShouldBeEqual(m => m.ShowInVersionHistory, o => o.GetShowInVersionHistory());
-            else
-                assert.SkipProperty(m => m.ShowInVersionHistory, "ShowInVersionHistory is NULL");
-
-            if (definition.ShowInViewForms.HasValue)
-                assert.ShouldBeEqual(m => m.ShowInViewForms, o => o.GetShowInViewForms());
-            else
-                assert.SkipProperty(m => m.ShowInViewForms, "ShowInViewForms is NULL");
-
-            assert
-                .ShouldBeEqual(m => m.Indexed, o => o.Indexed);
-
-            if (definition.AllowDeletion.HasValue)
-                assert.ShouldBeEqual(m => m.AllowDeletion, o => o.GetAllowDeletion());
-            else
-                assert.SkipProperty(m => m.AllowDeletion, "AllowDeletion is NULL");
-
+            assert.ShouldBeEqualIfHasValue(m => m.AllowDeletion, o => o.GetAllowDeletion());
 
             var supportsLocalization = ReflectionUtils.HasProperties(spObject, new[]
             {
@@ -424,8 +411,8 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.SkipProperty(m => m.DescriptionResource, "DescriptionResource is null or empty. Skipping.");
             }
 
-
+            assert.SkipProperty(m => m.PushChangesToLists,
+                "Covered by 'Regression.Scenarios.Fields.PushChangesToLists' test category");
         }
     }
-
 }

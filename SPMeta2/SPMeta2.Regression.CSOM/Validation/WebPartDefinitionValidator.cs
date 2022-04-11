@@ -68,7 +68,6 @@ namespace SPMeta2.Regression.CSOM.Validation
                 var webPartXmlString = webClient.DownloadString(webpartExportUrl);
                 CurrentWebPartXml = WebpartXmlExtensions.LoadWebpartXmlDocument(webPartXmlString);
 
-
                 assert.ShouldBeEqual(m => m.Title, o => o.Title);
 
                 // checking the web part type, shoul be as expected
@@ -325,7 +324,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                     var value = CurrentWebPartXml.GetTitleUrl();
                     var defValue = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
-                        Context = listItemModelHost.HostClientContext,
+                        Context = listItemModelHost,
                         Value = value
                     }).Value;
 
@@ -363,8 +362,66 @@ namespace SPMeta2.Regression.CSOM.Validation
                 }
                 else
                 {
-                    // TODO
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        // that's a fast hack
+                        // hope we eoudn't have other web part with ParameterBindings :)
+                        var webPartBindings = CurrentWebPartXml.GetProperty("ParameterBindings");
+                        var isValid = true;
+
+                        var srcProp = s.GetExpressionValue(m => m.ParameterBindings);
+
+                        // one more hack, fix up later
+                        // just checking presense of the strings
+                        foreach (var srcBinding in s.ParameterBindings)
+                        {
+                            var hasName = webPartBindings.Contains(srcBinding.Name);
+                            var hasValue = webPartBindings.Contains(srcBinding.Location);
+
+                            if (!hasName || !hasValue)
+                            {
+                                isValid = false;
+                            }
+                        }
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
+
+                if (!string.IsNullOrEmpty(definition.AuthorizationFilter))
+                {
+                    var value = CurrentWebPartXml.GetProperty("AuthorizationFilter");
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.AuthorizationFilter);
+                        var isValid = (srcProp.Value as string) == value;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.AuthorizationFilter, "AuthorizationFilter is null or empty. Skipping.");
+                }
+
+                if (definition.Hidden.HasValue)
+                    assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
+                else
+                    assert.SkipProperty(m => m.Hidden, "Hidden is null or empty. Skipping.");
+
             });
         }
     }

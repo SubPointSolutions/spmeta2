@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
 using SPMeta2.Attributes.Identity;
@@ -37,10 +38,10 @@ namespace SPMeta2.Definitions
 
             TitleResource = new List<ValueForUICulture>();
             DescriptionResource = new List<ValueForUICulture>();
+            IndexedRootFolderPropertyKeys = new List<IndexedPropertyValue>();
         }
 
         #region properties
-
 
         /// <summary>
         /// Title of the target list.
@@ -128,6 +129,7 @@ namespace SPMeta2.Definitions
         /// 
         [ExpectValidation]
         [ExpectRequired(GroupName = "List Template")]
+        //[ExpectRequiredIntRange(MinValue = 0, MaxValue = int.MaxValue)]
         [DataMember]
         public int TemplateType { get; set; }
 
@@ -218,7 +220,7 @@ namespace SPMeta2.Definitions
 
         /// <summary>
         /// The maximum number of major versions allowed for an item in a document library that uses version control with major versions only.
-        /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+        /// M2 provisions that property if only current CSOM runtime provide support for that property.
         /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
         /// </summary>
         [DataMember]
@@ -227,7 +229,7 @@ namespace SPMeta2.Definitions
 
         /// <summary>
         /// The maximum number of major versions that are allowed for an item in a document library that uses version control with both major and minor versions.
-        /// CSOM is not supported yet as M2 s build with SP2013 SP1+ assemblies.
+        /// M2 provisions that property if only current CSOM runtime provide support for that property.
         /// https://officespdev.uservoice.com/forums/224641-general/suggestions/6016131-majorversionlimit-majorwithminorversionslimit-pr
         /// </summary>
         [DataMember]
@@ -249,6 +251,51 @@ namespace SPMeta2.Definitions
         //[ExpectUpdateAsServerRelativeUrl]
         public string DocumentTemplateUrl { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [DataMember]
+        [ExpectValidation]
+        public List<IndexedPropertyValue> IndexedRootFolderPropertyKeys { get; set; }
+
+        [DataMember]
+        [ExpectValidation]
+        public int? WriteSecurity { get; set; }
+
+        [DataMember]
+        //[ExpectValidation]
+        public int? ReadSecurity { get; set; }
+
+        /// <summary>
+        /// Represents SPList.NavigateForFormsPages property.
+        /// Supported only with SSOM provision
+        /// https://github.com/SubPointSolutions/spmeta2/issues/752 
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? NavigateForFormsPages { get; set; }
+
+        /// <summary>
+        /// Represents SPList.EnableAssignToEmail property.
+        /// Supported only with SSOM provision
+        /// https://github.com/SubPointSolutions/spmeta2/issues/1023
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? EnableAssignToEmail { get; set; }
+
+        /// <summary>
+        /// Represents SPList.DisableGridEditing property.
+        /// Supported only with SSOM provision
+        /// https://github.com/SubPointSolutions/spmeta2/issues/1097
+        /// </summary>
+        [ExpectValidation]
+        [ExpectUpdate]
+        [DataMember]
+        public bool? DisableGridEditing { get; set; }
+
         #endregion
 
         #region methods
@@ -256,15 +303,9 @@ namespace SPMeta2.Definitions
         public override string ToString()
         {
             return string.Format("Title: [{0}] Url: [{1}] ContentTypesEnabled:[{4}] TemplateType:[{2}] TemplateName:[{3}]",
-                            new[] {
-                                Title,
 #pragma warning disable 618
-                              string.IsNullOrEmpty(Url) ? CustomUrl : Url,
+ Title, string.IsNullOrEmpty(Url) ? CustomUrl : Url, TemplateType, TemplateName, ContentTypesEnabled);
 #pragma warning restore 618
-                                TemplateType.ToString(),
-                                TemplateName,
-                                ContentTypesEnabled.ToString()
-                            });
         }
 
         #endregion

@@ -9,6 +9,8 @@ namespace SPMeta2.Syntax.Default
     [Serializable]
     [DataContract]
     public class ContentTypeLinkModelNode : TypedModelNode
+        , IContentTypeModelNode
+        , IWorkflowAssociationHostModelNode
     {
 
     }

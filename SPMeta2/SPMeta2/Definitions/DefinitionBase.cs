@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SPMeta2.Common;
+using SPMeta2.Services;
 
 namespace SPMeta2.Definitions
 {
@@ -73,6 +75,4 @@ namespace SPMeta2.Definitions
 
         #endregion
     }
-
-
 }

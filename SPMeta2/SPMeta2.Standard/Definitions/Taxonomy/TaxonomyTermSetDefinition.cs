@@ -100,10 +100,10 @@ namespace SPMeta2.Standard.Definitions.Taxonomy
 
         public override string ToString()
         {
-            return new ToStringResult<TaxonomyTermSetDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Id)
-                          .AddPropertyValue(p => p.LCID)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Id", Id)
+                          .AddRawPropertyValue("LCID", LCID)
                           .ToString();
         }
 

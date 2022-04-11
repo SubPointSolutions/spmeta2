@@ -166,12 +166,12 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<SiteDefinition>(this)
-                          .AddPropertyValue(p => p.Name)
-                          .AddPropertyValue(p => p.Url)
-                          .AddPropertyValue(p => p.SiteTemplate)
-                          .AddPropertyValue(p => p.PrefixName)
-                          .AddPropertyValue(p => p.LCID)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Name", Name)
+                          .AddRawPropertyValue("Url", Url)
+                          .AddRawPropertyValue("SiteTemplate", SiteTemplate)
+                          .AddRawPropertyValue("PrefixName", PrefixName)
+                          .AddRawPropertyValue("LCID", LCID)
                           .ToString();
         }
 

@@ -3,8 +3,10 @@ using System.Linq;
 using Microsoft.SharePoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.Definitions;
-
+using SPMeta2.Exceptions;
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.Utils;
 
 
@@ -22,16 +24,35 @@ namespace SPMeta2.Regression.SSOM.Validation
             var securableObject = modelHostContext.SecurableObject;
             var securityGroup = modelHostContext.SecurityGroup;
 
-            var securityRole = ResolveSecurityRole(ExtractWeb(securableObject), definition);
+            SPWeb web = null;
 
-            var spObject = securableObject.RoleAssignments
-                                          .OfType<SPRoleAssignment>()
+            if (securableObject != null)
+                web = ExtractWeb(securableObject);
+            else
+                web = securityGroup.ParentWeb;
+
+            var securityRole = ResolveSecurityRole(web, definition);
+
+            // security group -> roles
+            if (securableObject == null)
+                securableObject = web;
+
+            var roleAssignments = securableObject.RoleAssignments;
+            var spObject = roleAssignments.OfType<SPRoleAssignment>()
                                           .FirstOrDefault(r => r.Member.ID == securityGroup.ID);
 
             var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
             assert
                  .ShouldNotBeNull(spObject);
+
+            if (definition.RegIsMustBeSingleItem())
+            {
+                if (roleAssignments.Count != 1)
+                {
+                    throw new SPMeta2Exception("There must be only one RoleAssignments. RegIsMustBeSingleItem() == true");
+                }
+            }
 
             if (!string.IsNullOrEmpty(definition.SecurityRoleName))
             {
@@ -107,13 +128,5 @@ namespace SPMeta2.Regression.SSOM.Validation
 
 
         #endregion
-    }
-
-    internal static class SPRoleAssignmentExtensinos
-    {
-        public static string GetRoleDefinitionBindings(this SPRoleAssignment assignment)
-        {
-            return assignment.RoleDefinitionBindings.ToString();
-        }
     }
 }

@@ -11,6 +11,7 @@ using SPMeta2.Utils;
 using Microsoft.SharePoint;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.SSOM.Extensions;
 
 namespace SPMeta2.Regression.SSOM.Validation
 {
@@ -40,7 +41,7 @@ namespace SPMeta2.Regression.SSOM.Validation
                                      .ShouldBeEqual(m => m.Name, o => o.Name)
                                      .ShouldBeEqual(m => m.Class, o => o.Class)
                                      .ShouldBeEqual(m => m.Assembly, o => o.Assembly)
-                                     //.ShouldBeEqual(m => m.Data, o => o.Data)
+                //.ShouldBeEqual(m => m.Data, o => o.Data)
                                      .ShouldBeEqual(m => m.SequenceNumber, o => o.SequenceNumber)
                                      .ShouldBeEqual(m => m.Synchronization, o => o.GetSynchronization())
                                      .ShouldBeEqual(m => m.Type, o => o.GetEventReceiverType());
@@ -52,16 +53,4 @@ namespace SPMeta2.Regression.SSOM.Validation
         }
     }
 
-    internal static class EventReceiverDefinitionExtension
-    {
-        public static string GetSynchronization(this SPEventReceiverDefinition def)
-        {
-            return def.Synchronization.ToString();
-        }
-
-        public static string GetEventReceiverType(this SPEventReceiverDefinition def)
-        {
-            return def.Type.ToString();
-        }
-    }
 }

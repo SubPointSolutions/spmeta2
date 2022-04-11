@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes;
+using SPMeta2.Attributes.Identity;
 using SPMeta2.Attributes.Regression;
 using SPMeta2.Utils;
 
@@ -19,11 +20,29 @@ namespace SPMeta2.Definitions.Fields
     [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
-    [ExpectManyInstances]
 
+    [ExpectManyInstances]
     public class DependentLookupFieldDefinition : LookupFieldDefinition
     {
+        #region constructors
+
+        public DependentLookupFieldDefinition() : base()
+        {
+        }
+
+        #endregion
+
         #region properties
+
+        /// <summary>
+        /// ID of the target field.
+        /// </summary>
+        /// 
+        [ExpectValidation]
+        [ExpectRequired]
+        [DataMember]
+        [IdentityKey]
+        public override Guid Id { get; set; }
 
         [ExpectValidation]
         [DataMember]
@@ -60,9 +79,11 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<DependentLookupFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.InternalName)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("InternalName", InternalName)
+                          .AddRawPropertyValue("PrimaryLookupFieldId", PrimaryLookupFieldId)
+                          .AddRawPropertyValue("AllowMultipleValues", AllowMultipleValues)
                           .ToString();
         }
     }

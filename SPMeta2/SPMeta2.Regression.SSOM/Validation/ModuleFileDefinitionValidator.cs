@@ -10,6 +10,7 @@ using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
 using SPMeta2.SSOM.ModelHosts;
 using Microsoft.SharePoint;
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -167,16 +168,5 @@ namespace SPMeta2.Regression.SSOM.Validation
         }
     }
 
-    public static class SPFileExtensions
-    {
-        public static byte[] GetContent(this SPFile file)
-        {
-            byte[] result = null;
-
-            using (var stream = file.OpenBinaryStream())
-                result = ModuleFileUtils.ReadFully(stream);
-
-            return result;
-        }
-    }
+  
 }

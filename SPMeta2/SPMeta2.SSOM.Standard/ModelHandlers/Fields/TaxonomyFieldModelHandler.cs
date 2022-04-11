@@ -43,6 +43,9 @@ namespace SPMeta2.SSOM.Standard.ModelHandlers.Fields
 
             taxField.AllowMultipleValues = taxFieldModel.IsMulti;
 
+            if (taxFieldModel.UserCreated.HasValue)
+                taxField.UserCreated = taxFieldModel.UserCreated.Value;
+
             if (taxFieldModel.Open.HasValue)
                 taxField.Open = taxFieldModel.Open.Value;
 

@@ -18,14 +18,14 @@ namespace SPMeta2.Syntax.Default
         #region methods
 
         public static TModelNode AddFarmSolution<TModelNode>(this TModelNode model, FarmSolutionDefinition definition)
-            where TModelNode : ModelNode, IFarmModelNode, new()
+            where TModelNode : ModelNode, IFarmSolutionModelHostNode, new()
         {
             return AddFarmSolution(model, definition, null);
         }
 
         public static TModelNode AddFarmSolution<TModelNode>(this TModelNode model, FarmSolutionDefinition definition,
             Action<FarmSolutionModelNode> action)
-            where TModelNode : ModelNode, IFarmModelNode, new()
+            where TModelNode : ModelNode, IFarmSolutionModelHostNode, new()
         {
             return model.AddTypedDefinitionNode(definition, action);
         }
@@ -35,7 +35,7 @@ namespace SPMeta2.Syntax.Default
         #region array overload
 
         public static TModelNode AddFarmSolutions<TModelNode>(this TModelNode model, IEnumerable<FarmSolutionDefinition> definitions)
-           where TModelNode : ModelNode, IFarmModelNode, new()
+           where TModelNode : ModelNode, IFarmSolutionModelHostNode, new()
         {
             foreach (var definition in definitions)
                 model.AddDefinitionNode(definition);

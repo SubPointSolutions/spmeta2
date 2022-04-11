@@ -33,6 +33,14 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
         private ListBindContext LookupBindContext(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
         {
+            var webId = default(Guid);
+
+            return LookupBindContext(listItemModelHost, wpModel, out webId);
+        }
+
+        private ListBindContext LookupBindContext(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel,
+             out Guid webId)
+        {
             var result = new ListBindContext
             {
 
@@ -41,7 +49,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
             var web = listItemModelHost.HostWeb;
             var context = listItemModelHost.HostWeb.Context;
 
-            var list = LookupList(listItemModelHost, wpModel);
+            var list = LookupList(listItemModelHost, wpModel, out webId);
 
             View view = null;
 
@@ -49,6 +57,16 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                 view = list.Views.GetById(wpModel.ViewId.Value);
             else if (!string.IsNullOrEmpty(wpModel.ViewName))
                 view = list.Views.GetByTitle(wpModel.ViewName);
+            else if (!string.IsNullOrEmpty(wpModel.ViewUrl))
+            {
+                var views = list.Views;
+
+                context.Load(views, v => v.Include(r => r.ServerRelativeUrl));
+                context.ExecuteQueryWithTrace();
+
+                view = views.ToArray()
+                            .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(wpModel.ViewUrl.ToUpper()));
+            }
 
             context.Load(list, l => l.Id);
             context.Load(list, l => l.DefaultViewUrl);
@@ -120,13 +138,28 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
                 if (!string.IsNullOrEmpty(typedDefinition.WebUrl))
                 {
-                    // TODO
+                           var webId = default(Guid);
+                           var bindContext = LookupBindContext(listItemModelHost, typedDefinition, out webId);
+                    // web id should be the same
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.WebUrl);
+                        var isValid = webId == new  Guid(CurrentWebPartXml.GetWebId());
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
                 }
                 else
                 {
                     assert.SkipProperty(m => m.WebUrl, "WebUrl is NULL. Skipping.");
                 }
-
 
                 // list
                 if (!string.IsNullOrEmpty(definition.ListTitle))
@@ -254,8 +287,8 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     var bindedView = list.Views.GetById(viewId);
                     var targetView = list.Views.GetByTitle(definition.ViewName);
 
-                    context.Load(bindedView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
-                    context.Load(targetView, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit);
+                    context.Load(bindedView, l => l.BaseViewId, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit, l => l.JSLink);
+                    context.Load(targetView, l => l.BaseViewId, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit, l => l.JSLink);
 
                     context.ExecuteQueryWithTrace();
 
@@ -264,7 +297,9 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                     // these are two different views, just CAML and field count
                     isValid = (bindedView.ViewFields.Count == targetView.ViewFields.Count)
                               && (bindedView.ViewQuery == targetView.ViewQuery)
-                              && (bindedView.RowLimit == targetView.RowLimit);
+                              && (bindedView.RowLimit == targetView.RowLimit)
+                              && (bindedView.JSLink == targetView.JSLink)
+                              && (bindedView.BaseViewId == targetView.BaseViewId);
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
@@ -282,6 +317,56 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                 else
                 {
                     assert.SkipProperty(m => m.ViewName, "ViewName is null or empty. Skipping.");
+                }
+
+                if (!string.IsNullOrEmpty(definition.ViewUrl))
+                {
+                    var list = LookupList(listItemModelHost, definition);
+                    var bindContext = LookupBindContext(listItemModelHost, definition);
+
+                    var viewBindingXml = XDocument.Parse(CurrentWebPartXml.GetProperty("XmlDefinition"));
+                    var viewId = new Guid(viewBindingXml.Root.GetAttributeValue("Name"));
+
+                    var bindedView = list.Views.GetById(viewId);
+
+                    var views = list.Views;
+
+                    context.Load(views, v => v.Include(r => r.ServerRelativeUrl));
+                    context.ExecuteQueryWithTrace();
+
+                    var targetView = views.ToArray()
+                                .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(definition.ViewUrl.ToUpper()));
+
+                    context.Load(bindedView, l => l.BaseViewId, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit, l => l.JSLink);
+                    context.Load(targetView, l => l.BaseViewId, l => l.ViewFields, l => l.ViewQuery, l => l.RowLimit, l => l.JSLink);
+
+                    context.ExecuteQueryWithTrace();
+
+                    var isValid = false;
+
+                    // these are two different views, just CAML and field count
+                    isValid = (bindedView.ViewFields.Count == targetView.ViewFields.Count)
+                              && (bindedView.ViewQuery == targetView.ViewQuery)
+                              && (bindedView.RowLimit == targetView.RowLimit)
+                              && (bindedView.JSLink == targetView.JSLink)
+                              && (bindedView.BaseViewId == targetView.BaseViewId);
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.ViewUrl);
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.ViewUrl, "ViewUrl is null or empty. Skipping.");
                 }
 
                 // jslink
@@ -573,11 +658,26 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                 if (!string.IsNullOrEmpty(definition.XmlDefinition))
                 {
                     var value = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("XmlDefinition"));
+                    var destXmlAttrs = XDocument.Parse(value).Root.Attributes();
 
                     assert.ShouldBeEqual((p, s, d) =>
                     {
                         var srcProp = s.GetExpressionValue(m => m.XmlDefinition);
-                        var isValid = value.Contains("BaseViewID=\"2\"");
+                        var isValid = true;
+
+                        var srcXmlAttrs = XDocument.Parse(definition.XmlDefinition).Root.Attributes();
+
+                        foreach (var srcAttr in srcXmlAttrs)
+                        {
+                            var attrName = srcAttr.Name;
+                            var attrValue = srcAttr.Value;
+
+                            isValid = destXmlAttrs.FirstOrDefault(a => a.Name == attrName)
+                                .Value == attrValue;
+
+                            if (!isValid)
+                                break;
+                        }
 
                         return new PropertyValidationResult
                         {
@@ -626,12 +726,16 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
                         if (typedDefinition.WebId.HasGuidValue() || !string.IsNullOrEmpty(typedDefinition.WebUrl))
                         {
                             targetWeb = new LookupFieldModelHandler()
-                                            .GetTargetWeb(this.CurrentClientContext.Site, typedDefinition.WebUrl, typedDefinition.WebId);
+                                            .GetTargetWeb(
+                                            this.CurrentClientContext.Site, 
+                                            typedDefinition.WebUrl, 
+                                            typedDefinition.WebId,
+                                            modelHost);
                         }
 
                         var list = XsltListViewWebPartModelHandler.LookupList(targetWeb,
                                         typedDefinition.ListUrl,
-                                        typedDefinition.ListTitle, 
+                                        typedDefinition.ListTitle,
                                         typedDefinition.WebId);
 
                         var xmlDefinition = ConvertUtils.ToString(CurrentWebPartXml.GetProperty("XmlDefinition"));
@@ -702,8 +806,37 @@ namespace SPMeta2.Regression.CSOM.Validation.Webparts
 
         private List LookupList(ListItemModelHost listItemModelHost, XsltListViewWebPartDefinition wpModel)
         {
+            var webId = default(Guid);
+
+            return LookupList(listItemModelHost, wpModel, out webId);
+        }
+
+        private List LookupList(ListItemModelHost listItemModelHost, 
+            XsltListViewWebPartDefinition wpModel
+            , out Guid webId)
+        {
             var web = listItemModelHost.HostWeb;
-            var context = listItemModelHost.HostWeb.Context;
+            var context = web.Context;
+
+            if (wpModel.WebId.HasGuidValue() || !string.IsNullOrEmpty(wpModel.WebUrl))
+            {
+                web = new LookupFieldModelHandler()
+                                .GetTargetWeb(listItemModelHost.HostClientContext.Site,
+                                        wpModel.WebUrl, wpModel.WebId,
+                                        listItemModelHost);
+
+                webId = web.Id;
+            }
+            else
+            {
+                context.Load(web);
+                context.Load(web, w => w.Id);
+
+                context.ExecuteQueryWithTrace();
+
+
+                webId = web.Id;
+            }
 
             List list = null;
 

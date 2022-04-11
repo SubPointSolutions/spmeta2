@@ -8,6 +8,17 @@ using SPMeta2.Utils;
 
 namespace SPMeta2.Definitions.Base
 {
+    [Serializable]
+    [DataContract]
+    public class NavigationNodePropertyValue
+    {
+        [DataMember]
+        public string Key { get; set; }
+
+        [DataMember]
+        public string Value { get; set; }
+    }
+
     /// <summary>
     /// Base definition for SharePoint navigation nodes.
     /// </summary>
@@ -22,6 +33,7 @@ namespace SPMeta2.Definitions.Base
         {
             IsVisible = true;
             TitleResource = new List<ValueForUICulture>();
+            Properties = new List<NavigationNodePropertyValue>();
         }
 
         #endregion
@@ -74,17 +86,21 @@ namespace SPMeta2.Definitions.Base
         [DataMember]
         public bool IsVisible { get; set; }
 
+        [ExpectValidation]
+        [DataMember]
+        public List<NavigationNodePropertyValue> Properties { get; set; }
+
         #endregion
 
         #region methods
 
         public override string ToString()
         {
-            return new ToStringResult<NavigationNodeDefinitionBase>(this)
-                          .AddPropertyValue(p => p.Title)
-                          .AddPropertyValue(p => p.Url)
-                          .AddPropertyValue(p => p.IsExternal)
-                          .AddPropertyValue(p => p.IsVisible)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("Title", Title)
+                          .AddRawPropertyValue("Url", Url)
+                          .AddRawPropertyValue("IsExternal", IsExternal)
+                          .AddRawPropertyValue("IsVisible", IsVisible)
                           .ToString();
         }
 

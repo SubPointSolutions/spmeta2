@@ -44,7 +44,7 @@ namespace SPMeta2.Containers.Services.Rnd
 
         public override double Double()
         {
-            return Double(double.MaxValue);
+            return Double(100);
         }
 
         public override double Double(double maxValue)
@@ -98,7 +98,9 @@ namespace SPMeta2.Containers.Services.Rnd
 
         public override string DbServerName()
         {
-            return string.Format("{0}", RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultSqlServerName));
+            var dbServerName = RunnerEnvironmentUtils.GetEnvironmentVariable(EnvironmentConsts.DefaultSqlServerName);
+
+            return string.Format("{0}", dbServerName);
         }
 
         public override string ActiveDirectoryGroup()

@@ -5,6 +5,7 @@ using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.Utils;
+using SPMeta2.SSOM.ModelHosts;
 
 
 namespace SPMeta2.Regression.SSOM.Validation
@@ -13,8 +14,10 @@ namespace SPMeta2.Regression.SSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var spModel = modelHost.WithAssertAndCast<SPContentType>("modelHost", value => value.RequireNotNull());
+            var typedModelhost = modelHost.WithAssertAndCast<ContentTypeModelHost>("model", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model", value => value.RequireNotNull());
+
+            var spModel = typedModelhost.HostContentType;
 
             var spObject = FindExistingFieldLink(spModel, definition);
 

@@ -4,6 +4,7 @@ using SPMeta2.CSOM.Common;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.Definitions;
 using SPMeta2.Utils;
+using SPMeta2.CSOM.ModelHosts;
 
 namespace SPMeta2.Regression.CSOM.Validation
 {
@@ -11,11 +12,11 @@ namespace SPMeta2.Regression.CSOM.Validation
     {
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
-            var modelHostContext = modelHost.WithAssertAndCast<ModelHostContext>("modelHost", value => value.RequireNotNull());
+            var modelHostContext = modelHost.WithAssertAndCast<ContentTypeModelHost>("modelHost", value => value.RequireNotNull());
             var definition = model.WithAssertAndCast<ContentTypeFieldLinkDefinition>("model", value => value.RequireNotNull());
 
-            var site = modelHostContext.Site;
-            var contentType = modelHostContext.ContentType;
+            var site = modelHostContext.HostSite;
+            var contentType = modelHostContext.HostContentType;
 
             var context = site.Context;
 

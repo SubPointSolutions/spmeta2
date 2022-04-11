@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SPMeta2.BuiltInDefinitions;
 using SPMeta2.Containers;
 using SPMeta2.Containers.Standard;
-using SPMeta2.CSOM.DefaultSyntax;
+
 using SPMeta2.Definitions;
 using SPMeta2.Enumerations;
 using SPMeta2.Models;
@@ -16,6 +16,8 @@ using SPMeta2.Regression.Tests.Impl.Scenarios.Base;
 using SPMeta2.Standard.Definitions;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Validation.Validators.Relationships;
+
+using SPMeta2.Regression.Tests.Extensions;
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
 {
@@ -57,11 +59,10 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.SP2013Workflow")]
         public void CanDeploy_SP2013ListWorkflowAccosiation()
         {
-            var model = SPMeta2Model
-                .NewWebModel(web =>
-                {
-                    AddListWorkflow(web);
-                });
+            var model = SPMeta2Model.NewWebModel(web =>
+            {
+                AddListWorkflow(web);
+            });
 
             TestModel(model);
         }

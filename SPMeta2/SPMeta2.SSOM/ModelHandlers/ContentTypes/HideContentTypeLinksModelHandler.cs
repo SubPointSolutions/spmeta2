@@ -71,14 +71,13 @@ namespace SPMeta2.SSOM.ModelHandlers.ContentTypes
 
                 if (listContentType == null && !string.IsNullOrEmpty(srcContentTypeDef.ContentTypeId))
                 {
-                    listContentType =
-                        listContentTypes.FirstOrDefault(
-                            c => c.Id.ToString().ToUpper().StartsWith(srcContentTypeDef.ContentTypeId.ToUpper()));
+                    var spContentTypeId = new SPContentTypeId(srcContentTypeDef.ContentTypeId);
+                    listContentType = listContentTypes.FirstOrDefault(c => c.Parent.Id == spContentTypeId);
 
                     if (listContentType != null)
                     {
                         TraceService.Verbose((int)LogEventId.ModelProvisionCoreCall,
-                            string.Format("Found content type by matching ID start:[{0}]", srcContentTypeDef.ContentTypeId));
+                            string.Format("Found content type by matching parent ID:[{0}]", srcContentTypeDef.ContentTypeId));
                     }
                 }
 

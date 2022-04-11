@@ -20,6 +20,7 @@ using SPMeta2.Containers.Consts;
 using System.Diagnostics;
 using SPMeta2.Exceptions;
 using SPMeta2.Regression.Tests.Utils;
+using SPMeta2.Regression.Utils;
 
 
 namespace SPMeta2.Regression.Tests.Impl.Scenarios
@@ -215,8 +216,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
             {
                 app.OnProvisioned<object, AppDefinition>(context =>
                 {
-                    Trace.WriteLine(context.ObjectDefinition.ToString());
-                    Trace.WriteLine(context.Object.ToString());
+                    RegressionUtils.WriteLine(context.ObjectDefinition.ToString());
+                    RegressionUtils.WriteLine(context.Object.ToString());
 
                     var expectedAppVersion = new Version(context.ObjectDefinition.Version);
 

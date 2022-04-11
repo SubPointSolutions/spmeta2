@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using Microsoft.SharePoint.Client;
 using SPMeta2.Containers.Assertion;
+using SPMeta2.Containers.Extensions;
 using SPMeta2.CSOM.Extensions;
 using SPMeta2.CSOM.ModelHandlers;
 using SPMeta2.CSOM.ModelHosts;
 using SPMeta2.Definitions;
+using SPMeta2.Exceptions;
 using SPMeta2.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -24,9 +26,22 @@ namespace SPMeta2.Regression.CSOM.Validation
             securityRoleContext.Load(securityRole);
             securityRoleContext.ExecuteQueryWithTrace();
 
-            var spObject = securableObject.RoleAssignments
-                                          .OfType<RoleAssignment>()
+            var roleAssignments = securableObject.RoleAssignments;
+
+            securityRoleContext.Load(roleAssignments, d => d.Include(c => c.Member));
+            securityRoleContext.ExecuteQueryWithTrace();
+
+            var spObject = roleAssignments.ToArray()
                                           .FirstOrDefault(r => r.Member.Id == securityGroup.Id);
+
+
+            if (definition.RegIsMustBeSingleItem())
+            {
+                if (roleAssignments.Count != 1)
+                {
+                    throw new SPMeta2Exception("There must be only one RoleAssignments. RegIsMustBeSingleItem() == true");
+                }
+            }
 
             var context = spObject.Context;
             context.Load(spObject, o => o.RoleDefinitionBindings);
@@ -42,7 +57,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(m => m.SecurityRoleName);
-                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
+                    var dstProp = d.GetExpressionValue(o => o.RoleDefinitionBindings.ToString());
 
                     var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings
                                                            .FirstOrDefault(b => b.Id == securityRole.Id) != null;
@@ -66,7 +81,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(m => m.SecurityRoleType);
-                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
+                    var dstProp = d.GetExpressionValue(o => o.RoleDefinitionBindings.ToString());
 
                     var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings
                                                            .FirstOrDefault(b => b.Id == securityRole.Id) != null;
@@ -91,7 +106,7 @@ namespace SPMeta2.Regression.CSOM.Validation
                 assert.ShouldBeEqual((p, s, d) =>
                 {
                     var srcProp = s.GetExpressionValue(m => m.SecurityRoleId);
-                    var dstProp = d.GetExpressionValue(o => o.GetRoleDefinitionBindings());
+                    var dstProp = d.GetExpressionValue(o => o.RoleDefinitionBindings.ToString());
 
                     var hasRoleDefinitionBinding = spObject.RoleDefinitionBindings
                                                            .FirstOrDefault(b => b.Id == securityRole.Id) != null;
@@ -109,14 +124,6 @@ namespace SPMeta2.Regression.CSOM.Validation
             {
                 assert.SkipProperty(m => m.SecurityRoleId, "SecurityRoleId == 0. Skipping.");
             }
-        }
-    }
-
-    internal static class SPRoleAssignmentExtensinos
-    {
-        public static string GetRoleDefinitionBindings(this RoleAssignment assignment)
-        {
-            return assignment.RoleDefinitionBindings.ToString();
         }
     }
 }

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
+
 using Microsoft.SharePoint;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Syntax.Default;
 using SPMeta2.Utils;
-using System.IO;
+using SPMeta2.ModelHosts;
 
 namespace SPMeta2.SSOM.ModelHandlers
 {
@@ -30,7 +30,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
 
-
             var web = ExtractWeb(modelHost);
 
             var site = web.Site;
@@ -40,14 +39,14 @@ namespace SPMeta2.SSOM.ModelHandlers
             {
                 var contentTypeId = new SPContentTypeId(contentTypeDefinition.GetContentTypeId());
 
-                // SPBug, it has to be new SPWen for every content type operation inside feature event handler
+                // SPBug, it has to be new SPWeb for every content type operation inside feature event handler
                 using (var tmpRootWeb = site.OpenWeb(web.ID))
                 {
                     var targetContentType = tmpRootWeb.ContentTypes[contentTypeId];
 
                     if (childModelType == typeof(ModuleFileDefinition))
                     {
-                        action(new FolderModelHost()
+                        action(new FolderModelHost
                         {
                             CurrentContentType = targetContentType,
                             CurrentContentTypeFolder = targetContentType.ResourceFolder
@@ -55,10 +54,15 @@ namespace SPMeta2.SSOM.ModelHandlers
                     }
                     else
                     {
-                        action(targetContentType);
+                        action(ModelHostBase.Inherit<ContentTypeModelHost>(modelHost as ModelHostBase, host =>
+                        {
+                            host.HostContentType = targetContentType;
+                        }));
                     }
 
-                    targetContentType.Update(true);
+                    if (!targetContentType.ReadOnly)
+                        targetContentType.Update(true);
+
                     tmpRootWeb.Update();
                 }
             }
@@ -90,11 +94,24 @@ namespace SPMeta2.SSOM.ModelHandlers
             // SPBug, it has to be new SPWen for every content type operation inside feature event handler
             using (var tmpWeb = site.OpenWeb(targetWeb.ID))
             {
+                if (string.IsNullOrEmpty(contentTypeModel.ParentContentTypeId))
+                {
+                    var parentContentType = web.AvailableContentTypes
+                                               .OfType<SPContentType>()
+                                               .FirstOrDefault(ct => String.Equals(ct.Name, contentTypeModel.ParentContentTypeName, StringComparison.CurrentCultureIgnoreCase));
+
+                    if (parentContentType == null)
+                        throw new SPMeta2Exception(string.Format("Cannot find parent content type by giving name: [{0}]", contentTypeModel.ParentContentTypeName));
+
+                    contentTypeModel.ParentContentTypeId = parentContentType.Id.ToString();
+                }
+
                 var contentTypeId = new SPContentTypeId(contentTypeModel.GetContentTypeId());
 
                 // by ID, by Name
                 var targetContentType = tmpWeb.ContentTypes[contentTypeId];
 
+                // fallback to name
                 if (targetContentType == null)
                 {
                     targetContentType = tmpWeb.ContentTypes
@@ -131,11 +148,18 @@ namespace SPMeta2.SSOM.ModelHandlers
                 targetContentType.Name = contentTypeModel.Name;
                 targetContentType.Group = contentTypeModel.Group;
 
+                if (contentTypeModel.Sealed.HasValue)
+                    targetContentType.Sealed = contentTypeModel.Sealed.Value;
+
+                if (contentTypeModel.ReadOnly.HasValue)
+                    targetContentType.ReadOnly = contentTypeModel.ReadOnly.Value;
+
                 // SPBug, description cannot be null
                 targetContentType.Description = contentTypeModel.Description ?? string.Empty;
-                
+
 #if !NET35
-                targetContentType.JSLink = contentTypeModel.JSLink ?? string.Empty;
+                if (!string.IsNullOrEmpty(contentTypeModel.JSLink))
+                    targetContentType.JSLink = contentTypeModel.JSLink;
 #endif
 
                 if (!string.IsNullOrEmpty(contentTypeModel.DocumentTemplate))
@@ -159,6 +183,7 @@ namespace SPMeta2.SSOM.ModelHandlers
                     targetContentType.DocumentTemplate = processedDocumentTemplateUrl;
                 }
 
+                ProcessFormProperties(targetContentType, contentTypeModel);
                 ProcessLocalization(targetContentType, contentTypeModel);
 
                 InvokeOnModelEvent(this, new ModelEventArgs
@@ -172,11 +197,32 @@ namespace SPMeta2.SSOM.ModelHandlers
                     ModelHost = modelHost
                 });
 
-                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.Update(true)");
+                TraceService.Information((int)LogEventId.ModelProvisionCoreCall, "Calling currentContentType.UpdateIncludingSealedAndReadOnly(true)");
                 targetContentType.UpdateIncludingSealedAndReadOnly(true);
 
                 tmpWeb.Update();
             }
+        }
+
+        protected virtual void ProcessFormProperties(SPContentType targetContentType, ContentTypeDefinition contentTypeModel)
+        {
+            if (!string.IsNullOrEmpty(contentTypeModel.NewFormUrl))
+                targetContentType.NewFormUrl = contentTypeModel.NewFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.NewFormTemplateName))
+                targetContentType.NewFormTemplateName = contentTypeModel.NewFormTemplateName;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.EditFormUrl))
+                targetContentType.EditFormUrl = contentTypeModel.EditFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.EditFormTemplateName))
+                targetContentType.EditFormTemplateName = contentTypeModel.EditFormTemplateName;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DisplayFormUrl))
+                targetContentType.DisplayFormUrl = contentTypeModel.DisplayFormUrl;
+
+            if (!string.IsNullOrEmpty(contentTypeModel.DisplayFormTemplateName))
+                targetContentType.DisplayFormTemplateName = contentTypeModel.DisplayFormTemplateName;
         }
 
         protected virtual void ProcessLocalization(SPContentType obj, ContentTypeDefinition definition)

@@ -14,7 +14,7 @@ using SPMeta2.Syntax.Default;
 namespace SPMeta2.Regression.Tests.Impl.DefinitionCoverage
 {
     [TestClass]
-    public class BuiltInListDefinitionsCoverage : SPMeta2RegresionTestBase
+    public class BuiltInListDefinitionsCoverage : SPMeta2ProvisionRegresionTestBase
     {
         [TestMethod]
         [TestCategory("Regression.DefinitionCoverage.BuiltInListDefinitions")]

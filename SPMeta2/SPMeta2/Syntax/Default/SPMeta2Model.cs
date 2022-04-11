@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using SPMeta2.Definitions;
 using SPMeta2.Extensions;
 using SPMeta2.Models;
+using SPMeta2.Services;
 using SPMeta2.Services.Impl;
 using SPMeta2.Utils;
 
@@ -45,7 +46,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewFarmModel(Action<FarmModelNode> action)
+        public static FarmModelNode NewFarmModel(Action<FarmModelNode> action)
         {
             var node = NewFarmModel(new FarmDefinition(), action);
 
@@ -264,7 +265,7 @@ namespace SPMeta2.Syntax.Default
         /// List model is not going to be pushes by SPMeta2 API, it just required to be there for model tree processing.
         /// </summary>
         /// <returns></returns>
-        public static ModelNode NewListModel()
+        public static ListModelNode NewListModel()
         {
             return NewListModel((ListDefinition)null);
         }
@@ -275,7 +276,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="listDefinition"></param>
         /// <returns></returns>
-        public static ModelNode NewListModel(ListDefinition listDefinition)
+        public static ListModelNode NewListModel(ListDefinition listDefinition)
         {
             return NewListModel(listDefinition, null);
         }
@@ -287,7 +288,7 @@ namespace SPMeta2.Syntax.Default
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewListModel(Action<ListModelNode> action)
+        public static ListModelNode NewListModel(Action<ListModelNode> action)
         {
             var node = NewListModel(new ListDefinition
             {
@@ -307,7 +308,7 @@ namespace SPMeta2.Syntax.Default
         /// <param name="listDefinition"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static ModelNode NewListModel(ListDefinition listDefinition, Action<ListModelNode> action)
+        public static ListModelNode NewListModel(ListDefinition listDefinition, Action<ListModelNode> action)
         {
             return NewModelNode<ListDefinition, ListModelNode>(listDefinition, action);
         }
@@ -468,6 +469,34 @@ namespace SPMeta2.Syntax.Default
                 RegisterKnownType(node.GetType());
                 RegisterKnownType(node.Value.GetType());
             }
+        }
+
+        #endregion
+
+        #region compatibilities
+
+        public static ModelProvisionCompatibilityResult CheckProvisionCompatibility(ModelNode model)
+        {
+            return model.CheckProvisionCompatibility();
+        }
+
+        public static bool IsCSOMCompatible(ModelNode model)
+        {
+            return model.IsCSOMCompatible();
+        }
+
+        public static bool IsSSOMCompatible(ModelNode model)
+        {
+            return model.IsSSOMCompatible();
+        }
+
+        #endregion
+
+        #region pretty print
+
+        public static string ToPrettyPrint(ModelNode modelNode)
+        {
+            return modelNode.ToPrettyPrint();
         }
 
         #endregion

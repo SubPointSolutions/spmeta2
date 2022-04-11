@@ -21,7 +21,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
     [DefaultRootHost(typeof(SiteDefinition))]
     [DefaultParentHost(typeof(ListDefinition), typeof(RootWebDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -61,7 +61,7 @@ namespace SPMeta2.Standard.Definitions.DisplayTemplates
 
         public override string ToString()
         {
-            return new ToStringResult<ControlDisplayTemplateDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
 
                           .ToString();
         }

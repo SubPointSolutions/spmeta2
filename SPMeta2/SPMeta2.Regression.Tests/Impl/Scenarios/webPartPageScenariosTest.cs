@@ -125,7 +125,8 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
 
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
-                web.AddHostList(BuiltInListDefinitions.SitePages.Inherit(d =>
+                //web.AddHostList(BuiltInListDefinitions.SitePages.Inherit(d =>
+                web.AddList(listDef.Inherit(d =>
                 {
                     d.ContentTypesEnabled = true;
                 }), list =>
@@ -160,17 +161,18 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 site.AddContentType(contentTypeDef);
             });
 
-            //var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
-            //{
-            //    def.ContentTypesEnabled = true;
-            //    def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
-            //});
+            var listDef = ModelGeneratorService.GetRandomDefinition<ListDefinition>(def =>
+            {
+                def.ContentTypesEnabled = true;
+                def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
+            });
 
             var webModel = SPMeta2Model.NewWebModel(web =>
             {
                 web.AddFeature(webFeature);
 
-                web.AddHostList(BuiltInListDefinitions.SitePages.Inherit(d =>
+                //web.AddHostList(BuiltInListDefinitions.SitePages.Inherit(d =>
+                web.AddList(listDef.Inherit(d =>
                 {
                     d.ContentTypesEnabled = true;
                 }), list =>

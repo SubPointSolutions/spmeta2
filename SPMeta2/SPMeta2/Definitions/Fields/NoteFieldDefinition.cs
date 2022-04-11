@@ -133,12 +133,12 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<NoteFieldDefinition>(this, base.ToString())
-                          .AddPropertyValue(p => p.NumberOfLines)
-                          .AddPropertyValue(p => p.RichText)
-                          .AddPropertyValue(p => p.RichTextMode)
-                          .AddPropertyValue(p => p.AppendOnly)
-                          .AddPropertyValue(p => p.UnlimitedLengthInDocumentLibrary)
+            return new ToStringResultRaw(base.ToString())
+                          .AddRawPropertyValue("NumberOfLines", NumberOfLines)
+                          .AddRawPropertyValue("RichText", RichText)
+                          .AddRawPropertyValue("RichTextMode", RichTextMode)
+                          .AddRawPropertyValue("AppendOnly", AppendOnly)
+                          .AddRawPropertyValue("UnlimitedLengthInDocumentLibrary", UnlimitedLengthInDocumentLibrary)
                           .ToString();
         }
 

@@ -38,6 +38,7 @@ namespace SPMeta2.Regression.Impl.Tests.ModelHandlers
 
         [TestMethod]
         [TestCategory("Regression.Impl.CSOM.ListItemFieldValueModelHandler")]
+        [TestCategory("CI.Core")]
         public void ShouldNotDeploy_CSOM_ListItemFieldValue_WithFieldId()
         {
             var hasException = false;

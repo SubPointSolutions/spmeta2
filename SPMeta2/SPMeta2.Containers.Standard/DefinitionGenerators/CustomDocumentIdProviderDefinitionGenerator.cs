@@ -15,8 +15,7 @@ namespace SPMeta2.Containers.Standard.DefinitionGenerators
         {
             return WithEmptyDefinition(def =>
             {
-                // TODO
-                def.DocumentProviderType = "";
+                def.DocumentProviderType = "Microsoft.Office.DocumentManagement.Internal.OobProvider, Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";
             });
         }
     }

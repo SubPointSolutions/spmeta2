@@ -34,6 +34,11 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateDeveloperDashboardSettings : ExpectUpdate
+    {
+
+    }
+
     public class ExpectUpdateAsCamlQuery : ExpectUpdate
     {
 
@@ -101,6 +106,10 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsBooleanFieldDefaultValue : ExpectUpdate
+    {
+
+    }
 
     public class ExpectUpdateAsIntRange : ExpectUpdate
     {
@@ -108,8 +117,18 @@ namespace SPMeta2.Attributes.Regression
         public int MaxValue { get; set; }
     }
 
+    public class ExpectUpdateAsNumberFieldDisplayFormat : ExpectUpdate
+    {
+
+    }
+
     public class ExpectUpdateAsUrlFieldFormat : ExpectUpdate
     {
+    }
+
+    public class ExpectUpdateAsEmailAddress : ExpectUpdate
+    {
+
     }
 
     public class ExpectUpdateAsUrl : ExpectUpdate
@@ -199,4 +218,13 @@ namespace SPMeta2.Attributes.Regression
 
     }
 
+    public class ExpectUpdateAsDateFormat : ExpectUpdate
+    {
+
+    }
+
+    public class ExpectUpdateAsTestSecurityGroup : ExpectUpdate
+    {
+
+    }
 }

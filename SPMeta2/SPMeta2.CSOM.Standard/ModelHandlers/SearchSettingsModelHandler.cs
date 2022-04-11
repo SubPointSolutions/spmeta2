@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Web.Script.Serialization;
 using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Search.Administration;
-using Microsoft.SharePoint.Client.Search.Portability;
 using SPMeta2.Common;
 using SPMeta2.Config;
 using SPMeta2.CSOM.Extensions;
@@ -66,17 +64,17 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             return ConvertUtils.ToString(web.AllProperties[propertyBagName]);
         }
 
-        protected virtual void SetSearchCenterUrlAtWebLevel(Web web, string url)
+        protected virtual void SetSearchCenterUrlAtWebLevel(CSOMModelHostBase modelHost, Web web, string url)
         {
-            InternalSetSearchCenterUrl(web, url, true);
+            InternalSetSearchCenterUrl(modelHost, web, url, true);
         }
 
-        protected virtual void SetSearchCenterUrlAtSiteLevel(Web web, string url)
+        protected virtual void SetSearchCenterUrlAtSiteLevel(CSOMModelHostBase modelHost, Web web, string url)
         {
-            InternalSetSearchCenterUrl(web, url, false);
+            InternalSetSearchCenterUrl(modelHost, web, url, false);
         }
 
-        protected void InternalSetSearchCenterUrl(Web web, string url, bool isWebLevel)
+        protected void InternalSetSearchCenterUrl(CSOMModelHostBase modelHost, Web web, string url, bool isWebLevel)
         {
             var propertyBagName = "SRCH_ENH_FTR_URL_SITE";
 
@@ -87,7 +85,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             {
                 url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                 {
-                    Context = web.Context,
+                    Context = modelHost,
                     Value = url
                 }).Value;
 
@@ -98,6 +96,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         private void DeployAtWebLevel(object modelHost, Web web, SearchSettingsDefinition definition)
         {
+            var csomModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
             var context = web.Context;
 
             context.Load(web);
@@ -127,19 +127,19 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 {
                     var url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
-                        Context = context,
+                        Context = csomModelHost,
                         Value = definition.UseCustomResultsPageUrl
                     }).Value;
 
                     searchSettings.ResultsPageAddress = url;
                 }
 
-                SetCurrentSearchConfigAtWebLevel(web, searchSettings);
+                SetCurrentSearchConfigAtWebLevel(csomModelHost, web, searchSettings);
             }
 
             if (!string.IsNullOrEmpty(definition.SearchCenterUrl))
             {
-                SetSearchCenterUrlAtWebLevel(web, definition.SearchCenterUrl);
+                SetSearchCenterUrlAtWebLevel(csomModelHost, web, definition.SearchCenterUrl);
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -159,6 +159,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
         private void DeployAtSiteLevel(object modelHost, Site site, SearchSettingsDefinition definition)
         {
+            var csomModelHost = modelHost.WithAssertAndCast<CSOMModelHostBase>("modelHost", value => value.RequireNotNull());
+
             var web = site.RootWeb;
 
             var context = web.Context;
@@ -181,7 +183,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
 
             if (!string.IsNullOrEmpty(definition.SearchCenterUrl))
             {
-                SetSearchCenterUrlAtSiteLevel(web, definition.SearchCenterUrl);
+                SetSearchCenterUrlAtSiteLevel(csomModelHost, web, definition.SearchCenterUrl);
             }
 
             var searchSettings = GetCurrentSearchConfigAtSiteLevel(web);
@@ -195,7 +197,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                 {
                     var url = TokenReplacementService.ReplaceTokens(new TokenReplacementContext
                     {
-                        Context = context,
+                        Context = csomModelHost,
                         Value = definition.UseCustomResultsPageUrl
                     }).Value;
 
@@ -203,7 +205,7 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
                     searchSettings.ResultsPageAddress = url;
                 }
 
-                SetCurrentSearchConfigAtSiteLevel(web, searchSettings);
+                SetCurrentSearchConfigAtSiteLevel(csomModelHost, web, searchSettings);
             }
 
             InvokeOnModelEvent(this, new ModelEventArgs
@@ -221,17 +223,19 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers
             context.ExecuteQueryWithTrace();
         }
 
-        protected virtual void SetCurrentSearchConfigAtWebLevel(Web web, SearchSettingsConfig searchSettings)
+        protected virtual void SetCurrentSearchConfigAtWebLevel(CSOMModelHostBase modelHost, Web web, SearchSettingsConfig searchSettings)
         {
-            InternalSetCurrentSearchConfig(web, searchSettings, true);
+            InternalSetCurrentSearchConfig(modelHost, web, searchSettings, true);
         }
 
-        protected virtual void SetCurrentSearchConfigAtSiteLevel(Web web, SearchSettingsConfig searchSettings)
+        protected virtual void SetCurrentSearchConfigAtSiteLevel(CSOMModelHostBase modelHost, Web web, SearchSettingsConfig searchSettings)
         {
-            InternalSetCurrentSearchConfig(web, searchSettings, false);
+            InternalSetCurrentSearchConfig(modelHost, web, searchSettings, false);
         }
 
-        private void InternalSetCurrentSearchConfig(Web web,
+        private void InternalSetCurrentSearchConfig(
+            CSOMModelHostBase modelHost,
+            Web web,
             SearchSettingsConfig searchSettings, bool isWebLevel)
         {
             var propertyBagName = "SRCH_SB_SET_SITE";

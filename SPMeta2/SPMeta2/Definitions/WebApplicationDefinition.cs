@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Capabilities;
@@ -18,7 +19,7 @@ namespace SPMeta2.Definitions
     [DefaultParentHost(typeof(FarmDefinition))]
 
     [ExpectAddHostExtensionMethod]
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectWithExtensionMethod]
     [ExpectArrayExtensionMethod]
@@ -26,6 +27,15 @@ namespace SPMeta2.Definitions
     [ParentHostCapability(typeof(FarmDefinition))]
     public class WebApplicationDefinition : DefinitionBase
     {
+        #region constructors
+
+        public WebApplicationDefinition()
+        {
+            AllowedInlineDownloadedMimeTypes = new List<string>();
+        }
+
+        #endregion
+
         #region properties
 
         /// <summary>
@@ -125,6 +135,24 @@ namespace SPMeta2.Definitions
         [DataMember]
         public bool UseNTLMExclusively { get; set; }
 
+        /// <summary>
+        /// Maps AllowedInlineDownloadedMimeTypes value for SPWebApplication
+        /// By default adds all values on top of existing once
+        /// Use ShouldOverrideAllowedInlineDownloadedMimeTypes to force override this property array
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public List<string> AllowedInlineDownloadedMimeTypes { get; set; }
+
+        /// <summary>
+        /// Indicates if AllowedInlineDownloadedMimeTypes property should overwrite existing values in SPWebApplication
+        /// Null, false - values will be added on top
+        /// true - existing values are deleted and new values are added
+        /// </summary>
+        [ExpectValidation]
+        [DataMember]
+        public bool? ShouldOverrideAllowedInlineDownloadedMimeTypes { get; set; }
+
         #endregion
 
 
@@ -132,17 +160,17 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WebApplicationDefinition>(this)
-                          .AddPropertyValue(p => p.HostHeader)
-                          .AddPropertyValue(p => p.Port)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("HostHeader", HostHeader)
+                          .AddRawPropertyValue("Port", Port)
 
-                          .AddPropertyValue(p => p.CreateNewDatabase)
-                          .AddPropertyValue(p => p.DatabaseServer)
-                          .AddPropertyValue(p => p.DatabaseName)
+                          .AddRawPropertyValue("CreateNewDatabase", CreateNewDatabase)
+                          .AddRawPropertyValue("DatabaseServer", DatabaseServer)
+                          .AddRawPropertyValue("DatabaseName", DatabaseName)
 
-                          .AddPropertyValue(p => p.ApplicationPoolId)
-                          .AddPropertyValue(p => p.UseSecureSocketsLayer)
-                          .AddPropertyValue(p => p.ManagedAccount)
+                          .AddRawPropertyValue("ApplicationPoolId", ApplicationPoolId)
+                          .AddRawPropertyValue("UseSecureSocketsLayer", UseSecureSocketsLayer)
+                          .AddRawPropertyValue("ManagedAccount", ManagedAccount)
                           .ToString();
         }
 

@@ -95,16 +95,27 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        protected SPUserSolution FindExistingSolution(SiteModelHost siteModelHost,
+        protected virtual SPUserSolution FindExistingSolution(SiteModelHost siteModelHost,
             SandboxSolutionDefinition sandboxSolutionDefinition)
         {
-            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by SolutionId: [{0}]", sandboxSolutionDefinition.SolutionId);
-
-            return siteModelHost.HostSite.Solutions.OfType<SPUserSolution>()
-                                                                      .FirstOrDefault(f => f.SolutionId == sandboxSolutionDefinition.SolutionId);
+            return FindExistingSolutionById(siteModelHost, sandboxSolutionDefinition.SolutionId);
         }
 
-        protected SPFile FindExistingSolutionFile(SiteModelHost siteModelHost, SandboxSolutionDefinition sandboxSolutionDefinition)
+        protected virtual SPUserSolution FindExistingSolutionById(SiteModelHost siteModelHost,
+            Guid solutionId)
+        {
+            TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by SolutionId: [{0}]", solutionId);
+
+            // cler m_SiteSolutions flat to get always a fresh colletion
+            // m_SiteSolutions
+            var site = siteModelHost.HostSite;
+            ReflectionUtils.SetNonPublicFieldValue(site, "m_SiteSolutions", null);
+
+            return siteModelHost.HostSite.Solutions.OfType<SPUserSolution>()
+                                                                      .FirstOrDefault(f => f.SolutionId == solutionId);
+        }
+
+        protected virtual SPFile FindExistingSolutionFile(SiteModelHost siteModelHost, SandboxSolutionDefinition sandboxSolutionDefinition)
         {
             TraceService.VerboseFormat((int)LogEventId.ModelProvisionCoreCall, "Resolving sandbox solution by FileName: [{0}]", sandboxSolutionDefinition.FileName);
 

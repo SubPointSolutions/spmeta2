@@ -46,7 +46,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 (termSetOrTermNode as TaxonomyTermModelNode).AddRandomTerm(term =>
                  {
                      var termDef = term.Value as TaxonomyTermDefinition;
-                     termDef.Name = string.Format("InvertedLevel_{0}_{1}", deep, termDef.Name);
+                     termDef.Name = string.Format("il{0}_{1}", deep, termDef.Name);
 
                      if (cleanGuid)
                          termDef.Id = null;
@@ -59,7 +59,7 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
                 (termSetOrTermNode as TaxonomyTermSetModelNode).AddRandomTerm(term =>
                 {
                     var termDef = term.Value as TaxonomyTermDefinition;
-                    termDef.Name = string.Format("InvertedLevel_{0}_{1}", deep, termDef.Name);
+                    termDef.Name = string.Format("il{0}_{1}", deep, termDef.Name);
 
                     if (cleanGuid)
                         termDef.Id = null;
@@ -202,43 +202,40 @@ namespace SPMeta2.Regression.Tests.Impl.Scenarios
         [TestCategory("Regression.Scenarios.Taxonomy")]
         public void CanDeploy_TaxonomyHierarchy()
         {
-            var model = SPMeta2Model
-                  .NewSiteModel(site =>
-                  {
-                      site
-                          .AddRandomTermStore(store =>
-                          {
-                              store
-                                  .AddRandomTermGroup(group =>
-                                  {
-                                      group
-                                          .AddRandomTermSet(termSet =>
-                                          {
-                                              termSet
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm();
-                                          })
-                                          .AddRandomTermSet(termSet =>
-                                          {
-                                              termSet
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm();
-                                          });
-                                  })
-                                  .AddRandomTermGroup(group =>
-                                  {
-                                      group
-                                          .AddRandomTermSet(termSet =>
-                                          {
-                                              termSet
-                                                  .AddRandomTerm()
-                                                  .AddRandomTerm();
-                                          });
-                                  });
-                          });
-                  });
+            var model = SPMeta2Model.NewSiteModel(site =>
+            {
+                site.AddRandomTermStore(store =>
+                {
+                    store.AddRandomTermGroup(group =>
+                    {
+                        group
+                            .AddRandomTermSet(termSet =>
+                            {
+                                termSet
+                                    .AddRandomTerm()
+                                    .AddRandomTerm()
+                                    .AddRandomTerm()
+                                    .AddRandomTerm();
+                            })
+                            .AddRandomTermSet(termSet =>
+                            {
+                                termSet
+                                    .AddRandomTerm()
+                                    .AddRandomTerm();
+                            });
+                    })
+                    .AddRandomTermGroup(group =>
+                    {
+                        group
+                            .AddRandomTermSet(termSet =>
+                            {
+                                termSet
+                                    .AddRandomTerm()
+                                    .AddRandomTerm();
+                            });
+                    });
+                });
+            });
 
             TestModel(model);
         }

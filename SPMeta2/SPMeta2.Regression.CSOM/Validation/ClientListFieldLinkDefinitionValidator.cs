@@ -25,35 +25,50 @@ namespace SPMeta2.Regression.CSOM.Validation
             context.Load(spObject);
             context.ExecuteQueryWithTrace();
 
-            var assert = ServiceFactory.AssertService
-                .NewAssert(definition, spObject)
-                .ShouldNotBeNull(spObject);
-            //.ShouldBeEqual(m => m.FieldId, o => o.Id);
+            var assert = ServiceFactory.AssertService.NewAssert(definition, spObject);
 
-            if (!string.IsNullOrEmpty(definition.FieldInternalName))
-                assert.ShouldBeEqual(m => m.FieldInternalName, o => o.InternalName);
-            else
-                assert.SkipProperty(m => m.FieldInternalName, "FieldInternalName is null or empty. Skipping");
+            assert
+                .ShouldNotBeNull(spObject)
 
-            if (definition.FieldId.HasGuidValue())
-                assert.ShouldBeEqual(m => m.FieldId, o => o.Id);
-            else
-                assert.SkipProperty(m => m.FieldId, "FieldId is null or empty. Skipping");
+                .ShouldBeEqualIfNotNullOrEmpty(m => m.FieldInternalName, o => o.InternalName)
+
+                .ShouldBeEqualIfHasValue(m => m.FieldId, o => o.Id)
+                .ShouldBeEqualIfHasValue(m => m.Required, o => o.Required)
+                .ShouldBeEqualIfHasValue(m => m.Hidden, o => o.Hidden);
 
             if (!string.IsNullOrEmpty(definition.DisplayName))
                 assert.ShouldBeEqual(m => m.DisplayName, o => o.Title);
             else
-                assert.SkipProperty(m => m.DisplayName, "DisplayName is null or empty. Skipping");
+            {
 
-            if (definition.Required.HasValue)
-                assert.ShouldBeEqual(m => m.Required, o => o.Required);
-            else
-                assert.SkipProperty(m => m.Required, "Required is null or empty. Skipping");
+                var regDisplayTitleProp = definition.PropertyBag.FirstOrDefault(p => p.Name == "_Reg_DisplayName");
 
-            if (definition.Hidden.HasValue)
-                assert.ShouldBeEqual(m => m.Hidden, o => o.Hidden);
-            else
-                assert.SkipProperty(m => m.Hidden, "Hidden is null or empty. Skipping");
+                if (regDisplayTitleProp != null)
+                {
+                    // Enhance FieldDefinition with 'pushChangesToLists' option #922
+                    // https://github.com/SubPointSolutions/spmeta2/issues/922
+
+                    assert.ShouldBeEqual((p, s, d) =>
+                    {
+                        var srcProp = s.GetExpressionValue(m => m.DisplayName);
+                        var dstProp = d.GetExpressionValue(m => m.Title);
+
+                        var isValid = regDisplayTitleProp.Value == d.Title;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.DisplayName, "DisplayName is null or empty. Skipping");
+                }
+            }
 
             if (definition.AddFieldOptions.HasFlag(BuiltInAddFieldOptions.DefaultValue))
             {

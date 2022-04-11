@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security;
@@ -17,7 +18,11 @@ using SPMeta2.ModelHandlers;
 using SPMeta2.Models;
 using SPMeta2.Regression.CSOM;
 using SPMeta2.Regression.CSOM.Standard.Validation.Fields;
+using SPMeta2.Services;
 using SPMeta2.Utils;
+using SPMeta2.Exceptions;
+using SPMeta2.ModelHosts;
+using SPMeta2.CSOM.Extensions;
 
 namespace SPMeta2.Containers.O365v16
 {
@@ -56,6 +61,32 @@ namespace SPMeta2.Containers.O365v16
 
             foreach (var handlerType in ReflectionUtils.GetTypesFromAssembly<ModelHandlerBase>(csomtandartValidationAsm))
                 _validationService.RegisterModelHandler(Activator.CreateInstance(handlerType) as ModelHandlerBase);
+
+            _provisionService.OnModelNodeProcessing += (sender, args) =>
+            {
+                ContainerTraceUtils.WriteLine(
+                    string.Format("Processing: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
+                    new object[] {
+                                  args.ProcessedModelNodeCount,
+                                  args.TotalModelNodeCount,
+                                  100d * (double)args.ProcessedModelNodeCount / (double)args.TotalModelNodeCount,
+                                  args.CurrentNode.Value.GetType().Name,
+                                  args.CurrentNode.Value
+                                  }));
+            };
+
+            _provisionService.OnModelNodeProcessed += (sender, args) =>
+            {
+                ContainerTraceUtils.WriteLine(
+                   string.Format("Processed: [{0}/{1}] - [{2:0} %] - [{3}] [{4}]",
+                   new object[] {
+                                  args.ProcessedModelNodeCount,
+                                  args.TotalModelNodeCount,
+                                  100d * (double)args.ProcessedModelNodeCount / (double)args.TotalModelNodeCount,
+                                  args.CurrentNode.Value.GetType().Name,
+                                  args.CurrentNode.Value
+                                  }));
+            };
         }
 
         private void LoadEnvironmentConfig()
@@ -94,6 +125,10 @@ namespace SPMeta2.Containers.O365v16
         private CSOMProvisionService _provisionService;
         private CSOMValidationService _validationService;
 
+        public override ProvisionServiceBase ProvisionService
+        {
+            get { return _provisionService; }
+        }
 
         #endregion
 
@@ -123,9 +158,12 @@ namespace SPMeta2.Containers.O365v16
         /// <param name="model"></param>
         public override void DeploySiteModel(ModelNode model)
         {
+            if (!SiteUrls.Any())
+                throw new SPMeta2Exception("SiteUrls is empty");
+
             foreach (var siteUrl in SiteUrls)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on site: [{0}]", siteUrl));
 
 
                 for (var provisionGeneration = 0;
@@ -154,9 +192,12 @@ namespace SPMeta2.Containers.O365v16
         /// <param name="model"></param>
         public override void DeployWebModel(ModelNode model)
         {
+            if (!WebUrls.Any())
+                throw new SPMeta2Exception("WebUrls is empty");
+
             foreach (var webUrl in WebUrls)
             {
-                Trace.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+                ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
 
 
 
@@ -177,6 +218,71 @@ namespace SPMeta2.Containers.O365v16
 
 
             }
+        }
+
+        public override void DeployListModel(ModelNode model)
+        {
+            foreach (var webUrl in WebUrls)
+            {
+                ListOnUrl(model, webUrl);
+            }
+        }
+
+        private void ListOnUrl(ModelNode model, string webUrl)
+        {
+            ContainerTraceUtils.WriteLine(string.Format("[INF]    Running on web: [{0}]", webUrl));
+
+            WithO365Context(webUrl, context =>
+            {
+                for (var provisionGeneration = 0;
+                    provisionGeneration < ProvisionGenerationCount;
+                    provisionGeneration++)
+                {
+                    if (EnableDefinitionProvision)
+                    {
+                        if (OnBeforeDeployModel != null)
+                            OnBeforeDeployModel(_provisionService, model);
+
+                        var web = context.Web;
+                        var list = web.QueryAndGetListByTitle("Site Pages");
+
+                        if (list == null)
+                            list = web.QueryAndGetListByTitle("Pages");
+
+                        if (list == null)
+                            throw new SPMeta2Exception("Cannot find host list");
+
+                        var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromClientContext(context), h =>
+                        {
+                            h.HostList = list;
+                        });
+
+                        _provisionService.DeployModel(listHost, model);
+
+                        if (OnAfterDeployModel != null)
+                            OnAfterDeployModel(_provisionService, model);
+                    }
+
+                    if (EnableDefinitionValidation)
+                    {
+                        var web = context.Web;
+                        var list = web.QueryAndGetListByTitle("Site Pages");
+
+                        if (list == null)
+                            list = web.QueryAndGetListByTitle("Pages");
+
+                        if (list == null)
+                            throw new SPMeta2Exception("Cannot find host list");
+
+                        var listHost = ModelHostBase.Inherit<ListModelHost>(WebModelHost.FromClientContext(context), h =>
+                        {
+                            h.HostList = list;
+                        });
+
+                        _validationService.DeployModel(listHost, model);
+                    }
+                }
+            });
         }
 
         #endregion
@@ -219,10 +325,16 @@ namespace SPMeta2.Containers.O365v16
             using (var context = new ClientContext(siteUrl))
             {
                 context.Credentials = new SharePointOnlineCredentials(userName, GetSecurePasswordString(userPassword));
+
+                context.Load(context.Site, s => s.ServerRelativeUrl);
+                context.Load(context.Web);
+                context.Load(context.Web, s => s.ServerRelativeUrl);
+
+                context.ExecuteQuery();
+
                 action(context);
             }
         }
-
 
         #endregion
     }

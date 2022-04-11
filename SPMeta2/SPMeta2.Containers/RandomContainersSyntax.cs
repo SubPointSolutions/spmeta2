@@ -93,6 +93,20 @@ namespace SPMeta2.Containers
 
         #endregion
 
+        #region security groups
+
+        public static ModelNode AddRandomSecurityGroup(this ModelNode model)
+        {
+            return AddRandomSecurityGroup(model, null);
+        }
+
+        public static ModelNode AddRandomSecurityGroup(this ModelNode model, Action<ModelNode> action)
+        {
+            return model.AddRandomDefinition<SecurityGroupDefinition>(action);
+        }
+
+        #endregion
+
         #region user custom action
 
         public static ModelNode AddRandomUserCustomAction(this ModelNode model)
@@ -167,6 +181,11 @@ namespace SPMeta2.Containers
             return model.AddRandomTypedDefinition<ListDefinition, WebModelNode, ListModelNode>(action);
         }
 
+        public static WebModelNode AddRandomDocumentLibrary(this WebModelNode model)
+        {
+            return AddRandomDocumentLibrary(model, null);
+        }
+
         public static WebModelNode AddRandomDocumentLibrary(this WebModelNode model, Action<ListModelNode> action)
         {
             return model.AddRandomTypedDefinition<ListDefinition, WebModelNode, ListModelNode>(node =>
@@ -176,7 +195,8 @@ namespace SPMeta2.Containers
                 def.ContentTypesEnabled = true;
                 def.TemplateType = BuiltInListTemplateTypeId.DocumentLibrary;
 
-                action(node);
+                if (action != null)
+                    action(node);
             });
         }
 

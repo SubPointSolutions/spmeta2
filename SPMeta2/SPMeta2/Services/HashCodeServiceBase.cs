@@ -1,15 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace SPMeta2.Services
 {
     public abstract class HashCodeServiceBase : IDisposable
     {
+        #region constructors
+
+        public HashCodeServiceBase()
+        {
+            KnownTypes = new List<Type>();
+        }
+
+        #endregion
+
         #region methods
 
         public abstract string GetHashCode(object instance);
+        public List<Type> KnownTypes { get; set; }
 
         public void Dispose()
         {
@@ -28,48 +41,13 @@ namespace SPMeta2.Services
         #endregion
     }
 
-
-
-    public class MD5HashCodeServiceBase : HashCodeServiceBase
+    public static class HashCodeServiceBaseExtensions
     {
-        #region properties
-
-        private MD5CryptoServiceProvider _cryptoServiceProvider = new MD5CryptoServiceProvider();
-
-        #endregion
-
-        #region methods
-
-        public override string GetHashCode(object instance)
+        public static void RegisterKnownTypes(this HashCodeServiceBase service, IEnumerable<Type> types)
         {
-            var serializer = new DataContractSerializer(instance.GetType());
-
-            using (var memoryStream = new MemoryStream())
-            {
-                serializer.WriteObject(memoryStream, instance);
-
-                _cryptoServiceProvider.ComputeHash(memoryStream.ToArray());
-                return Convert.ToBase64String(_cryptoServiceProvider.Hash);
-            }
+            foreach (var type in types)
+                if (!service.KnownTypes.Contains(type))
+                    service.KnownTypes.Add(type);
         }
-
-        protected override void InternalDispose(bool disposing)
-        {
-            base.InternalDispose(disposing);
-
-            if (disposing)
-            {
-                if (_cryptoServiceProvider != null)
-          
-                {
-#if !NET35 
-                    // OMG
-                    _cryptoServiceProvider.Dispose();
-#endif
-                }
-            }
-        }
-
-        #endregion
     }
 }

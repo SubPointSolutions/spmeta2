@@ -9,6 +9,8 @@ using SPMeta2.Definitions;
 using SPMeta2.Services;
 using SPMeta2.Standard.Definitions.Taxonomy;
 using SPMeta2.Utils;
+using Microsoft.SharePoint.Client;
+using SPMeta2.Exceptions;
 
 namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 {
@@ -31,6 +33,33 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
             var definition = model.WithAssertAndCast<TaxonomyTermLabelDefinition>("model", value => value.RequireNotNull());
 
             DeployTermLabel(modelHost, termModelHost, definition);
+            SharePointOnlineWait(termModelHost, definition);
+        }
+
+        private void SharePointOnlineWait(TermModelHost termModelHost, TaxonomyTermLabelDefinition definition)
+        {
+            // wait until the group is there
+            // Nested terms provisioning in Office 365 fails #995
+            // TermSet not found #994
+            var context = termModelHost.HostClientContext;
+
+            if (IsSharePointOnlineContext(context))
+            {
+                var term = termModelHost.HostTerm;
+                var currentLabel = FindLabelInTerm(term, definition);
+
+                if (currentLabel == null)
+                {
+                    TryRetryService.TryWithRetry(() =>
+                    {
+                        currentLabel = FindLabelInTerm(term, definition);
+                        return currentLabel != null;
+                    });
+                }
+
+                if (currentLabel == null)
+                    throw new SPMeta2Exception(string.Format("Cannot find a term label after provision"));
+            }
         }
         private void DeployTermLabel(object modelHost, TermModelHost termModelHost, TaxonomyTermLabelDefinition labelModel)
         {
@@ -39,6 +68,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
 
             var term = termModelHost.HostTerm;
             var currentLabel = FindLabelInTerm(term, labelModel);
+
+            var shouldCommitChanges = false;
 
             InvokeOnModelEvent(this, new ModelEventArgs
             {
@@ -67,6 +98,8 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ObjectDefinition = labelModel,
                     ModelHost = modelHost
                 });
+
+                shouldCommitChanges = true;
             }
             else
             {
@@ -82,10 +115,19 @@ namespace SPMeta2.CSOM.Standard.ModelHandlers.Taxonomy
                     ObjectDefinition = labelModel,
                     ModelHost = modelHost
                 });
+
+                shouldCommitChanges = false;
             }
 
-            termStore.CommitAll();
-            context.ExecuteQueryWithTrace();
+            if (shouldCommitChanges)
+            {
+                termStore.CommitAll();
+
+                currentLabel.RefreshLoad();
+                term.RefreshLoad();
+
+                context.ExecuteQueryWithTrace();
+            }
         }
 
         protected Label FindLabelInTerm(Term termSet, TaxonomyTermLabelDefinition labelModel)

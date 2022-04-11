@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+
 using SPMeta2.Common;
 using SPMeta2.Definitions;
-using SPMeta2.Definitions.Base;
-using SPMeta2.ModelHandlers;
 using SPMeta2.Services;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -30,11 +30,11 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (modelHost is SiteModelHost)
             {
-                CreateWeb(modelHost, (modelHost as SiteModelHost).HostSite.RootWeb, webModel);
+                CreateWeb(modelHost, ((SiteModelHost)modelHost).HostSite.RootWeb, webModel);
             }
             else if (parentHost is WebModelHost)
             {
-                CreateWeb(modelHost, (parentHost as WebModelHost).HostWeb, webModel);
+                CreateWeb(modelHost, ((WebModelHost)parentHost).HostWeb, webModel);
             }
             else
             {
@@ -63,10 +63,20 @@ namespace SPMeta2.SSOM.ModelHandlers
             }
         }
 
-        private static void MapProperties(SPWeb web, WebDefinition webModel)
+        protected virtual void MapProperties(SPWeb web, WebDefinition webModel)
         {
-            web.Title = webModel.Title;
-            web.Description = string.IsNullOrEmpty(webModel.Description) ? String.Empty : webModel.Description;
+            // temporarily switch culture to allow setting of the properties Title and Description for multi-language scenarios
+            CultureUtils.WithCulture(web.UICulture, () =>
+            {
+                if (!string.IsNullOrEmpty(webModel.Title))
+                    web.Title = webModel.Title;
+
+                if (!string.IsNullOrEmpty(webModel.Description))
+                    web.Description = webModel.Description;
+            });
+
+            if (!string.IsNullOrEmpty(webModel.RequestAccessEmail))
+                web.RequestAccessEmail = webModel.RequestAccessEmail;
 
             if (webModel.LCID > 0)
                 web.Locale = new CultureInfo((int)webModel.LCID);
@@ -76,6 +86,52 @@ namespace SPMeta2.SSOM.ModelHandlers
 
             if (!string.IsNullOrEmpty(webModel.SiteLogoUrl))
                 web.SiteLogoUrl = webModel.SiteLogoUrl;
+
+#if !NET35
+            if (webModel.IndexedPropertyKeys.Any())
+            {
+                foreach (var indexedProperty in webModel.IndexedPropertyKeys)
+                {
+                    // indexed prop should exist in the prop bag
+                    // otherwise it won't be saved by SharePoint (ILSpy / Refletor to see the logic)
+                    // http://rwcchen.blogspot.com.au/2014/06/sharepoint-2013-indexed-property-keys.html
+
+                    var propName = indexedProperty.Name;
+                    var propValue = string.IsNullOrEmpty(indexedProperty.Value)
+                                            ? string.Empty
+                                            : indexedProperty.Value;
+
+                    if (web.AllProperties.ContainsKey(propName))
+                        web.AllProperties[propName] = propValue;
+                    else
+                        web.AllProperties.Add(propName, propValue);
+
+                    if (!web.IndexedPropertyKeys.Contains(propName))
+                        web.IndexedPropertyKeys.Add(propName);
+                }
+            }
+#endif
+
+            if (webModel.UseUniquePermission && web.HasUniqueRoleAssignments)
+            {
+                // safe check - if not then we'll get the following exception
+                // ---> System.InvalidOperationException: 
+                // You cannot set this property since the web does not have unique permissions.
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedMemberGroupName))
+                    web.AssociatedMemberGroup = ResolveSecurityGroup(web, webModel.AssociatedMemberGroupName);
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedOwnerGroupName))
+                    web.AssociatedOwnerGroup = ResolveSecurityGroup(web, webModel.AssociatedOwnerGroupName);
+
+                if (!string.IsNullOrEmpty(webModel.AssociatedVisitorGroupName))
+                    web.AssociatedVisitorGroup = ResolveSecurityGroup(web, webModel.AssociatedVisitorGroupName);
+            }
+        }
+
+        protected virtual SPGroup ResolveSecurityGroup(SPWeb web, string groupName)
+        {
+            return web.SiteGroups[groupName];
         }
 
         public override void WithResolvingModelHost(ModelHostResolveContext modelHostContext)
@@ -84,7 +140,6 @@ namespace SPMeta2.SSOM.ModelHandlers
             var model = modelHostContext.Model;
             var childModelType = modelHostContext.ChildModelType;
             var action = modelHostContext.Action;
-
 
             var webDefinition = model as WebDefinition;
             SPWeb parentWeb = null;
@@ -212,8 +267,6 @@ namespace SPMeta2.SSOM.ModelHandlers
                         customWebTemplate,
                         webModel.UseUniquePermission,
                         webModel.ConvertIfThere);
-
-
                 }
 
                 MapProperties(currentWeb, webModel);

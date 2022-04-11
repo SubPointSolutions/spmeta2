@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using SPMeta2.Attributes;
 using SPMeta2.Attributes.Identity;
@@ -42,13 +42,16 @@ namespace SPMeta2.Standard.Definitions
         public bool? DisplayShowHideRibbonAction { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? AddNewPagesToNavigation { get; set; }
 
         [DataMember]
+        [ExpectValidation]
         public bool? CreateFriendlyUrlsForNewPages { get; set; }
 
         [DataMember]
         [ExpectValidation]
+        [ExpectRequired(GroupName = "NavigationSource")]
         public string GlobalNavigationSource { get; set; }
 
         #region global navigation term store support
@@ -82,6 +85,7 @@ namespace SPMeta2.Standard.Definitions
 
         [DataMember]
         [ExpectValidation]
+        [ExpectRequired(GroupName = "NavigationSource")]
         public string CurrentNavigationSource { get; set; }
 
         #region current navigation term store support
@@ -151,9 +155,9 @@ namespace SPMeta2.Standard.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<WebNavigationSettingsDefinition>(this)
-                          .AddPropertyValue(p => p.GlobalNavigationSource)
-                          .AddPropertyValue(p => p.CurrentNavigationSource)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("GlobalNavigationSource", GlobalNavigationSource)
+                          .AddRawPropertyValue("CurrentNavigationSource", CurrentNavigationSource)
                           .ToString();
         }
 

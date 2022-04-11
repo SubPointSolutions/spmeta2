@@ -70,6 +70,9 @@ namespace SPMeta2.Enumerations
             UserDocsWebPart = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.UserDocsWebPart.webpart");
 
             BlogMonthQuickLaunch = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.BlogMonthQuickLaunch.webpart");
+
+            AdvancedSearchBox = ResourceUtils.ReadFromResourceName(asm, "SPMeta2.Templates.Webparts.AdvancedSearchBox.webpart");
+
         }
 
         #endregion
@@ -151,6 +154,8 @@ namespace SPMeta2.Enumerations
         public static string CategoryWebPart { get; set; }
 
         public static string BlogMonthQuickLaunch { get; set; }
+
+        public static string AdvancedSearchBox { get; set; }
     }
 }
 

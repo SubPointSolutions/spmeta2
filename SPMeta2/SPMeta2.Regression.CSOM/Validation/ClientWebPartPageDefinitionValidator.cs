@@ -7,6 +7,7 @@ using SPMeta2.Utils;
 using SPMeta2.CSOM.ModelHosts;
 using System.Text;
 using SPMeta2.CSOM.Extensions;
+using SPMeta2.Regression.CSOM.Extensions;
 using SPMeta2.Syntax.Default.Utils;
 
 namespace SPMeta2.Regression.CSOM.Validation
@@ -50,7 +51,7 @@ namespace SPMeta2.Regression.CSOM.Validation
             var assert = ServiceFactory.AssertService
                                      .NewAssert(definition, spObject)
                                            .ShouldNotBeNull(spObject)
-                                           .ShouldBeEqual(m => m.FileName, o => o.GetName());
+                                           .ShouldBeEqual(m => m.FileName, o => o.GetFileLeafRef());
 
             assert.SkipProperty(m => m.Title, "Web part pages don't have title. Skipping.");
 

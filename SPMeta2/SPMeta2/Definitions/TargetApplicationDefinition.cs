@@ -31,7 +31,7 @@ namespace SPMeta2.Definitions
     [DefaultRootHost(typeof(FarmDefinition))]
     [DefaultParentHost(typeof(SecureStoreApplicationDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
 
     [ExpectWithExtensionMethod]
@@ -54,7 +54,7 @@ namespace SPMeta2.Definitions
         [DataMember]
         [IdentityKey]
         public string ApplicationId { get; set; }
-      
+
         [DataMember]
         public string Name { get; set; }
 
@@ -88,10 +88,10 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<TargetApplicationDefinition>(this)
-                          .AddPropertyValue(p => p.ApplicationId)
-                          .AddPropertyValue(p => p.FriendlyName)
-                          .AddPropertyValue(p => p.Type)
+            return new ToStringResultRaw()
+                          .AddRawPropertyValue("ApplicationId", ApplicationId)
+                          .AddRawPropertyValue("FriendlyName", FriendlyName)
+                          .AddRawPropertyValue("Type", Type)
 
                           .ToString();
         }

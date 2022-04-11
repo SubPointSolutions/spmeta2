@@ -17,7 +17,7 @@ namespace SPMeta2.Definitions.Fields
     [DefaultParentHost(typeof(SiteDefinition))]
     [DefaultRootHost(typeof(SiteDefinition))]
 
-    [Serializable] 
+    [Serializable]
     [DataContract]
     [ExpectArrayExtensionMethod]
 
@@ -63,7 +63,7 @@ namespace SPMeta2.Definitions.Fields
 
         public override string ToString()
         {
-            return new ToStringResult<GuidFieldDefinition>(this, base.ToString())
+            return new ToStringResultRaw(base.ToString())
                           .ToString();
         }
 

@@ -70,6 +70,11 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                     view = list.Views[typedModel.ViewId.Value];
                 else if (!string.IsNullOrEmpty(typedModel.ViewName))
                     view = list.Views[typedModel.ViewName];
+                else if (!string.IsNullOrEmpty(typedModel.ViewUrl))
+                {
+                    view = list.Views.OfType<SPView>()
+                        .FirstOrDefault(v => v.ServerRelativeUrl.ToUpper().EndsWith(typedModel.ViewUrl.ToUpper()));
+                }
 
                 if (view != null)
                 {
@@ -114,7 +119,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
                                             typedDefinition.ListUrl,
                                             typedDefinition.ListId);
 
-                            var targetView = list.Views[Guid.Parse(xsltWebPart.ViewGuid)];
+                            var targetView = list.Views[ConvertUtils.ToGuid(xsltWebPart.ViewGuid).Value];
 
                             // fixing up the Toolbar
                             if (!string.IsNullOrEmpty(typedDefinition.Toolbar))
@@ -155,7 +160,7 @@ namespace SPMeta2.SSOM.ModelHandlers.Webparts
 
                                 if (field != null)
                                 {
-                                    field.SetValue(targetView, htmlSchemaXml.Root.GetInnerXmlAsString());
+                                    field.SetValue(targetView, htmlSchemaXml.Root.GetInnerXmlAsString(), null);
                                 }
                             }
 

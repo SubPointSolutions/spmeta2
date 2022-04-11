@@ -45,7 +45,7 @@ namespace SPMeta2.Regression.CSOM.Validation.Extended
 
                     var isValid = true;
 
-                    TraceUtils.WithScope(trace =>
+                    IndentableTrace.WithScope(trace =>
                     {
                         trace.WriteLine(string.Format("Checking web part presence on the page:[{0}]", pageUrl));
 

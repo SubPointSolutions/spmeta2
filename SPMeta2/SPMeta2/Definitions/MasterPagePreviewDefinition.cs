@@ -54,7 +54,7 @@ namespace SPMeta2.Definitions
 
         public override string ToString()
         {
-            return new ToStringResult<MasterPagePreviewDefinition>(this, base.ToString())
+            return new ToStringResultRaw( base.ToString())
                           .ToString();
         }
 

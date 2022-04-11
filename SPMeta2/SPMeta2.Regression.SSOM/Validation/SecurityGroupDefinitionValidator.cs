@@ -5,6 +5,7 @@ using SPMeta2.Containers.Assertion;
 using SPMeta2.Definitions;
 using SPMeta2.Definitions.Base;
 using SPMeta2.Exceptions;
+using SPMeta2.Regression.SSOM.Extensions;
 using SPMeta2.SSOM.ModelHandlers;
 using SPMeta2.SSOM.ModelHosts;
 using SPMeta2.Utils;
@@ -13,6 +14,22 @@ namespace SPMeta2.Regression.SSOM.Validation
 {
     public class SecurityGroupDefinitionValidator : SecurityGroupModelHandler
     {
+        protected string GetSafeUserLogin(string userLoginString)
+        {
+            var result = userLoginString.ToString().ToUpper().Replace("\\", "/");
+
+            if (result.Contains("|"))
+                result = result.Split('|')[1];
+
+            if (result.Contains('\\'))
+                result = result.Split('\\')[1];
+
+            if (result.Contains('/'))
+                result = result.Split('/')[1];
+
+            return result;
+        }
+
         public override void DeployModel(object modelHost, DefinitionBase model)
         {
             if (modelHost is SiteModelHost)
@@ -53,41 +70,70 @@ namespace SPMeta2.Regression.SSOM.Validation
                 else
                     assert.SkipProperty(m => m.AutoAcceptRequestToJoinLeave, "AutoAcceptRequestToJoinLeave is NULL. Skipping.");
 
-
-                assert.ShouldBeEqual((p, s, d) =>
+                if (!string.IsNullOrEmpty(definition.DefaultUser))
                 {
-                    var srcProp = s.GetExpressionValue(def => def.Owner);
-                    var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
-
-                    var isValid = srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
-                                  dstProp.Value.ToString().ToUpper().Replace("\\", "/");
-
-
-                    return new PropertyValidationResult
+                    assert.ShouldBeEqual((p, s, d) =>
                     {
-                        Tag = p.Tag,
-                        Src = srcProp,
-                        Dst = dstProp,
-                        IsValid = isValid
-                    };
-                });
+                        var srcProp = s.GetExpressionValue(def => def.Owner);
+                        var dstProp = d.GetExpressionValue(ct => ct.GetOwnerLogin());
 
-                assert.ShouldBeEqual((p, s, d) =>
+                        var srcUserLogin = GetSafeUserLogin(srcProp.Value.ToString());
+                        var dstsUserLogin = GetSafeUserLogin(dstProp.Value.ToString());
+
+                        var isValid = srcUserLogin == dstsUserLogin;
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = dstProp,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
                 {
-                    var srcProp = s.GetExpressionValue(def => def.DefaultUser);
-                    var dstProp = d.GetExpressionValue(ct => ct.GetDefaultUserLoginName());
+                    assert.SkipProperty(m => m.Owner, "");
+                }
 
-                    var isValid = srcProp.Value.ToString().ToUpper().Replace("\\", "/") ==
-                                dstProp.Value.ToString().ToUpper().Replace("\\", "/");
-
-                    return new PropertyValidationResult
+                if (!string.IsNullOrEmpty(definition.DefaultUser))
+                {
+                    assert.ShouldBeEqual((p, s, d) =>
                     {
-                        Tag = p.Tag,
-                        Src = srcProp,
-                        Dst = dstProp,
-                        IsValid = isValid
-                    };
-                });
+                        var srcProp = s.GetExpressionValue(def => def.DefaultUser);
+
+                        // should be in the group
+                        var userNames = d.Users.OfType<SPUser>()
+                                               .Select(u => u.LoginName);
+
+                        var isValid = false;
+
+                        foreach (var userName in userNames)
+                        {
+
+                            var srcUserLogin = GetSafeUserLogin(srcProp.Value.ToString());
+                            var dstsUserLogin = GetSafeUserLogin(userName);
+
+                            if (srcUserLogin == dstsUserLogin)
+                            {
+                                isValid = true;
+                                break;
+                            }
+                        }
+
+                        return new PropertyValidationResult
+                        {
+                            Tag = p.Tag,
+                            Src = srcProp,
+                            Dst = null,
+                            IsValid = isValid
+                        };
+                    });
+                }
+                else
+                {
+                    assert.SkipProperty(m => m.DefaultUser, "");
+                }
             }
             else if (modelHost is SecurityGroupModelHost)
             {
@@ -124,26 +170,6 @@ namespace SPMeta2.Regression.SSOM.Validation
             }
 
 
-        }
-    }
-
-    internal static class SPGroupExtensions
-    {
-        public static string GetOwnerLogin(this SPGroup group)
-        {
-            if (group.Owner is SPGroup)
-                return (group.Owner as SPGroup).LoginName;
-
-            if (group.Owner is SPUser)
-                return (group.Owner as SPUser).LoginName;
-
-            throw new SPMeta2Exception(string.Format("Cannot get LoginName for object:[{0}] of type:[{1}]",
-                group, group.Owner != null ? group.Owner.GetType().ToString() : "NULL"));
-        }
-
-        public static string GetDefaultUserLoginName(this SPGroup group)
-        {
-            return group.Users[0].LoginName;
         }
     }
 }
